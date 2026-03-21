@@ -54,14 +54,26 @@ const AnalisaPraMim = () => {
             <h1 className="font-heading text-3xl md:text-5xl font-bold text-[hsl(145,70%,35%)] leading-tight mb-6">
               80 currículos ou só os 5 certos?
               <br />
-              Você escolhe
+              <span className="text-white bg-[hsl(145,70%,35%)] px-4 py-1 inline-block mt-2 rounded">Você escolhe</span>
             </h1>
 
-            <div className="bg-primary rounded-2xl p-8 md:p-12 mb-8 max-w-2xl mx-auto">
-              <h2 className="font-heading text-2xl md:text-3xl font-bold text-primary-foreground mb-2">
-                Analisa.PraMim
-              </h2>
-              <p className="text-primary-foreground/80 text-sm">Uma solução Mercury Gestora®</p>
+            {/* YouTube VSL */}
+            <div className="bg-primary rounded-2xl p-4 md:p-6 mb-8 max-w-2xl mx-auto">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-6 h-6 rounded-full bg-[hsl(145,70%,35%)] flex items-center justify-center">
+                  <span className="text-white text-xs font-bold">▶</span>
+                </div>
+                <span className="text-primary-foreground font-heading font-bold text-sm">Análise de currículo para RH com IA- Analisa.PraMim ®</span>
+              </div>
+              <div className="aspect-video w-full rounded-xl overflow-hidden bg-black">
+                <iframe
+                  className="w-full h-full"
+                  src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+                  title="AnalisaPraMim - Demonstração"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
             </div>
 
             <Button
