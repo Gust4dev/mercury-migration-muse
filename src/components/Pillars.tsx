@@ -1,4 +1,5 @@
 import { Target, Filter, BarChart3 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 const pillars = [
   {
@@ -45,6 +46,30 @@ const pillars = [
   },
 ];
 
+const AnimatedCard = ({ children, delay }: { children: React.ReactNode; delay: number }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.2 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+};
+
 const Pillars = () => {
   return (
     <section className="bg-mercury-light py-20">
@@ -57,53 +82,49 @@ const Pillars = () => {
         </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {pillars.map((pillar) => (
-            <div
-              key={pillar.title}
-              className="bg-white rounded-xl border border-mercury-dark/10 overflow-hidden hover:shadow-lg transition-shadow"
-            >
-              {/* Header */}
-              <div className="bg-mercury-dark p-6 flex items-center gap-4">
-                <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center">
-                  <pillar.icon className="text-primary" size={24} />
-                </div>
-                <h3 className="font-heading text-xl font-bold text-white">
-                  {pillar.title}
-                </h3>
-              </div>
-
-              <div className="p-6 space-y-6">
-                {/* Erro do mercado */}
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-destructive mb-3">
-                    ✕ Erro do Mercado
-                  </p>
-                  <ul className="space-y-2">
-                    {pillar.erros.map((e) => (
-                      <li key={e} className="text-sm text-mercury-dark/60 flex items-start gap-2">
-                        <span className="text-destructive mt-0.5">•</span>
-                        {e}
-                      </li>
-                    ))}
-                  </ul>
+          {pillars.map((pillar, idx) => (
+            <AnimatedCard key={pillar.title} delay={idx * 150}>
+              <div className="bg-white rounded-xl border border-mercury-dark/10 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div className="bg-mercury-dark p-6 flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center">
+                    <pillar.icon className="text-primary" size={24} />
+                  </div>
+                  <h3 className="font-heading text-xl font-bold text-white">
+                    {pillar.title}
+                  </h3>
                 </div>
 
-                {/* Jeito Mercury */}
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-primary mb-3">
-                    ✓ Jeito Mercury
-                  </p>
-                  <ul className="space-y-2">
-                    {pillar.jeito.map((j) => (
-                      <li key={j} className="text-sm text-mercury-dark/80 flex items-start gap-2">
-                        <span className="text-primary mt-0.5">•</span>
-                        {j}
-                      </li>
-                    ))}
-                  </ul>
+                <div className="p-6 space-y-6">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wider text-destructive mb-3">
+                      ✕ Erro do Mercado
+                    </p>
+                    <ul className="space-y-2">
+                      {pillar.erros.map((e) => (
+                        <li key={e} className="text-sm text-mercury-dark/60 flex items-start gap-2">
+                          <span className="text-destructive mt-0.5">•</span>
+                          {e}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wider text-primary mb-3">
+                      ✓ Jeito Mercury
+                    </p>
+                    <ul className="space-y-2">
+                      {pillar.jeito.map((j) => (
+                        <li key={j} className="text-sm text-mercury-dark/80 flex items-start gap-2">
+                          <span className="text-primary mt-0.5">•</span>
+                          {j}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </div>
+            </AnimatedCard>
           ))}
         </div>
       </div>
