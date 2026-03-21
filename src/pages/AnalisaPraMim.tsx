@@ -91,7 +91,7 @@ const AnalisaPraMim = () => {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-[hsl(145,70%,35%)] leading-tight mb-6">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white leading-tight mb-6">
                 Pare de perder<br />tempo com<br />currículo ruim
               </h2>
               <p className="text-primary-foreground/90 mb-6 leading-relaxed">
@@ -173,7 +173,7 @@ const AnalisaPraMim = () => {
       </section>
 
       {/* Como funciona */}
-      <section className="bg-white py-20">
+      <section className="bg-white py-10">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="flex justify-center">

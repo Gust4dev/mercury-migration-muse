@@ -4,11 +4,11 @@ const Footer = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
-            <p className="font-heading text-lg font-bold text-foreground">
-              <span className="text-primary">Mercury</span> Gestora
+            <p className="font-heading text-lg font-bold text-white">
+              Mercury Gestora
             </p>
             <p className="text-xs text-muted-foreground mt-1">
-              CNPJ: 00.000.000/0001-00
+              CNPJ: 50.884.134/0001-90
             </p>
           </div>
 
