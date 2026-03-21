@@ -72,6 +72,37 @@ const VendiMais = () => {
         </div>
       </section>
 
+      {/* Bot Distribuidora de Gás */}
+      <section className="bg-background py-16">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center">
+            <p className="text-primary font-heading font-semibold text-sm uppercase tracking-[0.2em] mb-4">
+              Caso Real — Distribuidora de Gás
+            </p>
+            <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-4">
+              Atendimento <span className="text-primary">100% IA Mercury</span> — 24h por dia, 7 dias por semana
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
+              IA própria Mercury. Atendimento rápido, sem passos desnecessários. Entende áudio, salva dados,
+              informa preços e finaliza o pedido automaticamente. O pedido chega direto no WhatsApp da distribuidora
+              e na plataforma Mercury Nexus®.
+            </p>
+            <div className="rounded-2xl overflow-hidden border border-border shadow-xl max-w-2xl mx-auto">
+              <video
+                className="w-full"
+                controls
+                autoPlay
+                muted
+                loop
+                playsInline
+              >
+                <source src="/videos/bot-gas.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <Pillars />
       <Highlight />
       <BlogSection />
