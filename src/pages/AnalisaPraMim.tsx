@@ -180,7 +180,7 @@ const AnalisaPraMim = () => {
               <img
                 src={ticoSearch}
                 alt="Tico analisando currículos"
-                className="w-full max-w-xs"
+                className="w-full max-w-sm md:max-w-md"
               />
             </div>
             <div>
