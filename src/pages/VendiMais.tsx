@@ -41,6 +41,37 @@ const VendiMais = () => {
         </div>
       </section>
 
+
+      {/* Bot Farmácia Demo */}
+      <section className="bg-secondary py-16">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center">
+            <p className="text-primary font-heading font-semibold text-sm uppercase tracking-[0.2em] mb-4">
+              Caso Real — Bot Farmácia
+            </p>
+            <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-4">
+              Atendimento <span className="text-primary">híbrido com IA</span> + Cards nativos Meta
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
+              O ápice da tecnologia de atendimento no WhatsApp. Bot inteligente que combina
+              inteligência artificial com cards nativos da Meta para uma experiência única.
+            </p>
+            <div className="rounded-2xl overflow-hidden border border-border shadow-xl max-w-2xl mx-auto">
+              <video
+                className="w-full"
+                controls
+                autoPlay
+                muted
+                loop
+                playsInline
+              >
+                <source src="/videos/bot-farmacia.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <Pillars />
       <Highlight />
       <BlogSection />
