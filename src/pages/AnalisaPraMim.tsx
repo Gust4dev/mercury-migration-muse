@@ -48,7 +48,7 @@ const AnalisaPraMim = () => {
       <Navbar />
 
       {/* Hero */}
-      <section className="bg-background pt-28 pb-16">
+      <section className="bg-white pt-28 pb-16">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="font-heading text-3xl md:text-5xl font-bold text-[hsl(145,70%,35%)] leading-tight mb-6">
@@ -111,23 +111,23 @@ const AnalisaPraMim = () => {
       </section>
 
       {/* O que é */}
-      <section className="bg-background py-20">
+      <section className="bg-white py-20">
         <div className="container mx-auto px-4 lg:px-8 text-center">
           <div className="max-w-3xl mx-auto">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-6 flex items-center justify-center gap-3">
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-gray-900 mb-6 flex items-center justify-center gap-3">
               <Zap className="text-primary" size={32} />
               O que é o AnalisaPraMim?
             </h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">
+            <p className="text-gray-600 leading-relaxed mb-4">
               Uma IA treinada exclusivamente para recrutamento técnico.
             </p>
-            <p className="text-muted-foreground leading-relaxed mb-8">
+            <p className="text-gray-600 leading-relaxed mb-8">
               Ela lê a vaga, analisa currículos (até os mal formatados), cruza os dados e te entrega
               só os 5 candidatos mais aderentes com justificativas técnicas, lógicas e imparciais.
             </p>
             <Button
               size="lg"
-              className="bg-primary-foreground text-primary font-heading font-bold text-base px-10 py-6 hover:bg-primary-foreground/90 hover:scale-105 transition-all rounded-full border-2 border-foreground"
+              className="bg-gray-900 text-white font-heading font-bold text-base px-10 py-6 hover:bg-gray-800 hover:scale-105 transition-all rounded-full"
             >
               CONHECER PLATAFORMA
             </Button>
@@ -161,7 +161,7 @@ const AnalisaPraMim = () => {
       </section>
 
       {/* Como funciona */}
-      <section className="bg-background py-20">
+      <section className="bg-white py-20">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="flex justify-center">
@@ -178,7 +178,7 @@ const AnalisaPraMim = () => {
               </h2>
               <ul className="space-y-4">
                 {howItWorks.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-muted-foreground leading-relaxed">
+                  <li key={i} className="flex items-start gap-3 text-gray-700 leading-relaxed">
                     <CheckCircle className="text-[hsl(145,70%,35%)] mt-1 shrink-0" size={18} />
                     {item}
                   </li>
@@ -187,7 +187,7 @@ const AnalisaPraMim = () => {
               <div className="mt-10">
                 <Button
                   size="lg"
-                  className="bg-primary-foreground text-primary font-heading font-bold text-base px-10 py-6 hover:bg-primary-foreground/90 hover:scale-105 transition-all rounded-full border-2 border-foreground w-full md:w-auto"
+                  className="bg-gray-900 text-white font-heading font-bold text-base px-10 py-6 hover:bg-gray-800 hover:scale-105 transition-all rounded-full w-full md:w-auto"
                 >
                   ECONOMIZAR MEU TEMPO
                 </Button>
