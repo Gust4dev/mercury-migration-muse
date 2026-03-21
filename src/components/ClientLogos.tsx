@@ -10,6 +10,7 @@ import tudoplay from "@/assets/logos/tudoplay.png";
 import conectapro from "@/assets/logos/conectapro.png";
 import multclean from "@/assets/logos/multclean.png";
 import farmacias from "@/assets/logos/farmacias-associadas.png";
+import autoclean from "@/assets/logos/autoclean.png";
 
 const clients = [
   { name: "O Boticário", logo: boticario },
@@ -18,6 +19,7 @@ const clients = [
   { name: "Disk Gás Popular", logo: diskPopular },
   { name: "Drogaria Mato Grosso", logo: drogariaMg },
   { name: "Oliver Imóveis", logo: oliver },
+  { name: "AutoClean", logo: autoclean },
   { name: "Lust Shop", logo: lustShop },
   { name: "Hapvida", logo: hapvida },
   { name: "TudoPlay", logo: tudoplay },
