@@ -1,4 +1,5 @@
 import boticario from "@/assets/logos/boticario.png";
+import jaguar from "@/assets/logos/jaguar.png";
 import mouragas from "@/assets/logos/mouragas.png";
 import diskPopular from "@/assets/logos/disk-popular.png";
 import drogariaMg from "@/assets/logos/drogaria-mg.png";
@@ -7,9 +8,12 @@ import lustShop from "@/assets/logos/lust-shop.png";
 import hapvida from "@/assets/logos/hapvida.png";
 import tudoplay from "@/assets/logos/tudoplay.png";
 import conectapro from "@/assets/logos/conectapro.png";
+import multclean from "@/assets/logos/multclean.png";
+import farmacias from "@/assets/logos/farmacias-associadas.png";
 
 const clients = [
   { name: "O Boticário", logo: boticario },
+  { name: "Jaguar Auto Peças", logo: jaguar },
   { name: "Mouragas", logo: mouragas },
   { name: "Disk Gás Popular", logo: diskPopular },
   { name: "Drogaria Mato Grosso", logo: drogariaMg },
@@ -18,6 +22,8 @@ const clients = [
   { name: "Hapvida", logo: hapvida },
   { name: "TudoPlay", logo: tudoplay },
   { name: "ConectaPro", logo: conectapro },
+  { name: "MultClean", logo: multclean },
+  { name: "Farmácias Associadas", logo: farmacias },
 ];
 
 const ClientLogos = () => {
@@ -29,18 +35,17 @@ const ClientLogos = () => {
         </h2>
       </div>
 
-      {/* Infinite scroll marquee */}
       <div className="relative">
-        <div className="flex animate-marquee gap-8">
+        <div className="flex animate-marquee gap-6">
           {[...clients, ...clients, ...clients].map((client, i) => (
             <div
               key={`${client.name}-${i}`}
-              className="flex-shrink-0 w-44 h-24 bg-white rounded-lg border border-mercury-dark/10 flex items-center justify-center p-4 hover:shadow-md transition-shadow"
+              className="flex-shrink-0 w-48 h-32 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow"
             >
               <img
                 src={client.logo}
                 alt={client.name}
-                className="max-h-full max-w-full object-contain"
+                className="w-full h-full object-cover"
               />
             </div>
           ))}
