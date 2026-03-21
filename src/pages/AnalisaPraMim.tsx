@@ -173,9 +173,9 @@ const AnalisaPraMim = () => {
       </section>
 
       {/* Como funciona */}
-      <section className="bg-white py-10">
+      <section className="bg-white py-4">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div className="flex justify-center">
               <img
                 src={ticoSearch}
