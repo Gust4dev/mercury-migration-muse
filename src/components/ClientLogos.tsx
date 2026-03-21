@@ -10,7 +10,6 @@ import tudoplay from "@/assets/logos/tudoplay.png";
 import conectapro from "@/assets/logos/conectapro.png";
 import multclean from "@/assets/logos/multclean.png";
 import farmacias from "@/assets/logos/farmacias-associadas.png";
-import autoclean from "@/assets/logos/autoclean.png";
 
 const clients = [
   { name: "O Boticário", logo: boticario },
@@ -19,7 +18,6 @@ const clients = [
   { name: "Disk Gás Popular", logo: diskPopular },
   { name: "Drogaria Mato Grosso", logo: drogariaMg },
   { name: "Oliver Imóveis", logo: oliver },
-  { name: "AutoClean", logo: autoclean },
   { name: "Lust Shop", logo: lustShop },
   { name: "Hapvida", logo: hapvida },
   { name: "TudoPlay", logo: tudoplay },
@@ -37,18 +35,23 @@ const ClientLogos = () => {
         </h2>
       </div>
 
-      <div className="relative">
-        <div className="flex animate-marquee gap-6">
-          {[...clients, ...clients, ...clients].map((client, i) => (
-            <div
-              key={`${client.name}-${i}`}
-              className="flex-shrink-0 w-48 h-32 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow"
-            >
-              <img
-                src={client.logo}
-                alt={client.name}
-                className="w-full h-full object-cover"
-              />
+      <div className="relative overflow-hidden">
+        <div className="flex w-max animate-marquee-clients">
+          {[0, 1].map((copy) => (
+            <div key={copy} className="flex items-center gap-6 pr-6">
+              {clients.map((client) => (
+                <div
+                  key={`${client.name}-${copy}`}
+                  className="flex-shrink-0 w-48 h-32 rounded-xl overflow-hidden bg-card shadow-md transition-shadow hover:shadow-xl"
+                >
+                  <img
+                    src={client.logo}
+                    alt={client.name}
+                    loading="lazy"
+                    className="w-full h-full object-cover object-center"
+                  />
+                </div>
+              ))}
             </div>
           ))}
         </div>
