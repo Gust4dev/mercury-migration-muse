@@ -91,6 +91,21 @@
   animation: marquee-fast 20s linear infinite;
 }
 
+@keyframes marquee-clients {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-clients {
+  animation: marquee-clients 10s linear infinite;
+  width: max-content;
+  will-change: transform;
+}
+
 /* Fade in up animation */
 @keyframes fade-in-up {
   from {
