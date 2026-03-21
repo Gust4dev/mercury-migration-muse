@@ -101,7 +101,7 @@
 }
 
 .animate-marquee-clients {
-  animation: marquee-clients 25s linear infinite;
+  animation: marquee-clients 30s linear infinite;
   width: max-content;
   will-change: transform;
 }
