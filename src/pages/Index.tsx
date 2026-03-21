@@ -2,11 +2,9 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ClientLogos from "@/components/ClientLogos";
 import MetricsBanner from "@/components/MetricsBanner";
-import Pillars from "@/components/Pillars";
-import Highlight from "@/components/Highlight";
-import BlogSection from "@/components/BlogSection";
+import AboutSection from "@/components/AboutSection";
+import SolutionsOverview from "@/components/SolutionsOverview";
 import NexusSection from "@/components/NexusSection";
-import Qualification from "@/components/Qualification";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -16,11 +14,9 @@ const Index = () => {
       <Hero />
       <ClientLogos />
       <MetricsBanner />
-      <Pillars />
-      <Highlight />
-      <BlogSection />
+      <AboutSection />
+      <SolutionsOverview />
       <NexusSection />
-      <Qualification />
       <Footer />
     </div>
   );
