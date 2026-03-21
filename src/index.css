@@ -101,7 +101,22 @@
 }
 
 .animate-marquee-clients {
-  animation: marquee-clients 25s linear infinite;
+  animation: marquee-clients 30s linear infinite;
+  width: max-content;
+  will-change: transform;
+}
+
+@keyframes marquee-metrics {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-metrics {
+  animation: marquee-metrics 20s linear infinite;
   width: max-content;
   will-change: transform;
 }
