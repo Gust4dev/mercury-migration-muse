@@ -7,22 +7,24 @@ const metrics = [
 ];
 
 const MetricsBanner = () => {
-  const doubled = [...metrics, ...metrics, ...metrics];
+  const doubled = [...metrics, ...metrics];
 
   return (
     <section className="bg-primary py-5 overflow-hidden">
-      <div className="flex animate-marquee-fast gap-12 whitespace-nowrap">
-        {doubled.map((m, i) => (
-          <div key={`${m.value}-${i}`} className="flex items-center gap-3 flex-shrink-0">
-            <span className="font-heading text-3xl md:text-4xl font-black text-primary-foreground">
-              {m.value}
-            </span>
-            <span className="text-primary-foreground/80 font-medium text-sm uppercase tracking-wide">
-              {m.label}
-            </span>
-            {i < doubled.length - 1 && (
-              <span className="text-primary-foreground/30 mx-4">●</span>
-            )}
+      <div className="flex w-max animate-marquee-metrics">
+        {[0, 1].map((copy) => (
+          <div key={copy} className="flex items-center gap-12 pr-12 whitespace-nowrap">
+            {metrics.map((m) => (
+              <div key={`${m.value}-${copy}`} className="flex items-center gap-3 flex-shrink-0">
+                <span className="font-heading text-3xl md:text-4xl font-black text-primary-foreground">
+                  {m.value}
+                </span>
+                <span className="text-primary-foreground/80 font-medium text-sm uppercase tracking-wide">
+                  {m.label}
+                </span>
+                <span className="text-primary-foreground/30 mx-4">●</span>
+              </div>
+            ))}
           </div>
         ))}
       </div>
