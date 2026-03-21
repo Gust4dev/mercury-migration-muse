@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useEffect, useRef, useState } from "react";
 
 const articles = [
   {
@@ -20,13 +21,25 @@ const articles = [
 ];
 
 const BlogSection = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.2 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="bg-background py-20">
+    <section className="bg-background py-20" ref={ref}>
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="text-center mb-12">
+        <div className={`text-center mb-12 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <Button
             size="lg"
-            className="bg-primary text-primary-foreground font-heading font-bold text-base px-8 py-6 hover:bg-primary/90 mb-8"
+            className="bg-primary text-primary-foreground font-heading font-bold text-base px-8 py-6 hover:bg-primary/90 mb-8 hover:scale-105 transition-all hover:shadow-[0_0_30px_rgba(255,215,0,0.3)]"
           >
             Quero ver como funciona pra mim!!
             <ArrowRight className="ml-2" size={18} />
@@ -41,10 +54,11 @@ const BlogSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {articles.map((article) => (
+          {articles.map((article, idx) => (
             <div
               key={article.title}
-              className="bg-card rounded-xl border border-border p-6 hover:border-primary/40 transition-colors group cursor-pointer"
+              className={`bg-card rounded-xl border border-border p-6 hover:border-primary/40 transition-all duration-500 group cursor-pointer hover:-translate-y-1 hover:shadow-lg ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+              style={{ transitionDelay: `${300 + idx * 150}ms` }}
             >
               <div className="flex items-center gap-2 mb-4">
                 <span className="text-xs font-bold uppercase tracking-wider text-primary">

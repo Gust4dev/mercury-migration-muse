@@ -1,7 +1,24 @@
+import { useEffect, useRef, useState } from "react";
+
 const Highlight = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.3 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="bg-background py-20">
-      <div className="container mx-auto px-4 lg:px-8 text-center max-w-4xl">
+    <section className="bg-background py-20 overflow-hidden">
+      <div
+        ref={ref}
+        className={`container mx-auto px-4 lg:px-8 text-center max-w-4xl transition-all duration-1000 ${visible ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
+      >
         <p className="text-primary font-heading font-semibold text-sm uppercase tracking-[0.2em] mb-6">
           Vendi.Mais®
         </p>
