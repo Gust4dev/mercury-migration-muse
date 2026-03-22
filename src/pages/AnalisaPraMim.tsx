@@ -50,18 +50,17 @@ const AnalisaPraMim = () => {
       <Navbar />
 
       {/* Hero */}
-      <section className="bg-white pt-16 sm:pt-28 pb-8 sm:pb-16">
-        <div className="container mx-auto px-5 sm:px-4 lg:px-8">
+      <section className="bg-white pt-16 sm:pt-28 pb-6 sm:pb-16">
+        <div className="container mx-auto px-4 sm:px-4 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="font-heading text-[22px] leading-[1.2] sm:text-3xl md:text-5xl font-bold text-[hsl(145,70%,35%)] mb-4 sm:mb-6 px-1">
+            <h1 className="font-heading text-[22px] leading-[1.2] sm:text-3xl md:text-5xl font-bold text-[hsl(145,70%,35%)] mb-3 sm:mb-6">
               80 currículos ou só os 5 certos?
               <br />
               <span className="text-white bg-[hsl(145,70%,35%)] px-3 sm:px-4 py-1 inline-block mt-2 rounded text-[20px] sm:text-3xl md:text-5xl">Você escolhe</span>
             </h1>
 
-            {/* YouTube VSL */}
-            <div className="bg-primary rounded-xl sm:rounded-2xl p-2.5 sm:p-6 mb-5 sm:mb-8 max-w-2xl mx-auto">
-              <div className="flex items-center gap-2 mb-2 sm:mb-3">
+            <div className="bg-primary rounded-xl sm:rounded-2xl p-2 sm:p-6 mb-4 sm:mb-8 max-w-2xl mx-auto">
+              <div className="flex items-center gap-2 mb-1.5 sm:mb-3">
                 <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[hsl(145,70%,35%)] flex items-center justify-center shrink-0">
                   <span className="text-white text-[10px] sm:text-xs font-bold">▶</span>
                 </div>
@@ -91,9 +90,9 @@ const AnalisaPraMim = () => {
       </section>
 
       {/* Pare de perder tempo */}
-      <section className="bg-primary py-10 sm:py-20">
-        <div className="container mx-auto px-5 sm:px-4 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-12 items-center">
+      <section className="bg-primary py-8 sm:py-20">
+        <div className="container mx-auto px-4 sm:px-4 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-12 items-center">
             <div className="text-center md:text-left order-2 md:order-1">
               <h2 className="font-heading text-xl sm:text-3xl md:text-4xl font-bold text-white leading-tight mb-3 sm:mb-6">
                 Pare de perder<br />tempo com<br />currículo ruim
@@ -103,7 +102,7 @@ const AnalisaPraMim = () => {
                 <br />Foi contratado pra decidir certo.
                 <br />O AnalisaPraMim faz a parte chata por você.
               </p>
-              <ul className="space-y-1.5 sm:space-y-2 text-primary-foreground/80 text-xs sm:text-sm mb-5 sm:mb-8">
+              <ul className="space-y-1.5 sm:space-y-2 text-primary-foreground/80 text-xs sm:text-sm mb-4 sm:mb-8">
                 <li>- Analisa vários currículos de uma vez</li>
                 <li>- Rankeia os candidatos</li>
                 <li>- Explica o motivo da posição do candidato</li>
@@ -121,7 +120,7 @@ const AnalisaPraMim = () => {
               <img
                 src={ticoPhone}
                 alt="Tico - mascote AnalisaPraMim"
-                className="w-full max-w-[240px] sm:max-w-md rounded-2xl"
+                className="w-full max-w-[200px] sm:max-w-md rounded-2xl"
               />
             </div>
           </div>
@@ -129,17 +128,17 @@ const AnalisaPraMim = () => {
       </section>
 
       {/* O que é */}
-      <section className="bg-white py-10 sm:py-20">
-        <div className="container mx-auto px-5 sm:px-4 lg:px-8 text-center">
+      <section className="bg-white py-8 sm:py-20">
+        <div className="container mx-auto px-4 sm:px-4 lg:px-8 text-center">
           <div className="max-w-3xl mx-auto">
             <h2 className="font-heading text-xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-6 flex items-center justify-center gap-2 sm:gap-3">
-              <Zap className="text-primary shrink-0" size={22} />
+              <Zap className="text-primary shrink-0" size={20} />
               O que é o AnalisaPraMim?
             </h2>
-            <p className="text-gray-600 leading-relaxed mb-2 sm:mb-4 text-xs sm:text-base px-1">
+            <p className="text-gray-600 leading-relaxed mb-2 sm:mb-4 text-xs sm:text-base">
               Uma IA treinada exclusivamente para recrutamento técnico.
             </p>
-            <p className="text-gray-600 leading-relaxed mb-5 sm:mb-8 text-xs sm:text-base px-1">
+            <p className="text-gray-600 leading-relaxed mb-4 sm:mb-8 text-xs sm:text-base">
               Ela lê a vaga, analisa currículos (até os mal formatados), cruza os dados e te entrega
               só os 5 candidatos mais aderentes com justificativas técnicas, lógicas e imparciais.
             </p>
@@ -156,13 +155,13 @@ const AnalisaPraMim = () => {
       </section>
 
       {/* Depoimentos */}
-      <section className="bg-[hsl(145,70%,35%)] py-10 sm:py-16">
-        <div className="container mx-auto px-5 sm:px-4 lg:px-8">
+      <section className="bg-[hsl(145,70%,35%)] py-8 sm:py-16">
+        <div className="container mx-auto px-4 sm:px-4 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
             <p className="text-white/80 font-semibold mb-2 text-xs sm:text-base">
               {testimonials[currentTestimonial].name}, {testimonials[currentTestimonial].role}
             </p>
-            <blockquote className="text-white text-sm sm:text-lg md:text-xl leading-relaxed italic mb-5 sm:mb-8 px-1">
+            <blockquote className="text-white text-sm sm:text-lg md:text-xl leading-relaxed italic mb-4 sm:mb-8">
               "{testimonials[currentTestimonial].text}"
             </blockquote>
             <div className="flex justify-center gap-2">
@@ -181,30 +180,30 @@ const AnalisaPraMim = () => {
       </section>
 
       {/* Como funciona */}
-      <section className="bg-white py-4 sm:py-16">
-        <div className="container mx-auto px-5 sm:px-4 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-8 items-center">
+      <section className="bg-white py-6 sm:py-16">
+        <div className="container mx-auto px-4 sm:px-4 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 items-center">
             <div className="flex justify-center">
               <img
                 src={ticoSearch}
                 alt="Tico analisando currículos"
-                className="w-full max-w-[180px] sm:max-w-sm md:max-w-md"
+                className="w-full max-w-[160px] sm:max-w-sm md:max-w-md"
               />
             </div>
             <div className="text-center md:text-left">
-              <h2 className="font-heading text-xl sm:text-3xl md:text-4xl font-bold text-[hsl(145,70%,35%)] leading-tight mb-5 sm:mb-8 flex items-center justify-center md:justify-start gap-2 sm:gap-3">
-                <Brain className="text-primary shrink-0" size={22} />
+              <h2 className="font-heading text-xl sm:text-3xl md:text-4xl font-bold text-[hsl(145,70%,35%)] leading-tight mb-4 sm:mb-8 flex items-center justify-center md:justify-start gap-2 sm:gap-3">
+                <Brain className="text-primary shrink-0" size={20} />
                 <span>Como funciona</span>
               </h2>
-              <ul className="space-y-2.5 sm:space-y-4">
+              <ul className="space-y-2 sm:space-y-4">
                 {howItWorks.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2.5 sm:gap-3 text-gray-700 leading-relaxed text-xs sm:text-base">
-                    <CheckCircle className="text-[hsl(145,70%,35%)] mt-0.5 shrink-0" size={16} />
+                  <li key={i} className="flex items-start gap-2 sm:gap-3 text-gray-700 leading-relaxed text-xs sm:text-base">
+                    <CheckCircle className="text-[hsl(145,70%,35%)] mt-0.5 shrink-0" size={15} />
                     {item}
                   </li>
                 ))}
               </ul>
-              <div className="mt-6 sm:mt-10">
+              <div className="mt-5 sm:mt-10">
                 <a href={SITE_LINK} target="_blank" rel="noopener noreferrer" className="inline-block w-full md:w-auto">
                   <Button
                     size="lg"
