@@ -37,10 +37,16 @@ const NexusSection = () => {
         </div>
 
         <div className={`max-w-4xl mx-auto mb-12 transition-all duration-700 delay-300 ${visible ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
-          <div className="aspect-video bg-mercury-dark rounded-xl border border-border flex items-center justify-center cursor-pointer group hover:border-primary/40 transition-all hover:shadow-[0_0_40px_rgba(255,215,0,0.1)]">
-            <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center group-hover:bg-primary/30 group-hover:scale-110 transition-all">
-              <Play className="text-primary ml-1" size={32} />
-            </div>
+          <div className="rounded-2xl overflow-hidden border border-border shadow-xl">
+            <video
+              className="w-full pointer-events-none"
+              autoPlay
+              muted
+              loop
+              playsInline
+            >
+              <source src="/videos/nexus-demo.mp4" type="video/mp4" />
+            </video>
           </div>
         </div>
 
