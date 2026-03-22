@@ -44,7 +44,7 @@ const Footer = () => {
 
             <div className="flex items-center gap-3 mt-2">
               <a
-                href="https://wa.me/5565999999999"
+                href="https://api.whatsapp.com/send/?phone=556295643201&text=Estou+vindo+do+site%2C+preciso+de+ajuda&type=phone_number&app_absent=0"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary/50 hover:scale-110 transition-all"
