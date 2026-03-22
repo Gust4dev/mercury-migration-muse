@@ -185,8 +185,8 @@ const VendiMaisFlowchart = () => {
           <NodeCard visible={visible} delay={250} className="w-full">
             <div className="text-center mb-4">
               <SectionLabel>Captação Multicanal</SectionLabel>
-              <p className="text-muted-foreground text-xs">
-                Leads de outros canais são redirecionados ao Bot Central
+              <p className="text-muted-foreground text-xs max-w-lg mx-auto">
+                Leads que não clicam diretamente no anúncio, mas te chamam em outros canais como Direct, Messenger, TikTok — são direcionados com IA pro bot principal, evitando fuga ou perda de leads.
               </p>
             </div>
             <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
