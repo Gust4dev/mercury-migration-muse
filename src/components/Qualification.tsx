@@ -2,6 +2,8 @@ import { Check, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 
+const WA_LINK = "https://api.whatsapp.com/send/?phone=556295643201&text=Estou+vindo+do+site%2C+preciso+de+ajuda+sobre+o+Vendi.Mais%C2%AE&type=phone_number&app_absent=0";
+
 const criteria = [
   "Você já fatura acima de R$ 50 mil/mês",
   "Tem um time comercial (mesmo que pequeno)",
@@ -56,13 +58,15 @@ const Qualification = () => {
         </div>
 
         <div className={`text-center transition-all duration-700 delay-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-          <Button
-            size="lg"
-            className="bg-primary text-primary-foreground font-heading font-bold text-sm sm:text-base px-8 sm:px-10 py-5 sm:py-6 hover:bg-primary/90 hover:scale-105 transition-all hover:shadow-[0_0_30px_rgba(255,215,0,0.3)] w-full sm:w-auto"
-          >
-            Quero ver valores para implementar
-            <ArrowRight className="ml-2" size={18} />
-          </Button>
+          <a href={WA_LINK} target="_blank" rel="noopener noreferrer">
+            <Button
+              size="lg"
+              className="bg-primary text-primary-foreground font-heading font-bold text-sm sm:text-base px-8 sm:px-10 py-5 sm:py-6 hover:bg-primary/90 hover:scale-105 transition-all hover:shadow-[0_0_30px_rgba(255,215,0,0.3)] w-full sm:w-auto"
+            >
+              Quero ver valores para implementar
+              <ArrowRight className="ml-2" size={18} />
+            </Button>
+          </a>
         </div>
       </div>
     </section>

@@ -1,10 +1,12 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { ArrowRight, CheckCircle, Zap, FileText, BarChart3, MessageSquare, Brain } from "lucide-react";
+import { ArrowRight, CheckCircle, Zap, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ticoPhone from "@/assets/tico-phone.png";
 import ticoSearch from "@/assets/tico-search.png";
 import { useState, useEffect } from "react";
+
+const WA_LINK = "https://api.whatsapp.com/send/?phone=556295643201&text=Estou+vindo+do+site%2C+preciso+de+ajuda+sobre+o+Analisa.PraMim&type=phone_number&app_absent=0";
 
 const testimonials = [
   {
@@ -48,22 +50,22 @@ const AnalisaPraMim = () => {
       <Navbar />
 
       {/* Hero */}
-      <section className="bg-white pt-28 pb-16">
+      <section className="bg-white pt-24 sm:pt-28 pb-12 sm:pb-16">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="font-heading text-3xl md:text-5xl font-bold text-[hsl(145,70%,35%)] leading-tight mb-6">
+            <h1 className="font-heading text-2xl sm:text-3xl md:text-5xl font-bold text-[hsl(145,70%,35%)] leading-tight mb-4 sm:mb-6 px-2">
               80 currículos ou só os 5 certos?
               <br />
-              <span className="text-white bg-[hsl(145,70%,35%)] px-4 py-1 inline-block mt-2 rounded">Você escolhe</span>
+              <span className="text-white bg-[hsl(145,70%,35%)] px-3 sm:px-4 py-1 inline-block mt-2 rounded text-xl sm:text-3xl md:text-5xl">Você escolhe</span>
             </h1>
 
             {/* YouTube VSL */}
-            <div className="bg-primary rounded-2xl p-4 md:p-6 mb-8 max-w-2xl mx-auto">
+            <div className="bg-primary rounded-2xl p-3 sm:p-4 md:p-6 mb-6 sm:mb-8 max-w-2xl mx-auto">
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-6 h-6 rounded-full bg-[hsl(145,70%,35%)] flex items-center justify-center">
+                <div className="w-6 h-6 rounded-full bg-[hsl(145,70%,35%)] flex items-center justify-center shrink-0">
                   <span className="text-white text-xs font-bold">▶</span>
                 </div>
-                <span className="text-primary-foreground font-heading font-bold text-sm">Análise de currículo para RH com IA- Analisa.PraMim ®</span>
+                <span className="text-primary-foreground font-heading font-bold text-xs sm:text-sm truncate">Análise de currículo para RH com IA - Analisa.PraMim ®</span>
               </div>
               <div className="aspect-video w-full rounded-xl overflow-hidden bg-black">
                 <iframe
@@ -76,46 +78,50 @@ const AnalisaPraMim = () => {
               </div>
             </div>
 
-            <Button
-              size="lg"
-              className="bg-[hsl(145,70%,35%)] text-white font-heading font-bold text-base px-10 py-6 hover:bg-[hsl(145,70%,30%)] hover:scale-105 transition-all rounded-full"
-            >
-              VER O Analisa.PraMim®
-            </Button>
+            <a href={WA_LINK} target="_blank" rel="noopener noreferrer">
+              <Button
+                size="lg"
+                className="bg-[hsl(145,70%,35%)] text-white font-heading font-bold text-sm sm:text-base px-8 sm:px-10 py-5 sm:py-6 hover:bg-[hsl(145,70%,30%)] hover:scale-105 transition-all rounded-full w-full sm:w-auto"
+              >
+                VER O Analisa.PraMim®
+              </Button>
+            </a>
           </div>
         </div>
       </section>
 
       {/* Pare de perder tempo */}
-      <section className="bg-primary py-20">
+      <section className="bg-primary py-14 sm:py-20">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white leading-tight mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-center">
+            <div className="text-center md:text-left">
+              <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight mb-4 sm:mb-6">
                 Pare de perder<br />tempo com<br />currículo ruim
               </h2>
-              <p className="text-primary-foreground/90 mb-6 leading-relaxed">
+              <p className="text-primary-foreground/90 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
                 Você não foi contratado pra abrir 80 PDFs.
                 <br />Foi contratado pra decidir certo.
                 <br />O AnalisaPraMim faz a parte chata por você.
               </p>
-              <ul className="space-y-2 text-primary-foreground/80 text-sm mb-8">
+              <ul className="space-y-2 text-primary-foreground/80 text-sm mb-6 sm:mb-8">
                 <li>- Analisa vários currículos de uma vez</li>
                 <li>- Rankeia os candidatos</li>
                 <li>- Explica o motivo da posição do candidato</li>
               </ul>
-              <Button
-                size="lg"
-                className="bg-[hsl(145,70%,35%)] text-white font-heading font-bold text-base px-10 py-6 hover:bg-[hsl(145,70%,30%)] hover:scale-105 transition-all rounded-full"
-              >
-                ECONOMIZAR MEU TEMPO
-              </Button>
+              <a href={WA_LINK} target="_blank" rel="noopener noreferrer">
+                <Button
+                  size="lg"
+                  className="bg-[hsl(145,70%,35%)] text-white font-heading font-bold text-sm sm:text-base px-8 sm:px-10 py-5 sm:py-6 hover:bg-[hsl(145,70%,30%)] hover:scale-105 transition-all rounded-full w-full sm:w-auto"
+                >
+                  ECONOMIZAR MEU TEMPO
+                </Button>
+              </a>
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-center order-first md:order-last">
               <img
                 src={ticoPhone}
                 alt="Tico - mascote AnalisaPraMim"
-                className="w-full max-w-md rounded-2xl"
+                className="w-full max-w-xs sm:max-w-md rounded-2xl"
               />
             </div>
           </div>
@@ -123,38 +129,40 @@ const AnalisaPraMim = () => {
       </section>
 
       {/* O que é */}
-      <section className="bg-white py-20">
+      <section className="bg-white py-14 sm:py-20">
         <div className="container mx-auto px-4 lg:px-8 text-center">
           <div className="max-w-3xl mx-auto">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-gray-900 mb-6 flex items-center justify-center gap-3">
-              <Zap className="text-primary" size={32} />
+            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center justify-center gap-3">
+              <Zap className="text-primary shrink-0" size={28} />
               O que é o AnalisaPraMim?
             </h2>
-            <p className="text-gray-600 leading-relaxed mb-4">
+            <p className="text-gray-600 leading-relaxed mb-3 sm:mb-4 text-sm sm:text-base px-2">
               Uma IA treinada exclusivamente para recrutamento técnico.
             </p>
-            <p className="text-gray-600 leading-relaxed mb-8">
+            <p className="text-gray-600 leading-relaxed mb-6 sm:mb-8 text-sm sm:text-base px-2">
               Ela lê a vaga, analisa currículos (até os mal formatados), cruza os dados e te entrega
               só os 5 candidatos mais aderentes com justificativas técnicas, lógicas e imparciais.
             </p>
-            <Button
-              size="lg"
-              className="bg-gray-900 text-white font-heading font-bold text-base px-10 py-6 hover:bg-gray-800 hover:scale-105 transition-all rounded-full"
-            >
-              CONHECER PLATAFORMA
-            </Button>
+            <a href={WA_LINK} target="_blank" rel="noopener noreferrer">
+              <Button
+                size="lg"
+                className="bg-gray-900 text-white font-heading font-bold text-sm sm:text-base px-8 sm:px-10 py-5 sm:py-6 hover:bg-gray-800 hover:scale-105 transition-all rounded-full w-full sm:w-auto"
+              >
+                CONHECER PLATAFORMA
+              </Button>
+            </a>
           </div>
         </div>
       </section>
 
       {/* Depoimentos */}
-      <section className="bg-[hsl(145,70%,35%)] py-16">
+      <section className="bg-[hsl(145,70%,35%)] py-12 sm:py-16">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
-            <p className="text-white/80 font-semibold mb-2">
+            <p className="text-white/80 font-semibold mb-2 text-sm sm:text-base">
               {testimonials[currentTestimonial].name}, {testimonials[currentTestimonial].role}
             </p>
-            <blockquote className="text-white text-lg md:text-xl leading-relaxed italic mb-8">
+            <blockquote className="text-white text-base sm:text-lg md:text-xl leading-relaxed italic mb-6 sm:mb-8 px-2">
               "{testimonials[currentTestimonial].text}"
             </blockquote>
             <div className="flex justify-center gap-2">
@@ -173,36 +181,38 @@ const AnalisaPraMim = () => {
       </section>
 
       {/* Como funciona */}
-      <section className="bg-white py-4">
+      <section className="bg-white py-10 sm:py-4">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div className="flex justify-center">
               <img
                 src={ticoSearch}
                 alt="Tico analisando currículos"
-                className="w-full max-w-sm md:max-w-md"
+                className="w-full max-w-[250px] sm:max-w-sm md:max-w-md"
               />
             </div>
-            <div>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-[hsl(145,70%,35%)] leading-tight mb-8 flex items-center gap-3">
-                <Brain className="text-primary" size={32} />
-                Como funciona (sem mágica, só inteligência)
+            <div className="text-center md:text-left">
+              <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-[hsl(145,70%,35%)] leading-tight mb-6 sm:mb-8 flex items-center justify-center md:justify-start gap-3">
+                <Brain className="text-primary shrink-0" size={28} />
+                <span>Como funciona</span>
               </h2>
-              <ul className="space-y-4">
+              <ul className="space-y-3 sm:space-y-4">
                 {howItWorks.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-gray-700 leading-relaxed">
-                    <CheckCircle className="text-[hsl(145,70%,35%)] mt-1 shrink-0" size={18} />
+                  <li key={i} className="flex items-start gap-3 text-gray-700 leading-relaxed text-sm sm:text-base">
+                    <CheckCircle className="text-[hsl(145,70%,35%)] mt-0.5 shrink-0" size={18} />
                     {item}
                   </li>
                 ))}
               </ul>
-              <div className="mt-10">
-                <Button
-                  size="lg"
-                  className="bg-gray-900 text-white font-heading font-bold text-base px-10 py-6 hover:bg-gray-800 hover:scale-105 transition-all rounded-full w-full md:w-auto"
-                >
-                  ECONOMIZAR MEU TEMPO
-                </Button>
+              <div className="mt-8 sm:mt-10">
+                <a href={WA_LINK} target="_blank" rel="noopener noreferrer">
+                  <Button
+                    size="lg"
+                    className="bg-gray-900 text-white font-heading font-bold text-sm sm:text-base px-8 sm:px-10 py-5 sm:py-6 hover:bg-gray-800 hover:scale-105 transition-all rounded-full w-full md:w-auto"
+                  >
+                    ECONOMIZAR MEU TEMPO
+                  </Button>
+                </a>
               </div>
             </div>
           </div>

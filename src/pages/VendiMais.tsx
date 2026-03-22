@@ -8,6 +8,8 @@ import Footer from "@/components/Footer";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+const WA_LINK = "https://api.whatsapp.com/send/?phone=556295643201&text=Estou+vindo+do+site%2C+preciso+de+ajuda+sobre+o+Vendi.Mais%C2%AE&type=phone_number&app_absent=0";
+
 const VendiMais = () => {
   return (
     <div className="min-h-screen">
@@ -30,14 +32,25 @@ const VendiMais = () => {
               Três pilares funcionando simultaneamente para atrair, filtrar e
               converter com dados reais. Sem achismo. Sem desperdício.
             </p>
-            <div className="animate-fade-in-up animation-delay-600 flex justify-center md:justify-start">
-              <Button
-                size="lg"
-                className="bg-primary text-primary-foreground font-heading font-bold text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6 hover:bg-primary/90 hover:scale-105 transition-all hover:shadow-[0_0_30px_rgba(255,215,0,0.3)] w-full sm:w-auto"
-              >
-                Quero ver uma demonstração
-                <ArrowRight className="ml-2" size={18} />
-              </Button>
+            <div className="animate-fade-in-up animation-delay-600 flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+              <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+                <Button
+                  size="lg"
+                  className="bg-primary text-primary-foreground font-heading font-bold text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6 hover:bg-primary/90 hover:scale-105 transition-all hover:shadow-[0_0_30px_rgba(255,215,0,0.3)] w-full"
+                >
+                  Quero ver uma demonstração
+                  <ArrowRight className="ml-2" size={18} />
+                </Button>
+              </a>
+              <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-primary text-primary font-heading font-bold text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6 hover:bg-primary/10 hover:scale-105 transition-all w-full"
+                >
+                  Falar com um especialista
+                </Button>
+              </a>
             </div>
           </div>
         </div>
