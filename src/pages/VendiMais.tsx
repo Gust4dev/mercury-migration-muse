@@ -21,21 +21,18 @@ const VendiMais = () => {
         <div className="absolute bottom-0 -left-20 w-48 h-48 bg-primary/5 rounded-full blur-3xl animate-pulse-slow animation-delay-2000" />
         <div className="container mx-auto px-4 lg:px-8 relative z-10">
           <div className="max-w-3xl mx-auto text-center md:text-left md:mx-0">
-            <div className="flex items-center gap-3 mb-4 sm:mb-5 animate-fade-in-up justify-center md:justify-start flex-wrap">
-              <span className="inline-flex items-center gap-1.5 bg-primary/15 border border-primary/30 text-primary text-[10px] sm:text-xs font-heading font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">
-                🔥 Mais contratado
-              </span>
-              <span className="inline-flex items-center gap-1.5 bg-card border border-border text-muted-foreground text-[10px] sm:text-xs font-heading font-semibold uppercase tracking-wider px-3 py-1.5 rounded-full">
-                Mercury Gestora — Vendi.Mais®
-              </span>
+            <div className="inline-flex items-center gap-2 bg-primary text-primary-foreground text-[11px] sm:text-xs font-heading font-extrabold uppercase tracking-[0.15em] px-4 py-2 rounded-full mb-5 sm:mb-6 animate-fade-in-up shadow-[0_0_20px_rgba(255,215,0,0.25)]">
+              <span className="text-base">🔥</span>
+              Produto destaque — Solução mais contratada
             </div>
+            <p className="text-muted-foreground font-heading font-semibold text-xs sm:text-sm uppercase tracking-[0.2em] mb-3 sm:mb-4 animate-fade-in-up animation-delay-200">
+              Mercury Gestora — Vendi.Mais®
+            </p>
             <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-4 sm:mb-6 animate-fade-in-up animation-delay-200">
-              <span className="text-primary">Vendi.Mais®</span> — O sistema que
-              transforma gestão comercial em receita previsível
+              A gestão comercial que <span className="text-primary">transforma dados</span> em vendas reais
             </h1>
             <p className="text-muted-foreground text-base sm:text-lg md:text-xl max-w-2xl mb-6 sm:mb-8 leading-relaxed animate-fade-in-up animation-delay-400 mx-auto md:mx-0">
-              Três pilares funcionando simultaneamente para atrair, filtrar e
-              converter com dados reais. Sem achismo. Sem desperdício.
+              Chega de achismo. Nossa tecnologia une atração cirúrgica, filtragem inteligente e dados acionáveis para escalar suas vendas com previsibilidade.
             </p>
             <div className="animate-fade-in-up animation-delay-600 flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
               <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
