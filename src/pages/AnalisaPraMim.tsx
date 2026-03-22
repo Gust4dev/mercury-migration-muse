@@ -78,7 +78,7 @@ const AnalisaPraMim = () => {
               </div>
             </div>
 
-            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="inline-block w-full sm:w-auto">
+            <a href={SITE_LINK} target="_blank" rel="noopener noreferrer" className="inline-block w-full sm:w-auto">
               <Button
                 size="lg"
                 className="bg-[hsl(145,70%,35%)] text-white font-heading font-bold text-sm sm:text-base px-8 sm:px-10 py-5 sm:py-6 hover:bg-[hsl(145,70%,30%)] hover:scale-105 transition-all rounded-full w-full sm:w-auto active:scale-95"
