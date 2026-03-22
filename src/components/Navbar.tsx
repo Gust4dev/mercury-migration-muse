@@ -85,7 +85,7 @@ const Navbar = () => {
 
       {/* Mobile menu - fullscreen overlay */}
       <div
-        className={`md:hidden fixed inset-0 top-14 bg-background/98 backdrop-blur-lg transition-all duration-300 ${
+        className={`md:hidden fixed inset-0 top-14 bg-background backdrop-blur-none transition-all duration-300 ${
           open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >

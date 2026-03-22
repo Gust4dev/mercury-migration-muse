@@ -10,7 +10,7 @@ const Hero = () => {
       <div className="absolute top-1/4 -left-32 w-64 sm:w-96 h-64 sm:h-96 bg-primary/10 rounded-full blur-3xl animate-pulse-slow" />
       <div className="absolute bottom-1/4 -right-32 w-48 sm:w-80 h-48 sm:h-80 bg-primary/5 rounded-full blur-3xl animate-pulse-slow animation-delay-2000" />
 
-      <div className="container mx-auto px-5 sm:px-4 lg:px-8 py-12 sm:py-20 relative z-10">
+      <div className="container mx-auto px-5 sm:px-4 lg:px-8 py-8 sm:py-20 relative z-10">
         <div className="max-w-3xl mx-auto text-center md:text-left md:mx-0">
           <div className="inline-flex items-center gap-1.5 bg-primary text-primary-foreground text-[9px] sm:text-[11px] font-heading font-extrabold uppercase tracking-[0.12em] px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full mb-3 sm:mb-5 animate-fade-in-up shadow-[0_0_16px_rgba(255,215,0,0.25)]">
             <span className="text-xs sm:text-sm">🔥</span>
