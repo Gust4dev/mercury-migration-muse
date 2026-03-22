@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Instagram, Mail } from "lucide-react";
 import whatsappLogo from "@/assets/whatsapp-logo.png";
 
-const WA_LINK = "https://wa.me/556295643201?text=Estou%20vindo%20do%20site%2C%20preciso%20de%20ajuda";
+const WA_LINK = "https://wa.me/556295643201?text=Estou%20vindo%20do%20site%2C%20preciso%20de%20ajuda%C2%AE";
 
 const Suporte = () => {
   return (
@@ -35,7 +35,7 @@ const Suporte = () => {
                 </Button>
               </a>
 
-              <a href="https://www.instagram.com/mercurygestora" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.instagram.com/mercurygestora?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">
                 <Button
                   size="lg"
                   className="w-full bg-gradient-to-r from-[#833AB4] via-[#E1306C] to-[#F77737] hover:opacity-90 text-white font-heading font-bold text-base py-6 hover:scale-105 transition-all gap-3"

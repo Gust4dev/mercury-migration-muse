@@ -43,7 +43,7 @@ const Footer = () => {
 
             <div className="flex items-center gap-3 mt-2">
               <a
-                href="https://wa.me/556295643201?text=Estou%20vindo%20do%20site%2C%20preciso%20de%20ajuda"
+                href="https://wa.me/556295643201?text=Estou%20vindo%20do%20site%2C%20preciso%20de%20ajuda%C2%AE"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary/50 hover:scale-110 transition-all overflow-hidden"
@@ -51,7 +51,7 @@ const Footer = () => {
                 <img src={whatsappLogo} alt="WhatsApp" className="h-full w-full object-cover rounded-full" />
               </a>
               <a
-                href="https://www.instagram.com/mercurygestora"
+                href="https://www.instagram.com/mercurygestora?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary/50 hover:scale-110 transition-all"
