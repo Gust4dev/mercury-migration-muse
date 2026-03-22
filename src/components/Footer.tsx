@@ -43,12 +43,12 @@ const Footer = () => {
 
             <div className="flex items-center gap-3 mt-2">
               <a
-                href="https://api.whatsapp.com/send/?phone=556295643201&text=Estou+vindo+do+site%2C+preciso+de+ajuda&type=phone_number&app_absent=0"
+                href="https://wa.me/556295643201?text=Estou%20vindo%20do%20site%2C%20preciso%20de%20ajuda"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary/50 hover:scale-110 transition-all"
+                className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary/50 hover:scale-110 transition-all overflow-hidden"
               >
-                <img src={whatsappLogo} alt="WhatsApp" className="h-5 w-5 object-contain" />
+                <img src={whatsappLogo} alt="WhatsApp" className="h-full w-full object-cover rounded-full" />
               </a>
               <a
                 href="https://www.instagram.com/mercurygestora"
@@ -57,22 +57,6 @@ const Footer = () => {
                 className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary/50 hover:scale-110 transition-all"
               >
                 <Instagram className="text-muted-foreground" size={18} />
-              </a>
-              <a
-                href="https://www.tiktok.com/@mercurygestora"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary/50 hover:scale-110 transition-all"
-              >
-                <img src={tiktokLogo} alt="TikTok" className="h-5 w-5 object-contain rounded-sm" />
-              </a>
-              <a
-                href="https://www.linkedin.com/company/mercurygestora"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary/50 hover:scale-110 transition-all"
-              >
-                <Linkedin className="text-muted-foreground" size={18} />
               </a>
             </div>
           </div>
