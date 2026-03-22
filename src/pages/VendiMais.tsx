@@ -104,6 +104,7 @@ const VendiMais = () => {
 
       <Pillars />
       <Highlight />
+      <VendiMaisFlowchart />
       <BlogSection />
       <Qualification />
       <Footer />
