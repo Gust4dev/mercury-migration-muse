@@ -31,9 +31,9 @@ const Footer = () => {
             <Link to="/analisa-pra-mim" className="text-sm text-muted-foreground hover:text-primary transition-colors">
               Analisa.PraMim
             </Link>
-            <a href="#suporte" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+            <Link to="/suporte" className="text-sm text-muted-foreground hover:text-primary transition-colors">
               Suporte
-            </a>
+            </Link>
           </div>
 
           {/* Social & Contact */}
