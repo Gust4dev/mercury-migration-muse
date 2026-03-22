@@ -64,7 +64,7 @@ const SolutionsOverview = () => {
                 <img
                   src={sol.mascot}
                   alt="Tico"
-                  className="absolute -bottom-2 -right-2 h-24 sm:h-28 w-24 sm:w-28 object-contain opacity-20 group-hover:opacity-40 transition-opacity pointer-events-none"
+                  className="hidden sm:block absolute -bottom-2 -right-2 h-28 w-28 object-contain opacity-20 group-hover:opacity-40 transition-opacity pointer-events-none"
                 />
               )}
 
