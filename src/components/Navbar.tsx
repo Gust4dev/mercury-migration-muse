@@ -25,7 +25,7 @@ const Navbar = () => {
   }, [open]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border" style={{ backgroundColor: 'hsl(0 0% 4% / 0.97)' }}>
       <div className="container mx-auto flex items-center justify-between h-14 sm:h-16 px-4 lg:px-8">
         <Link to="/" className="flex items-center gap-2">
           <img src={mercuryLogo} alt="Mercury Gestora" className="h-8 sm:h-9 w-auto" />
