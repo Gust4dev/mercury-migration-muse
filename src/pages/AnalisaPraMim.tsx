@@ -6,7 +6,7 @@ import ticoPhone from "@/assets/tico-phone.png";
 import ticoSearch from "@/assets/tico-search.png";
 import { useState, useEffect } from "react";
 
-const WA_LINK = "https://api.whatsapp.com/send/?phone=556295643201&text=Estou+vindo+do+site%2C+preciso+de+ajuda+sobre+o+Analisa.PraMim&type=phone_number&app_absent=0";
+const WA_LINK = "https://wa.me/556295643201?text=Estou%20vindo%20do%20site%2C%20preciso%20de%20ajuda%20sobre%20o%20Analisa.PraMim";
 
 const testimonials = [
   {

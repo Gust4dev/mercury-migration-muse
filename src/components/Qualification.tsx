@@ -2,7 +2,7 @@ import { Check, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 
-const WA_LINK = "https://api.whatsapp.com/send/?phone=556295643201&text=Estou+vindo+do+site%2C+preciso+de+ajuda+sobre+o+Vendi.Mais%C2%AE&type=phone_number&app_absent=0";
+const WA_LINK = "https://wa.me/556295643201?text=Estou%20vindo%20do%20site%2C%20preciso%20de%20ajuda%20sobre%20o%20Vendi.Mais%C2%AE";
 
 const criteria = [
   "Você já fatura acima de R$ 50 mil/mês",
