@@ -58,8 +58,7 @@ const VendiMais = () => {
             </p>
             <div className="rounded-2xl overflow-hidden border border-border shadow-xl max-w-2xl mx-auto">
               <video
-                className="w-full"
-                controls
+                className="w-full pointer-events-none"
                 autoPlay
                 muted
                 loop
