@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, TrendingUp, Search } from "lucide-react";
+import { ArrowRight, TrendingUp, Search, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -10,6 +10,7 @@ const solutions = [
     desc: "Sistema completo de gestão comercial com atração cirúrgica, filtragem inteligente e dados acionáveis. Escale suas vendas com previsibilidade.",
     link: "/vendimais",
     highlights: ["Atração Cirúrgica", "Filtragem por IA", "Dados em Tempo Real"],
+    sectors: ["Marketing", "Comercial", "Vendas"],
   },
   {
     icon: Search,
@@ -17,6 +18,7 @@ const solutions = [
     desc: "Análise profunda do seu negócio com diagnósticos precisos e planos de ação personalizados para acelerar resultados.",
     link: "/analisa-pra-mim",
     highlights: ["Diagnóstico Completo", "Plano de Ação", "Acompanhamento"],
+    sectors: ["RH", "Recrutamento", "Seleção"],
   },
 ];
 
@@ -38,13 +40,13 @@ const SolutionsOverview = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className={`text-center mb-16 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <p className="text-primary font-heading font-semibold text-sm uppercase tracking-[0.2em] mb-4">
-            Nossas Soluções
+            O que fazemos
           </p>
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Ferramentas que <span className="text-primary">geram resultado</span>
+            Soluções <span className="text-primary">mais contratadas</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Cada solução foi desenhada para resolver problemas reais de empresas que querem crescer com inteligência.
+            Estas são nossas soluções mais populares — mas não são as únicas. Cada empresa tem necessidades específicas, e criamos ferramentas sob medida para cada desafio.
           </p>
         </div>
 
@@ -55,9 +57,18 @@ const SolutionsOverview = () => {
               className={`bg-card rounded-2xl border border-border p-8 hover:border-primary/40 hover:-translate-y-1 hover:shadow-xl transition-all duration-500 group ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
               style={{ transitionDelay: `${300 + idx * 150}ms` }}
             >
-              <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
-                <sol.icon className="text-primary" size={28} />
+              <div className="flex items-center justify-between mb-6">
+                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                  <sol.icon className="text-primary" size={28} />
+                </div>
+                <div className="flex items-center gap-1.5 bg-primary/10 border border-primary/20 rounded-full px-3 py-1">
+                  <Tag className="text-primary" size={12} />
+                  <span className="text-[10px] font-bold text-primary uppercase tracking-wider">
+                    {sol.sectors.join(" · ")}
+                  </span>
+                </div>
               </div>
+
               <h3 className="font-heading text-2xl font-bold text-foreground mb-3">{sol.title}</h3>
               <p className="text-muted-foreground mb-6 leading-relaxed">{sol.desc}</p>
 
