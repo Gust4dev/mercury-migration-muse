@@ -7,8 +7,8 @@ const navLinks = [
   { label: "Home", href: "/" },
   { label: "Analisa.PraMim", href: "/analisa-pra-mim" },
   { label: "Vendi.Mais", href: "/vendimais" },
-  { label: "Suporte", href: "#suporte" },
-  { label: "Login", href: "#login" },
+  { label: "Suporte", href: "/suporte" },
+  { label: "Mercury Nexus®", href: "https://mercurynexus.com.br", external: true },
 ];
 
 const Navbar = () => {
