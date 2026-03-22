@@ -105,7 +105,14 @@ const VendiMais = () => {
               IA própria Mercury. Entende áudio, salva dados, informa preços e finaliza o pedido
               automaticamente.
             </p>
-            <div className="rounded-xl sm:rounded-2xl overflow-hidden border border-border shadow-xl max-w-full sm:max-w-lg md:max-w-2xl mx-auto">
+            {/* Mobile: vídeo quadrado */}
+            <div className="block sm:hidden rounded-xl overflow-hidden border border-border shadow-xl mx-auto">
+              <video className="w-full pointer-events-none" autoPlay muted loop playsInline>
+                <source src="/videos/bot-gas-mobile.mp4" type="video/mp4" />
+              </video>
+            </div>
+            {/* Desktop: vídeo original */}
+            <div className="hidden sm:block rounded-2xl overflow-hidden border border-border shadow-xl max-w-lg md:max-w-2xl mx-auto">
               <video className="w-full pointer-events-none" autoPlay muted loop playsInline>
                 <source src="/videos/bot-gas.mp4" type="video/mp4" />
               </video>
