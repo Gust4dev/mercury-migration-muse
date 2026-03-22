@@ -51,7 +51,7 @@ const Footer = () => {
                 <img src={whatsappLogo} alt="WhatsApp" className="h-full w-full object-cover rounded-full" />
               </a>
               <a
-                href="https://www.instagram.com/mercurygestora"
+                href="https://www.instagram.com/mercurygestora?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary/50 hover:scale-110 transition-all"
