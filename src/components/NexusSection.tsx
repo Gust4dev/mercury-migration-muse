@@ -1,4 +1,4 @@
-import { Play, Zap, Shield, TrendingUp } from "lucide-react";
+import { Zap, Shield, TrendingUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const benefits = [
