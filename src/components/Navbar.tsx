@@ -85,9 +85,10 @@ const Navbar = () => {
 
       {/* Mobile menu - fullscreen overlay */}
       <div
-        className={`md:hidden fixed inset-0 top-14 bg-background backdrop-blur-none transition-all duration-300 ${
+        className={`md:hidden fixed inset-0 top-14 transition-all duration-300 ${
           open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
+        style={{ backgroundColor: 'hsl(0 0% 4%)' }}
       >
         <div className="flex flex-col px-6 pt-6 gap-1">
           {navLinks.map((link, idx) => {
