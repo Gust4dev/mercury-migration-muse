@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import mercuryLogo from "@/assets/mercury-logo.png";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -17,8 +18,11 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
       <div className="container mx-auto flex items-center justify-between h-16 px-4 lg:px-8">
-        <Link to="/" className="font-heading text-xl font-bold tracking-tight">
-          <span className="text-white">Mercury</span> <span className="text-white">Gestora</span>
+        <Link to="/" className="flex items-center gap-2.5">
+          <img src={mercuryLogo} alt="Mercury Gestora" className="h-9 w-auto" />
+          <span className="font-heading text-xl font-bold tracking-tight text-white">
+            Mercury Gestora
+          </span>
         </Link>
 
         {/* Desktop */}

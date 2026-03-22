@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowRight, TrendingUp, Search, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import ticoMascot from "@/assets/tico-mascot.png";
 
 const solutions = [
   {
@@ -11,6 +12,7 @@ const solutions = [
     link: "/vendimais",
     highlights: ["Atração Cirúrgica", "Filtragem por IA", "Dados em Tempo Real"],
     sectors: ["Marketing", "Comercial", "Vendas"],
+    mascot: null,
   },
   {
     icon: Search,
@@ -19,6 +21,7 @@ const solutions = [
     link: "/analisa-pra-mim",
     highlights: ["Diagnóstico Completo", "Plano de Ação", "Acompanhamento"],
     sectors: ["RH", "Recrutamento", "Seleção"],
+    mascot: ticoMascot,
   },
 ];
 
@@ -54,9 +57,18 @@ const SolutionsOverview = () => {
           {solutions.map((sol, idx) => (
             <div
               key={sol.title}
-              className={`bg-card rounded-2xl border border-border p-8 hover:border-primary/40 hover:-translate-y-1 hover:shadow-xl transition-all duration-500 group ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+              className={`relative bg-card rounded-2xl border border-border p-8 hover:border-primary/40 hover:-translate-y-1 hover:shadow-xl transition-all duration-500 group overflow-hidden ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
               style={{ transitionDelay: `${300 + idx * 150}ms` }}
             >
+              {/* Mascot floating */}
+              {sol.mascot && (
+                <img
+                  src={sol.mascot}
+                  alt="Tico"
+                  className="absolute -bottom-2 -right-2 h-28 w-28 object-contain opacity-20 group-hover:opacity-40 transition-opacity pointer-events-none"
+                />
+              )}
+
               <div className="flex items-center justify-between mb-6">
                 <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                   <sol.icon className="text-primary" size={28} />
@@ -70,7 +82,7 @@ const SolutionsOverview = () => {
               </div>
 
               <h3 className="font-heading text-2xl font-bold text-foreground mb-3">{sol.title}</h3>
-              <p className="text-muted-foreground mb-6 leading-relaxed">{sol.desc}</p>
+              <p className="text-muted-foreground mb-6 leading-relaxed relative z-10">{sol.desc}</p>
 
               <div className="flex flex-wrap gap-2 mb-6">
                 {sol.highlights.map((h) => (
@@ -81,7 +93,7 @@ const SolutionsOverview = () => {
               </div>
 
               <Link to={sol.link}>
-                <Button variant="outline" className="border-primary text-primary hover:bg-primary/10 font-heading font-bold group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+                <Button variant="outline" className="border-primary text-primary hover:bg-primary/10 font-heading font-bold group-hover:bg-primary group-hover:text-primary-foreground transition-all relative z-10">
                   Conhecer solução
                   <ArrowRight className="ml-2" size={16} />
                 </Button>
