@@ -205,7 +205,7 @@ const AnalisaPraMim = () => {
                 ))}
               </ul>
               <div className="mt-6 sm:mt-10">
-                <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="inline-block w-full md:w-auto">
+                <a href={SITE_LINK} target="_blank" rel="noopener noreferrer" className="inline-block w-full md:w-auto">
                   <Button
                     size="lg"
                     className="bg-gray-900 text-white font-heading font-bold text-sm sm:text-base px-8 sm:px-10 py-5 sm:py-6 hover:bg-gray-800 hover:scale-105 transition-all rounded-full w-full md:w-auto active:scale-95"
