@@ -17,29 +17,29 @@ const Qualification = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.2 }
+      { threshold: 0.15 }
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
 
   return (
-    <section className="bg-background py-20" ref={ref}>
+    <section className="bg-background py-16 sm:py-20" ref={ref}>
       <div className="container mx-auto px-4 lg:px-8 max-w-3xl">
-        <div className={`text-center mb-12 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-          <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
+        <div className={`text-center mb-8 sm:mb-12 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+          <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 sm:mb-4 px-2">
             O Vendi.Mais® <span className="text-primary">não é para aventureiros</span>
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-sm sm:text-base">
             Nosso sistema funciona para quem leva vendas a sério.
           </p>
         </div>
 
-        <div className={`bg-card rounded-xl border border-border p-8 mb-8 transition-all duration-700 delay-200 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-          <p className="font-heading font-bold text-lg text-primary mb-6 uppercase tracking-wider">
+        <div className={`bg-card rounded-xl border border-border p-6 sm:p-8 mb-6 sm:mb-8 transition-all duration-700 delay-200 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+          <p className="font-heading font-bold text-base sm:text-lg text-primary mb-5 sm:mb-6 uppercase tracking-wider">
             É para você se:
           </p>
-          <ul className="space-y-4">
+          <ul className="space-y-3 sm:space-y-4">
             {criteria.map((c, idx) => (
               <li
                 key={c}
@@ -49,7 +49,7 @@ const Qualification = () => {
                 <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center shrink-0 mt-0.5">
                   <Check className="text-primary" size={14} />
                 </div>
-                <span className="text-foreground font-medium">{c}</span>
+                <span className="text-foreground font-medium text-sm sm:text-base">{c}</span>
               </li>
             ))}
           </ul>
@@ -58,7 +58,7 @@ const Qualification = () => {
         <div className={`text-center transition-all duration-700 delay-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <Button
             size="lg"
-            className="bg-primary text-primary-foreground font-heading font-bold text-base px-10 py-6 hover:bg-primary/90 hover:scale-105 transition-all hover:shadow-[0_0_30px_rgba(255,215,0,0.3)]"
+            className="bg-primary text-primary-foreground font-heading font-bold text-sm sm:text-base px-8 sm:px-10 py-5 sm:py-6 hover:bg-primary/90 hover:scale-105 transition-all hover:shadow-[0_0_30px_rgba(255,215,0,0.3)] w-full sm:w-auto"
           >
             Quero ver valores para implementar
             <ArrowRight className="ml-2" size={18} />
