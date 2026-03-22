@@ -143,7 +143,7 @@ const AnalisaPraMim = () => {
               Ela lê a vaga, analisa currículos (até os mal formatados), cruza os dados e te entrega
               só os 5 candidatos mais aderentes com justificativas técnicas, lógicas e imparciais.
             </p>
-            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="inline-block w-full sm:w-auto">
+            <a href={SITE_LINK} target="_blank" rel="noopener noreferrer" className="inline-block w-full sm:w-auto">
               <Button
                 size="lg"
                 className="bg-gray-900 text-white font-heading font-bold text-sm sm:text-base px-8 sm:px-10 py-5 sm:py-6 hover:bg-gray-800 hover:scale-105 transition-all rounded-full w-full sm:w-auto active:scale-95"
