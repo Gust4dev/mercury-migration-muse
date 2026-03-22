@@ -226,8 +226,10 @@ const VendiMaisFlowchart = () => {
           <NodeCard visible={visible} delay={550} glow className="w-full">
             <div className="text-center mb-5">
               <SectionLabel>Núcleo do Sistema</SectionLabel>
-              <div className="flex items-center justify-center gap-2.5 mt-1">
-                <img src={whatsappLogo} alt="WhatsApp" className="h-7 w-7 object-contain" />
+              <div className="flex items-center justify-center gap-3 mt-1">
+                <div className="w-10 h-10 rounded-full overflow-hidden shrink-0">
+                  <img src={whatsappLogo} alt="WhatsApp" className="w-full h-full object-cover" />
+                </div>
                 <h3 className="font-heading font-bold text-foreground text-lg">
                   Bot Central WhatsApp
                 </h3>
