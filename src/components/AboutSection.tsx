@@ -29,12 +29,20 @@ const AboutSection = () => {
             Quem Somos
           </p>
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-6">
-            A <span className="text-primary">Mercury Gestora</span> nasceu para resolver o maior problema das empresas brasileiras
+            A <span className="text-primary">Mercury Gestora</span> faz a ponte entre a tecnologia de ponta e o seu negócio
           </h2>
-          <p className="text-muted-foreground text-lg leading-relaxed">
-            Unimos tecnologia proprietária, inteligência de dados e gestão estratégica
-            para transformar a forma como empresas vendem. Não somos uma agência.
-            Somos o braço de crescimento que faltava no seu negócio.
+          <p className="text-muted-foreground text-lg leading-relaxed mb-4">
+            Unimos a fronteira da tecnologia com inteligência de dados e gestão estratégica
+            para transformar os setores de pequenas e médias empresas — <strong className="text-foreground">a sua empresa</strong>.
+            Não somos uma agência. Somos o braço de automação, tecnologia e dados que faltava
+            pro seu negócio, pelo preço certo.
+          </p>
+          <p className="text-muted-foreground text-base leading-relaxed">
+            Fala-se muito de IA, mas pouco se mostra de soluções reais para empresas do dia a dia.
+            O mercado só fala de big techs. Nós viemos para quebrar isso — fazemos a cola entre
+            tecnologias como IA e SaaS e os empreendedores reais. Com tecnologias próprias e
+            patenteadas, estruturas únicas e uma parceria genuína: você nos contrata para resolver
+            seu problema e nós <span className="text-primary font-semibold">resolveremos</span>.
           </p>
         </div>
 
