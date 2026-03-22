@@ -11,7 +11,11 @@ const Hero = () => {
 
       <div className="container mx-auto px-5 sm:px-4 lg:px-8 py-12 sm:py-20 relative z-10">
         <div className="max-w-3xl mx-auto text-center md:text-left md:mx-0">
-          <p className="text-primary font-heading font-semibold text-[11px] sm:text-sm uppercase tracking-[0.2em] mb-4 sm:mb-6 animate-fade-in-up">
+          <div className="inline-flex items-center gap-1.5 bg-primary text-primary-foreground text-[9px] sm:text-[11px] font-heading font-extrabold uppercase tracking-[0.12em] px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full mb-3 sm:mb-5 animate-fade-in-up shadow-[0_0_16px_rgba(255,215,0,0.25)]">
+            <span className="text-xs sm:text-sm">🔥</span>
+            Produto destaque — Solução mais contratada
+          </div>
+          <p className="text-primary font-heading font-semibold text-[11px] sm:text-sm uppercase tracking-[0.2em] mb-4 sm:mb-6 animate-fade-in-up animation-delay-100">
             Mercury Gestora — Vendi.Mais®
           </p>
 
