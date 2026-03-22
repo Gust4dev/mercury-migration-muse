@@ -24,14 +24,16 @@ import {
   ChevronDown,
   type LucideIcon,
 } from "lucide-react";
+import whatsappLogo from "@/assets/whatsapp-logo.png";
+import tiktokLogo from "@/assets/tiktok-logo.png";
 
 /* ─── data ─── */
 const auxiliaryBots = [
-  { icon: Instagram, label: "Instagram" },
-  { icon: MessageSquare, label: "Messenger" },
-  { icon: Globe, label: "TikTok" },
-  { icon: Send, label: "Telegram" },
-  { icon: MessageSquare, label: "Viber" },
+  { icon: Instagram, label: "Instagram", image: null },
+  { icon: MessageSquare, label: "Messenger", image: null },
+  { icon: null, label: "TikTok", image: tiktokLogo },
+  { icon: Send, label: "Telegram", image: null },
+  { icon: MessageSquare, label: "Viber", image: null },
 ];
 
 const botSteps = [
@@ -50,11 +52,11 @@ const nexusFeatures = [
 ];
 
 const techPills = [
-  { icon: Shield, label: "API WhatsApp" },
-  { icon: Instagram, label: "API Instagram" },
-  { icon: Globe, label: "API TikTok" },
-  { icon: Cpu, label: "IA Mercury" },
-  { icon: Handshake, label: "Consultoria" },
+  { icon: Shield, label: "API WhatsApp", image: null },
+  { icon: Instagram, label: "API Instagram", image: null },
+  { icon: null, label: "API TikTok", image: tiktokLogo },
+  { icon: Cpu, label: "IA Mercury", image: null },
+  { icon: Handshake, label: "Consultoria", image: null },
 ];
 
 /* ─── small reusable pieces ─── */
@@ -100,17 +102,24 @@ const NodeCard = ({
 const IconBubble = ({
   Icon,
   size = "md",
+  image,
 }: {
-  Icon: LucideIcon;
+  Icon?: LucideIcon | null;
   size?: "sm" | "md" | "lg";
+  image?: string | null;
 }) => {
   const dims = { sm: "w-8 h-8", md: "w-10 h-10", lg: "w-12 h-12" };
   const iconSize = { sm: 14, md: 18, lg: 22 };
+  const imgSize = { sm: "h-4 w-4", md: "h-5 w-5", lg: "h-6 w-6" };
   return (
     <div
       className={`${dims[size]} rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0`}
     >
-      <Icon className="text-primary" size={iconSize[size]} />
+      {image ? (
+        <img src={image} alt="" className={`${imgSize[size]} object-contain`} />
+      ) : Icon ? (
+        <Icon className="text-primary" size={iconSize[size]} />
+      ) : null}
     </div>
   );
 };
@@ -198,7 +207,11 @@ const VendiMaisFlowchart = () => {
                   }`}
                   style={{ transitionDelay: `${300 + i * 80}ms` }}
                 >
-                  <bot.icon className="text-muted-foreground group-hover:text-primary transition-colors" size={18} />
+                  {bot.image ? (
+                    <img src={bot.image} alt={bot.label} className="h-[18px] w-[18px] object-contain group-hover:scale-110 transition-transform" />
+                  ) : bot.icon ? (
+                    <bot.icon className="text-muted-foreground group-hover:text-primary transition-colors" size={18} />
+                  ) : null}
                   <span className="text-[10px] text-muted-foreground group-hover:text-foreground font-medium transition-colors">
                     {bot.label}
                   </span>
@@ -213,8 +226,8 @@ const VendiMaisFlowchart = () => {
           <NodeCard visible={visible} delay={550} glow className="w-full">
             <div className="text-center mb-5">
               <SectionLabel>Núcleo do Sistema</SectionLabel>
-              <div className="flex items-center justify-center gap-2 mt-1">
-                <Bot className="text-primary" size={22} />
+              <div className="flex items-center justify-center gap-2.5 mt-1">
+                <img src={whatsappLogo} alt="WhatsApp" className="h-7 w-7 object-contain" />
                 <h3 className="font-heading font-bold text-foreground text-lg">
                   Bot Central WhatsApp
                 </h3>
@@ -330,7 +343,11 @@ const VendiMaisFlowchart = () => {
                   }`}
                   style={{ transitionDelay: `${1250 + i * 60}ms` }}
                 >
-                  <t.icon className="text-primary" size={13} />
+                  {t.image ? (
+                    <img src={t.image} alt={t.label} className="h-[13px] w-[13px] object-contain" />
+                  ) : t.icon ? (
+                    <t.icon className="text-primary" size={13} />
+                  ) : null}
                   <span className="text-[11px] text-foreground/80 font-medium">{t.label}</span>
                 </div>
               ))}
