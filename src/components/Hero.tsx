@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const WA_LINK = "https://wa.me/556295643201?text=Estou%20vindo%20do%20site%2C%20preciso%20de%20ajuda%C2%AE";
 
@@ -31,7 +32,7 @@ const Hero = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 animate-fade-in-up animation-delay-600 justify-center md:justify-start">
-            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+            <Link to="/vendi-mais" className="w-full sm:w-auto">
               <Button
                 size="lg"
                 className="bg-primary text-primary-foreground font-heading font-bold text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6 hover:bg-primary/90 transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(255,215,0,0.3)] w-full animate-glow-pulse active:scale-95"
@@ -39,7 +40,7 @@ const Hero = () => {
                 Quero ver uma demonstração
                 <ArrowRight className="ml-2" size={18} />
               </Button>
-            </a>
+            </Link>
 
             <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
               <Button
