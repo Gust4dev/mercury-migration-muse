@@ -21,9 +21,14 @@ const VendiMais = () => {
         <div className="absolute bottom-0 -left-20 w-48 h-48 bg-primary/5 rounded-full blur-3xl animate-pulse-slow animation-delay-2000" />
         <div className="container mx-auto px-4 lg:px-8 relative z-10">
           <div className="max-w-3xl mx-auto text-center md:text-left md:mx-0">
-            <p className="text-primary font-heading font-semibold text-xs sm:text-sm uppercase tracking-[0.2em] mb-3 sm:mb-4 animate-fade-in-up">
-              Solução Mercury
-            </p>
+            <div className="flex items-center gap-3 mb-4 sm:mb-5 animate-fade-in-up justify-center md:justify-start flex-wrap">
+              <span className="inline-flex items-center gap-1.5 bg-primary/15 border border-primary/30 text-primary text-[10px] sm:text-xs font-heading font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">
+                🔥 Mais contratado
+              </span>
+              <span className="inline-flex items-center gap-1.5 bg-card border border-border text-muted-foreground text-[10px] sm:text-xs font-heading font-semibold uppercase tracking-wider px-3 py-1.5 rounded-full">
+                Mercury Gestora — Vendi.Mais®
+              </span>
+            </div>
             <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-4 sm:mb-6 animate-fade-in-up animation-delay-200">
               <span className="text-primary">Vendi.Mais®</span> — O sistema que
               transforma gestão comercial em receita previsível
