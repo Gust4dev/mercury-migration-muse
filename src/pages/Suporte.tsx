@@ -11,26 +11,26 @@ const Suporte = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <section className="flex-1 bg-background pt-24 sm:pt-32 pb-16 sm:pb-24">
-        <div className="container mx-auto px-4 lg:px-8">
+      <section className="flex-1 bg-background pt-20 sm:pt-32 pb-14 sm:pb-24">
+        <div className="container mx-auto px-5 sm:px-4 lg:px-8">
           <div className="max-w-xl mx-auto text-center">
-            <p className="text-primary font-heading font-semibold text-xs sm:text-sm uppercase tracking-[0.2em] mb-3">
+            <p className="text-primary font-heading font-semibold text-[11px] sm:text-sm uppercase tracking-[0.2em] mb-2 sm:mb-3 animate-fade-in-up">
               Suporte Mercury
             </p>
-            <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 sm:mb-6">
+            <h1 className="font-heading text-2xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-6 animate-fade-in-up animation-delay-200">
               Conecte-se <span className="text-primary">conosco</span>
             </h1>
-            <p className="text-muted-foreground text-sm sm:text-base mb-10 sm:mb-14 leading-relaxed max-w-md mx-auto">
+            <p className="text-muted-foreground text-xs sm:text-base mb-8 sm:mb-14 leading-relaxed max-w-md mx-auto animate-fade-in-up animation-delay-400">
               Escolha o canal de sua preferência para falar com nossa equipe. Estamos prontos para ajudar.
             </p>
 
-            <div className="flex flex-col gap-4 max-w-xs mx-auto">
+            <div className="flex flex-col gap-3 sm:gap-4 max-w-xs mx-auto animate-fade-in-up animation-delay-600">
               <a href={WA_LINK} target="_blank" rel="noopener noreferrer">
                 <Button
                   size="lg"
-                  className="w-full bg-[#25D366] hover:bg-[#1ebe57] text-white font-heading font-bold text-base py-6 hover:scale-105 transition-all gap-3"
+                  className="w-full bg-[#25D366] hover:bg-[#1ebe57] text-white font-heading font-bold text-sm sm:text-base py-5 sm:py-6 hover:scale-105 transition-all gap-2.5 sm:gap-3 active:scale-95"
                 >
-                  <img src={whatsappLogo} alt="WhatsApp" className="h-6 w-6 rounded-full object-cover" />
+                  <img src={whatsappLogo} alt="WhatsApp" className="h-5 w-5 sm:h-6 sm:w-6 rounded-full object-cover" />
                   WhatsApp
                 </Button>
               </a>
@@ -38,9 +38,9 @@ const Suporte = () => {
               <a href="https://www.instagram.com/mercurygestora?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">
                 <Button
                   size="lg"
-                  className="w-full bg-gradient-to-r from-[#833AB4] via-[#E1306C] to-[#F77737] hover:opacity-90 text-white font-heading font-bold text-base py-6 hover:scale-105 transition-all gap-3"
+                  className="w-full bg-gradient-to-r from-[#833AB4] via-[#E1306C] to-[#F77737] hover:opacity-90 text-white font-heading font-bold text-sm sm:text-base py-5 sm:py-6 hover:scale-105 transition-all gap-2.5 sm:gap-3 active:scale-95"
                 >
-                  <Instagram size={22} />
+                  <Instagram size={20} />
                   Instagram
                 </Button>
               </a>
@@ -49,9 +49,9 @@ const Suporte = () => {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="w-full border-primary text-primary font-heading font-bold text-base py-6 hover:bg-primary/10 hover:scale-105 transition-all gap-3"
+                  className="w-full border-primary text-primary font-heading font-bold text-xs sm:text-base py-5 sm:py-6 hover:bg-primary/10 hover:scale-105 transition-all gap-2 sm:gap-3 active:scale-95"
                 >
-                  <Mail size={22} />
+                  <Mail size={18} />
                   contato@mercurygestora.com.br
                 </Button>
               </a>

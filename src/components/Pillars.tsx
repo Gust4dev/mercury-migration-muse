@@ -64,10 +64,8 @@ const Pillars = () => {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setVisible(true);
-      },
-      { threshold: 0.15 }
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.1 }
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
@@ -76,28 +74,28 @@ const Pillars = () => {
   const pillar = pillars[active];
 
   return (
-    <section className="bg-secondary py-16 md:py-24 overflow-hidden" ref={ref}>
-      <div className="container mx-auto px-4 lg:px-8">
+    <section className="bg-secondary py-12 sm:py-24 overflow-hidden" ref={ref}>
+      <div className="container mx-auto px-5 sm:px-4 lg:px-8">
         {/* Header */}
         <div
-          className={`text-center mb-10 md:mb-14 transition-all duration-700 ${
+          className={`text-center mb-8 sm:mb-14 transition-all duration-700 ${
             visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <p className="text-primary font-heading font-semibold text-xs sm:text-sm uppercase tracking-[0.2em] mb-3">
+          <p className="text-primary font-heading font-semibold text-[11px] sm:text-sm uppercase tracking-[0.2em] mb-2 sm:mb-3">
             Metodologia exclusiva
           </p>
-          <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 px-2">
+          <h2 className="font-heading text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2 sm:mb-3">
             Os 3 pilares do <span className="text-primary">Vendi.Mais®</span>
           </h2>
-          <p className="text-muted-foreground max-w-lg mx-auto text-sm md:text-base px-4">
+          <p className="text-muted-foreground max-w-lg mx-auto text-xs sm:text-base">
             A diferença entre o que o mercado faz e o que realmente funciona.
           </p>
         </div>
 
         {/* Pillar Tabs */}
         <div
-          className={`flex flex-col sm:flex-row justify-center gap-2 sm:gap-3 mb-8 md:mb-12 max-w-2xl mx-auto transition-all duration-700 delay-200 ${
+          className={`flex flex-row justify-center gap-2 sm:gap-3 mb-6 sm:mb-12 max-w-2xl mx-auto transition-all duration-700 delay-200 ${
             visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
@@ -107,37 +105,31 @@ const Pillars = () => {
               <button
                 key={p.title}
                 onClick={() => setActive(idx)}
-                className={`group flex items-center gap-3 rounded-xl px-5 py-3.5 sm:py-4 transition-all duration-300 border text-left sm:flex-1 ${
+                className={`group flex flex-col sm:flex-row items-center gap-1.5 sm:gap-3 rounded-xl px-3 sm:px-5 py-2.5 sm:py-4 transition-all duration-300 border text-center sm:text-left flex-1 active:scale-95 ${
                   isActive
                     ? "bg-primary/10 border-primary/40 shadow-[0_0_20px_-5px_hsl(var(--primary)/0.2)]"
-                    : "bg-card/50 border-border/40 hover:border-primary/20 hover:bg-card/80"
+                    : "bg-card/50 border-border/40"
                 }`}
               >
                 <div
-                  className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300 ${
-                    isActive ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground group-hover:text-primary"
+                  className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300 ${
+                    isActive ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
                   }`}
                 >
-                  <p.icon size={20} />
+                  <p.icon size={16} className="sm:w-5 sm:h-5" />
                 </div>
                 <div>
                   <span
-                    className={`font-heading font-bold text-sm block transition-colors ${
+                    className={`font-heading font-bold text-xs sm:text-sm block transition-colors ${
                       isActive ? "text-primary" : "text-foreground"
                     }`}
                   >
                     {p.title}
                   </span>
-                  <span className="text-[11px] text-muted-foreground hidden sm:block">
+                  <span className="text-[10px] text-muted-foreground hidden sm:block">
                     {p.subtitle}
                   </span>
                 </div>
-                {/* active indicator */}
-                <div
-                  className={`ml-auto w-2 h-2 rounded-full shrink-0 transition-all duration-300 ${
-                    isActive ? "bg-primary scale-100" : "bg-transparent scale-0"
-                  }`}
-                />
               </button>
             );
           })}
@@ -149,17 +141,17 @@ const Pillars = () => {
             visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <div className="rounded-2xl border border-border/60 bg-card/80 backdrop-blur-sm overflow-hidden">
-            {/* Top bar with icon */}
-            <div className="bg-background/60 border-b border-border/40 p-5 md:p-6 flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                <pillar.icon className="text-primary" size={24} />
+          <div className="rounded-xl sm:rounded-2xl border border-border/60 bg-card/80 backdrop-blur-sm overflow-hidden">
+            {/* Top bar */}
+            <div className="bg-background/60 border-b border-border/40 p-4 sm:p-6 flex items-center gap-3 sm:gap-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                <pillar.icon className="text-primary" size={20} />
               </div>
               <div>
-                <h3 className="font-heading font-bold text-lg md:text-xl text-foreground">
+                <h3 className="font-heading font-bold text-base sm:text-xl text-foreground">
                   {pillar.title}
                 </h3>
-                <p className="text-muted-foreground text-xs md:text-sm">
+                <p className="text-muted-foreground text-[11px] sm:text-sm">
                   {pillar.subtitle}
                 </p>
               </div>
@@ -168,54 +160,42 @@ const Pillars = () => {
             {/* Comparison Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border/30">
               {/* Erro */}
-              <div className="p-5 md:p-7">
-                <div className="flex items-center gap-2 mb-5">
-                  <div className="w-6 h-6 rounded-full bg-destructive/10 flex items-center justify-center">
-                    <X className="text-destructive" size={12} />
+              <div className="p-4 sm:p-7">
+                <div className="flex items-center gap-2 mb-4 sm:mb-5">
+                  <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-destructive/10 flex items-center justify-center">
+                    <X className="text-destructive" size={11} />
                   </div>
-                  <span className="text-xs font-heading font-bold uppercase tracking-wider text-destructive">
+                  <span className="text-[10px] sm:text-xs font-heading font-bold uppercase tracking-wider text-destructive">
                     Erro do Mercado
                   </span>
                 </div>
-                <ul className="space-y-3">
-                  {pillar.erros.map((e, idx) => (
-                    <li
-                      key={e}
-                      className="flex items-start gap-3 animate-fade-in"
-                      style={{ animationDelay: `${idx * 100}ms` }}
-                    >
-                      <span className="w-1.5 h-1.5 rounded-full bg-destructive/40 mt-2 shrink-0" />
-                      <span className="text-sm text-muted-foreground leading-relaxed">
-                        {e}
-                      </span>
+                <ul className="space-y-2.5 sm:space-y-3">
+                  {pillar.erros.map((e) => (
+                    <li key={e} className="flex items-start gap-2.5 sm:gap-3">
+                      <span className="w-1.5 h-1.5 rounded-full bg-destructive/40 mt-1.5 sm:mt-2 shrink-0" />
+                      <span className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{e}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
               {/* Jeito Mercury */}
-              <div className="p-5 md:p-7 bg-primary/[0.02]">
-                <div className="flex items-center gap-2 mb-5">
-                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Check className="text-primary" size={12} />
+              <div className="p-4 sm:p-7 bg-primary/[0.02]">
+                <div className="flex items-center gap-2 mb-4 sm:mb-5">
+                  <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Check className="text-primary" size={11} />
                   </div>
-                  <span className="text-xs font-heading font-bold uppercase tracking-wider text-primary">
+                  <span className="text-[10px] sm:text-xs font-heading font-bold uppercase tracking-wider text-primary">
                     Jeito Mercury
                   </span>
                 </div>
-                <ul className="space-y-3">
-                  {pillar.jeito.map((j, idx) => (
-                    <li
-                      key={j}
-                      className="flex items-start gap-3 animate-fade-in"
-                      style={{ animationDelay: `${150 + idx * 100}ms` }}
-                    >
-                      <div className="w-5 h-5 rounded-md bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-                        <Check className="text-primary" size={10} />
+                <ul className="space-y-2.5 sm:space-y-3">
+                  {pillar.jeito.map((j) => (
+                    <li key={j} className="flex items-start gap-2.5 sm:gap-3">
+                      <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                        <Check className="text-primary" size={9} />
                       </div>
-                      <span className="text-sm text-foreground leading-relaxed font-medium">
-                        {j}
-                      </span>
+                      <span className="text-xs sm:text-sm text-foreground leading-relaxed font-medium">{j}</span>
                     </li>
                   ))}
                 </ul>
