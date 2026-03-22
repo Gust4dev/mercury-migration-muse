@@ -73,7 +73,14 @@ const VendiMais = () => {
               Bot inteligente que combina inteligência artificial com cards nativos da Meta para
               uma experiência única.
             </p>
-            <div className="rounded-xl sm:rounded-2xl overflow-hidden border border-border shadow-xl max-w-full sm:max-w-lg md:max-w-2xl mx-auto">
+            {/* Mobile: vídeo quadrado */}
+            <div className="block sm:hidden rounded-xl overflow-hidden border border-border shadow-xl mx-auto">
+              <video className="w-full pointer-events-none" autoPlay muted loop playsInline>
+                <source src="/videos/bot-farmacia-mobile.mp4" type="video/mp4" />
+              </video>
+            </div>
+            {/* Desktop: vídeo original */}
+            <div className="hidden sm:block rounded-2xl overflow-hidden border border-border shadow-xl max-w-lg md:max-w-2xl mx-auto">
               <video className="w-full pointer-events-none" autoPlay muted loop playsInline>
                 <source src="/videos/bot-farmacia.mp4" type="video/mp4" />
               </video>
