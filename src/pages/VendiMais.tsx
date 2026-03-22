@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Pillars from "@/components/Pillars";
 import Highlight from "@/components/Highlight";
+import VendiMaisFlowchart from "@/components/VendiMaisFlowchart";
 import BlogSection from "@/components/BlogSection";
 import Qualification from "@/components/Qualification";
 import Footer from "@/components/Footer";
@@ -103,6 +104,7 @@ const VendiMais = () => {
 
       <Pillars />
       <Highlight />
+      <VendiMaisFlowchart />
       <BlogSection />
       <Qualification />
       <Footer />
