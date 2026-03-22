@@ -8,12 +8,12 @@ const pillars = [
     erros: [
       "Impulsionar posts sem estratégia",
       "Atrair curiosos em vez de compradores",
-      "Gastar verba sem segmentação real",
+      "Ignorar o Google Meu Negócio como fonte de leads",
     ],
     jeito: [
-      "Campanhas baseadas em dados de comportamento",
-      "Segmentação que atrai quem realmente compra",
-      "Investimento otimizado com ROI mensurável",
+      "Campanhas pagas com segmentação por comportamento real",
+      "Análise e otimização do Google Meu Negócio para captação orgânica",
+      "Tráfego pago + orgânico trabalhando juntos com ROI mensurável",
     ],
   },
   {
