@@ -28,9 +28,9 @@ const clients = [
 
 const ClientLogos = () => {
   return (
-    <section className="bg-mercury-light py-16 overflow-hidden">
+    <section className="bg-mercury-light py-10 sm:py-16 overflow-hidden">
       <div className="container mx-auto px-4 lg:px-8">
-        <h2 className="font-heading text-center text-sm md:text-base font-bold uppercase tracking-[0.15em] text-mercury-dark/70 mb-12">
+        <h2 className="font-heading text-center text-xs sm:text-sm md:text-base font-bold uppercase tracking-[0.15em] text-mercury-dark/70 mb-8 sm:mb-12 px-2">
           Tecnologia e gestão validada por gigantes do mercado
         </h2>
       </div>
@@ -38,11 +38,11 @@ const ClientLogos = () => {
       <div className="relative overflow-hidden">
         <div className="flex w-max animate-marquee-clients">
           {[0, 1].map((copy) => (
-            <div key={copy} className="flex items-center gap-6 pr-6">
+            <div key={copy} className="flex items-center gap-4 sm:gap-6 pr-4 sm:pr-6">
               {clients.map((client) => (
                 <div
                   key={`${client.name}-${copy}`}
-                  className="flex-shrink-0 w-48 h-32 rounded-xl overflow-hidden bg-card shadow-md transition-shadow hover:shadow-xl"
+                  className="flex-shrink-0 w-36 h-24 sm:w-48 sm:h-32 rounded-xl overflow-hidden bg-card shadow-md"
                 >
                   <img
                     src={client.logo}
