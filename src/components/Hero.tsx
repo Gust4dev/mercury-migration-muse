@@ -6,7 +6,7 @@ const WA_LINK = "https://wa.me/556295643201?text=Estou%20vindo%20do%20site%2C%20
 
 const Hero = () => {
   return (
-    <section className="relative min-h-[90vh] sm:min-h-screen flex items-center bg-background pt-14 sm:pt-16 overflow-hidden">
+    <section className="relative min-h-[70vh] sm:min-h-screen flex items-center bg-background pt-14 sm:pt-16 overflow-hidden">
       <div className="absolute top-1/4 -left-32 w-64 sm:w-96 h-64 sm:h-96 bg-primary/10 rounded-full blur-3xl animate-pulse-slow" />
       <div className="absolute bottom-1/4 -right-32 w-48 sm:w-80 h-48 sm:h-80 bg-primary/5 rounded-full blur-3xl animate-pulse-slow animation-delay-2000" />
 
