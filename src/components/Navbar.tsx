@@ -29,10 +29,20 @@ const Navbar = () => {
         <ul className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => {
             const isActive = link.href === location.pathname;
-            const isRoute = link.href.startsWith("/");
+            const isExternal = 'external' in link && link.external;
+            const isRoute = link.href.startsWith("/") && !isExternal;
             return (
               <li key={link.label}>
-                {isRoute ? (
+                {isExternal ? (
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 text-sm font-medium rounded-md transition-colors text-primary hover:text-primary/80 font-bold"
+                  >
+                    {link.label}
+                  </a>
+                ) : isRoute ? (
                   <Link
                     to={link.href}
                     className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
