@@ -6,7 +6,7 @@ import ticoPhone from "@/assets/tico-phone.png";
 import ticoSearch from "@/assets/tico-search.png";
 import { useState, useEffect } from "react";
 
-const WA_LINK = "https://wa.me/556295643201?text=Estou%20vindo%20do%20site%2C%20preciso%20de%20ajuda%20sobre%20o%20Analisa.PraMim";
+const SITE_LINK = "https://analisapramim.com.br";
 
 const testimonials = [
   {
