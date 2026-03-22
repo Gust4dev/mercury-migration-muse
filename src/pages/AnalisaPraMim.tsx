@@ -121,7 +121,7 @@ const AnalisaPraMim = () => {
               <img
                 src={ticoPhone}
                 alt="Tico - mascote AnalisaPraMim"
-                className="w-full max-w-[200px] sm:max-w-md rounded-2xl"
+                className="w-full max-w-[240px] sm:max-w-md rounded-2xl"
               />
             </div>
           </div>
