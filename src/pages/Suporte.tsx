@@ -11,8 +11,8 @@ const Suporte = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <section className="flex-1 bg-background pt-20 sm:pt-32 pb-14 sm:pb-24">
-        <div className="container mx-auto px-5 sm:px-4 lg:px-8">
+      <section className="flex-1 bg-background pt-20 sm:pt-32 pb-10 sm:pb-24">
+        <div className="container mx-auto px-4 sm:px-4 lg:px-8">
           <div className="max-w-xl mx-auto text-center">
             <p className="text-primary font-heading font-semibold text-[11px] sm:text-sm uppercase tracking-[0.2em] mb-2 sm:mb-3 animate-fade-in-up">
               Suporte Mercury
@@ -20,7 +20,7 @@ const Suporte = () => {
             <h1 className="font-heading text-2xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-6 animate-fade-in-up animation-delay-200">
               Conecte-se <span className="text-primary">conosco</span>
             </h1>
-            <p className="text-muted-foreground text-xs sm:text-base mb-8 sm:mb-14 leading-relaxed max-w-md mx-auto animate-fade-in-up animation-delay-400">
+            <p className="text-muted-foreground text-xs sm:text-base mb-6 sm:mb-14 leading-relaxed max-w-md mx-auto animate-fade-in-up animation-delay-400">
               Escolha o canal de sua preferência para falar com nossa equipe. Estamos prontos para ajudar.
             </p>
 

@@ -15,19 +15,17 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
 
-  // Close menu on route change
   useEffect(() => { setOpen(false); }, [location.pathname]);
 
-  // Prevent body scroll when menu open
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border" style={{ backgroundColor: 'hsl(0 0% 4% / 0.97)' }}>
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-[hsl(0_0%_4%)]">
       <div className="container mx-auto flex items-center justify-between h-14 sm:h-16 px-4 lg:px-8">
-        <Link to="/" className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
           <img src={mercuryLogo} alt="Mercury Gestora" className="h-8 sm:h-9 w-auto" />
           <span className="font-heading text-lg sm:text-xl font-bold tracking-tight text-white">
             Mercury Gestora
@@ -83,12 +81,11 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile menu - fullscreen overlay */}
+      {/* Mobile menu */}
       <div
-        className={`md:hidden fixed inset-0 top-14 transition-all duration-300 ${
+        className={`md:hidden fixed inset-0 top-14 z-50 transition-all duration-300 bg-[hsl(0,0%,4%)] ${
           open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
-        style={{ backgroundColor: 'hsl(0 0% 4%)' }}
       >
         <div className="flex flex-col px-6 pt-6 gap-1">
           {navLinks.map((link, idx) => {
