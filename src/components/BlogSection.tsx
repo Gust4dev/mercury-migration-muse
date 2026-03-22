@@ -2,6 +2,8 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 
+const WA_LINK = "https://api.whatsapp.com/send/?phone=556295643201&text=Estou+vindo+do+site%2C+preciso+de+ajuda+sobre+o+Vendi.Mais%C2%AE&type=phone_number&app_absent=0";
+
 const articles = [
   {
     title: "Como gerar 650 leads qualificados por mês sem aumentar a verba",
@@ -37,13 +39,15 @@ const BlogSection = () => {
     <section className="bg-background py-16 sm:py-20" ref={ref}>
       <div className="container mx-auto px-4 lg:px-8">
         <div className={`text-center mb-8 sm:mb-12 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-          <Button
-            size="lg"
-            className="bg-primary text-primary-foreground font-heading font-bold text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6 hover:bg-primary/90 mb-6 sm:mb-8 hover:scale-105 transition-all hover:shadow-[0_0_30px_rgba(255,215,0,0.3)] w-full sm:w-auto"
-          >
-            Quero ver como funciona pra mim!!
-            <ArrowRight className="ml-2" size={18} />
-          </Button>
+          <a href={WA_LINK} target="_blank" rel="noopener noreferrer">
+            <Button
+              size="lg"
+              className="bg-primary text-primary-foreground font-heading font-bold text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6 hover:bg-primary/90 mb-6 sm:mb-8 hover:scale-105 transition-all hover:shadow-[0_0_30px_rgba(255,215,0,0.3)] w-full sm:w-auto"
+            >
+              Quero ver como funciona pra mim!!
+              <ArrowRight className="ml-2" size={18} />
+            </Button>
+          </a>
 
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 sm:mb-4">
             Conteúdos que <span className="text-primary">vendem</span>
