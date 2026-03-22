@@ -78,8 +78,20 @@ const Navbar = () => {
       {open && (
         <div className="md:hidden bg-background border-t border-border px-4 pb-4">
           {navLinks.map((link) => {
-            const isRoute = link.href.startsWith("/");
-            return isRoute ? (
+            const isExternal = 'external' in link && link.external;
+            const isRoute = link.href.startsWith("/") && !isExternal;
+            return isExternal ? (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className="block py-3 text-sm font-bold border-b border-border last:border-0 text-primary"
+              >
+                {link.label}
+              </a>
+            ) : isRoute ? (
               <Link
                 key={link.label}
                 to={link.href}
