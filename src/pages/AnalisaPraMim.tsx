@@ -6,7 +6,7 @@ import ticoPhone from "@/assets/tico-phone.png";
 import ticoSearch from "@/assets/tico-search.png";
 import { useState, useEffect } from "react";
 
-const WA_LINK = "https://wa.me/556295643201?text=Estou%20vindo%20do%20site%2C%20preciso%20de%20ajuda%20sobre%20o%20Analisa.PraMim";
+const SITE_LINK = "https://analisapramim.com.br";
 
 const testimonials = [
   {
@@ -78,7 +78,7 @@ const AnalisaPraMim = () => {
               </div>
             </div>
 
-            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="inline-block w-full sm:w-auto">
+            <a href={SITE_LINK} target="_blank" rel="noopener noreferrer" className="inline-block w-full sm:w-auto">
               <Button
                 size="lg"
                 className="bg-[hsl(145,70%,35%)] text-white font-heading font-bold text-sm sm:text-base px-8 sm:px-10 py-5 sm:py-6 hover:bg-[hsl(145,70%,30%)] hover:scale-105 transition-all rounded-full w-full sm:w-auto active:scale-95"
@@ -108,7 +108,7 @@ const AnalisaPraMim = () => {
                 <li>- Rankeia os candidatos</li>
                 <li>- Explica o motivo da posição do candidato</li>
               </ul>
-              <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="inline-block w-full sm:w-auto">
+              <a href={SITE_LINK} target="_blank" rel="noopener noreferrer" className="inline-block w-full sm:w-auto">
                 <Button
                   size="lg"
                   className="bg-[hsl(145,70%,35%)] text-white font-heading font-bold text-sm sm:text-base px-8 sm:px-10 py-5 sm:py-6 hover:bg-[hsl(145,70%,30%)] hover:scale-105 transition-all rounded-full w-full sm:w-auto active:scale-95"
@@ -143,7 +143,7 @@ const AnalisaPraMim = () => {
               Ela lê a vaga, analisa currículos (até os mal formatados), cruza os dados e te entrega
               só os 5 candidatos mais aderentes com justificativas técnicas, lógicas e imparciais.
             </p>
-            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="inline-block w-full sm:w-auto">
+            <a href={SITE_LINK} target="_blank" rel="noopener noreferrer" className="inline-block w-full sm:w-auto">
               <Button
                 size="lg"
                 className="bg-gray-900 text-white font-heading font-bold text-sm sm:text-base px-8 sm:px-10 py-5 sm:py-6 hover:bg-gray-800 hover:scale-105 transition-all rounded-full w-full sm:w-auto active:scale-95"
@@ -205,7 +205,7 @@ const AnalisaPraMim = () => {
                 ))}
               </ul>
               <div className="mt-6 sm:mt-10">
-                <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="inline-block w-full md:w-auto">
+                <a href={SITE_LINK} target="_blank" rel="noopener noreferrer" className="inline-block w-full md:w-auto">
                   <Button
                     size="lg"
                     className="bg-gray-900 text-white font-heading font-bold text-sm sm:text-base px-8 sm:px-10 py-5 sm:py-6 hover:bg-gray-800 hover:scale-105 transition-all rounded-full w-full md:w-auto active:scale-95"
