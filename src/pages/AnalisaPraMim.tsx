@@ -67,8 +67,8 @@ const AnalisaPraMim = () => {
               </div>
               <div className="aspect-video w-full rounded-xl overflow-hidden bg-black">
                 <iframe
-                  className="w-full h-full"
-                  src="https://www.youtube.com/embed/NAq72W_Vaps?start=45&autoplay=1&mute=1"
+                  className="w-full h-full pointer-events-none"
+                  src="https://www.youtube.com/embed/NAq72W_Vaps?start=45&autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=1"
                   title="AnalisaPraMim - Demonstração"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
