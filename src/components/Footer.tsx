@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import mercuryLogo from "@/assets/mercury-logo.png";
 import whatsappLogo from "@/assets/whatsapp-logo.png";
-import tiktokLogo from "@/assets/tiktok-logo.png";
-import { Instagram, Linkedin } from "lucide-react";
+import { Instagram } from "lucide-react";
 
 const Footer = () => {
   return (
