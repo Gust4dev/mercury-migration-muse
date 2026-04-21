@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Instagram, Mail } from "lucide-react";
 import whatsappLogo from "@/assets/whatsapp-logo.png";
@@ -7,8 +8,23 @@ import whatsappLogo from "@/assets/whatsapp-logo.png";
 const WA_LINK = "https://wa.me/556293618627?text=Estou%20vindo%20do%20Site,%20preciso%20de%20ajuda";
 
 const Suporte = () => {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: "Suporte Mercury Gestora",
+    url: "https://mercurygestora.com.br/suporte",
+    description: "Canais oficiais de contato e suporte da Mercury Gestora: WhatsApp, Instagram e e-mail.",
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
+      <SEO
+        title="Suporte e Contato — Fale com a Mercury Gestora"
+        description="Entre em contato com a Mercury Gestora pelo WhatsApp, Instagram ou e-mail. Suporte rápido para sua jornada de automação comercial e IA."
+        canonical="/suporte"
+        keywords="contato Mercury Gestora, suporte, WhatsApp, atendimento, fale conosco"
+        jsonLd={jsonLd}
+      />
       <Navbar />
 
       <section className="flex-1 bg-background pt-20 sm:pt-32 pb-10 sm:pb-24">

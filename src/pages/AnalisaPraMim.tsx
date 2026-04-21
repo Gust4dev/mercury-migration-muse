@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 import { ArrowRight, CheckCircle, Zap, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ticoPhone from "@/assets/tico-phone.png";
@@ -45,8 +46,43 @@ const AnalisaPraMim = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      name: "Analisa.PraMim®",
+      applicationCategory: "BusinessApplication",
+      operatingSystem: "Web",
+      description:
+        "Inteligência artificial que lê, interpreta e rankeia currículos para o RH em minutos, reduzindo o tempo de contratação.",
+      url: "https://mercurygestora.com.br/analisa-pra-mim",
+      brand: { "@type": "Brand", name: "Mercury Gestora" },
+      offers: {
+        "@type": "Offer",
+        priceCurrency: "BRL",
+        availability: "https://schema.org/InStock",
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Início", item: "https://mercurygestora.com.br/" },
+        { "@type": "ListItem", position: 2, name: "Analisa.PraMim", item: "https://mercurygestora.com.br/analisa-pra-mim" },
+      ],
+    },
+  ];
+
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Analisa.PraMim® — IA que Tria Currículos para RH em Minutos | Mercury Gestora"
+        description="Analisa.PraMim® usa IA para ler, interpretar e rankear currículos automaticamente. Reduza em até 47% o tempo de contratação e foque só nos 5 melhores candidatos."
+        canonical="/analisa-pra-mim"
+        keywords="Analisa.PraMim, triagem de currículos, IA para RH, recrutamento com IA, automação de RH, análise de currículo, ATS inteligente, recrutamento e seleção"
+        ogType="product"
+        jsonLd={jsonLd}
+      />
       <Navbar />
 
       {/* Hero */}
