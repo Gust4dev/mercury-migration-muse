@@ -5,14 +5,50 @@ import VendiMaisFlowchart from "@/components/VendiMaisFlowchart";
 import BlogSection from "@/components/BlogSection";
 import Qualification from "@/components/Qualification";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const WA_LINK = "https://wa.me/556293618627?text=Estou%20vindo%20do%20Site,%20preciso%20de%20ajuda";
 
 const VendiMais = () => {
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: "Vendi.Mais®",
+      brand: { "@type": "Brand", name: "Mercury Gestora" },
+      description:
+        "Plataforma de gestão comercial com IA, automação de WhatsApp, filtragem inteligente de leads e dashboards acionáveis para escalar vendas de PMEs.",
+      category: "Software de Automação Comercial",
+      url: "https://mercurygestora.com.br/vendi-mais",
+      offers: {
+        "@type": "Offer",
+        priceCurrency: "BRL",
+        availability: "https://schema.org/InStock",
+        url: "https://mercurygestora.com.br/vendi-mais",
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Início", item: "https://mercurygestora.com.br/" },
+        { "@type": "ListItem", position: 2, name: "Vendi.Mais", item: "https://mercurygestora.com.br/vendi-mais" },
+      ],
+    },
+  ];
+
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Vendi.Mais® — Gestão Comercial com IA e Automação de WhatsApp | Mercury Gestora"
+        description="Vendi.Mais® transforma dados em vendas reais: bots de WhatsApp com IA, filtragem inteligente de leads, dashboards acionáveis e previsibilidade comercial para PMEs."
+        canonical="/vendi-mais"
+        keywords="Vendi.Mais, gestão comercial, automação de vendas, bot WhatsApp IA, chatbot vendas, qualificação de leads, dashboard de vendas, CRM, automação comercial PMEs"
+        ogType="product"
+        jsonLd={jsonLd}
+      />
       <Navbar />
 
       {/* Hero */}
