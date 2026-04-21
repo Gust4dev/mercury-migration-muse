@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Instagram, Mail } from "lucide-react";
 import whatsappLogo from "@/assets/whatsapp-logo.png";
 
-const WA_LINK = "https://wa.me/556295643201?text=Estou%20vindo%20do%20site%2C%20preciso%20de%20ajuda%C2%AE";
+const WA_LINK = "https://wa.me/556293618627?text=Estou%20vindo%20do%20Site,%20preciso%20de%20ajuda";
 
 const Suporte = () => {
   return (

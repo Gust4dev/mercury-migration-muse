@@ -43,7 +43,7 @@ const Footer = () => {
 
             <div className="flex items-center gap-3 mt-1 sm:mt-2">
               <a
-                href="https://wa.me/556295643201?text=Estou%20vindo%20do%20site%2C%20preciso%20de%20ajuda%C2%AE"
+                href="https://wa.me/556293618627?text=Estou%20vindo%20do%20Site,%20preciso%20de%20ajuda"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-11 h-11 sm:w-10 sm:h-10 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary/50 hover:scale-110 transition-all overflow-hidden active:scale-95"
