@@ -1,0 +1,11 @@
+# Mercury Gestora
+
+> Tecnologia, estratégia e automação para empresas venderem mais. Combinamos gestão de tráfego, Inteligência Artificial, CRM, automação comercial, dados e consultoria estratégica para PMEs.
+
+A Mercury Gestora é uma empresa brasileira (Goiânia/GO) especializada em crescimento comercial. Nossa solução principal é o Vendi.Mais®, sustentada pela tecnologia proprietária Mercury Nexus®, que conecta atendimento, CRM, automações, campanhas, dados e IA em um único ambiente.
+
+## Pages
+
+- [Home](/): Visão geral da Mercury Gestora, áreas de atuação, Vendi.Mais e tecnologia Mercury Nexus.
+- [Vendi.Mais](/vendimais): Solução comercial completa — tráfego, atendimento com IA, CRM, automação, remarketing e analytics.
+- [Suporte](/suporte): Canal de suporte para clientes Mercury Gestora.

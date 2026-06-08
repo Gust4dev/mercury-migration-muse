@@ -42,14 +42,15 @@ const VendiMais = () => {
   return (
     <div className="min-h-screen">
       <SEO
-        title="Vendi.Mais® — Gestão Comercial com IA e Automação de WhatsApp | Mercury Gestora"
-        description="Vendi.Mais® transforma dados em vendas reais: bots de WhatsApp com IA, filtragem inteligente de leads, dashboards acionáveis e previsibilidade comercial para PMEs."
-        canonical="/vendi-mais"
-        keywords="Vendi.Mais, gestão comercial, automação de vendas, bot WhatsApp IA, chatbot vendas, qualificação de leads, dashboard de vendas, CRM, automação comercial PMEs"
+        title="Vendi.Mais® — Vendas com IA e WhatsApp | Mercury Gestora"
+        description="Vendi.Mais®: gestão comercial com IA, bot de WhatsApp, qualificação de leads e dashboards para escalar vendas de PMEs com previsibilidade."
+        canonical="/vendimais"
+        keywords="Vendi.Mais, automação de vendas, bot WhatsApp IA, qualificação de leads, CRM, automação comercial PMEs"
         ogType="product"
         jsonLd={jsonLd}
       />
       <Navbar />
+      <main>
 
       {/* Hero */}
       <section className="relative bg-background pt-18 sm:pt-28 pb-10 sm:pb-20 overflow-hidden">
@@ -153,6 +154,7 @@ const VendiMais = () => {
       <VendiMaisFlowchart />
       <BlogSection />
       <Qualification />
+      </main>
       <Footer />
     </div>
   );

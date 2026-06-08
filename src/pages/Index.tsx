@@ -47,21 +47,23 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       <SEO
-        title="Mercury Gestora — Tráfego, IA, CRM e Automação para vender mais"
-        description="Tecnologia, estratégia e automação para fazer sua empresa vender mais. Conheça o Vendi.Mais®, a solução comercial completa da Mercury, sustentada pela tecnologia Mercury Nexus®."
+        title="Mercury Gestora — Automação Comercial com IA e CRM"
+        description="Tecnologia, estratégia e automação para sua empresa vender mais. Conheça o Vendi.Mais® e a tecnologia Mercury Nexus®."
         canonical="/"
-        keywords="Mercury Gestora, Vendi.Mais, Mercury Nexus, gestão de tráfego, automação comercial, IA para vendas, CRM, remarketing, consultoria comercial, bot WhatsApp"
+        keywords="Mercury Gestora, Vendi.Mais, Mercury Nexus, automação comercial, IA para vendas, CRM, bot WhatsApp"
         jsonLd={jsonLd}
       />
       <Navbar />
-      <Hero />
-      <ClientLogos />
-      <MetricsBanner />
-      <OperationSection />
-      <VendiMaisHighlight />
-      <NexusSection />
-      <MercuryDifferentials />
-      <AboutSection />
+      <main>
+        <Hero />
+        <ClientLogos />
+        <MetricsBanner />
+        <OperationSection />
+        <VendiMaisHighlight />
+        <NexusSection />
+        <MercuryDifferentials />
+        <AboutSection />
+      </main>
       <Footer />
     </div>
   );
