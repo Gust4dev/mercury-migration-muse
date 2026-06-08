@@ -14,5 +14,4 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-Sitemap: https://mercurygestora.com.br/sitemap.xml
-Host: https://mercurygestora.com.br
+Sitemap: https://mercury-migration-muse.lovable.app/sitemap.xml
