@@ -50,6 +50,7 @@ const VendiMais = () => {
         jsonLd={jsonLd}
       />
       <Navbar />
+      <main>
 
       {/* Hero */}
       <section className="relative bg-background pt-18 sm:pt-28 pb-10 sm:pb-20 overflow-hidden">
@@ -153,6 +154,7 @@ const VendiMais = () => {
       <VendiMaisFlowchart />
       <BlogSection />
       <Qualification />
+      </main>
       <Footer />
     </div>
   );
