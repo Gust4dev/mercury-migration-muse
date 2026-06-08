@@ -7,7 +7,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { useEffect } from "react";
 import Index from "./pages/Index.tsx";
 import VendiMais from "./pages/VendiMais.tsx";
-import AnalisaPraMim from "./pages/AnalisaPraMim.tsx";
+
 import Suporte from "./pages/Suporte.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
@@ -30,7 +30,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/vendimais" element={<VendiMais />} />
           <Route path="/vendi-mais" element={<VendiMais />} />
-          <Route path="/analisa-pra-mim" element={<AnalisaPraMim />} />
+          
           <Route path="/suporte" element={<Suporte />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
