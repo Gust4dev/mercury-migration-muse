@@ -9,9 +9,9 @@ import hapvida from "@/assets/logos/hapvida.png";
 import conectapro from "@/assets/logos/conectapro.png";
 import multclean from "@/assets/logos/multclean.png";
 import farmacias from "@/assets/logos/farmacias-associadas.png";
-const fernandesGas = { url: "/__l5e/assets-v1/d271716c-4348-4cea-bd15-3f04c19d1c83/fernandes-gas.jpg" };
-const grupoAtiva = { url: "/__l5e/assets-v1/12fa60e1-cc36-4bf7-9cb8-1b39a241742e/grupo-ativa.jpg" };
-const consigaz = { url: "/__l5e/assets-v1/93cf5166-3239-47d5-82c2-08449b215d91/consigaz.png" };
+import fernandesGas from "@/assets/logos/fernandes-gas.jpg";
+import grupoAtiva from "@/assets/logos/grupo-ativa.jpg";
+import consigaz from "@/assets/logos/consigaz.png";
 
 const clients = [
   { name: "O Boticário", logo: boticario },
@@ -22,9 +22,9 @@ const clients = [
   { name: "Oliver Imóveis", logo: oliver },
   { name: "Lust Shop", logo: lustShop },
   { name: "Hapvida", logo: hapvida },
-  { name: "Fernandes Gás", logo: fernandesGas.url },
-  { name: "Grupo Ativa", logo: grupoAtiva.url },
-  { name: "Consigaz", logo: consigaz.url },
+  { name: "Fernandes Gás", logo: fernandesGas },
+  { name: "Grupo Ativa", logo: grupoAtiva },
+  { name: "Consigaz", logo: consigaz },
   { name: "ConectaPro", logo: conectapro },
   { name: "MultClean", logo: multclean },
   { name: "Farmácias Associadas", logo: farmacias },
