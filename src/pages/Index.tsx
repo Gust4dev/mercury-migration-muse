@@ -54,14 +54,16 @@ const Index = () => {
         jsonLd={jsonLd}
       />
       <Navbar />
-      <Hero />
-      <ClientLogos />
-      <MetricsBanner />
-      <OperationSection />
-      <VendiMaisHighlight />
-      <NexusSection />
-      <MercuryDifferentials />
-      <AboutSection />
+      <main>
+        <Hero />
+        <ClientLogos />
+        <MetricsBanner />
+        <OperationSection />
+        <VendiMaisHighlight />
+        <NexusSection />
+        <MercuryDifferentials />
+        <AboutSection />
+      </main>
       <Footer />
     </div>
   );
