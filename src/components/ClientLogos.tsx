@@ -9,9 +9,9 @@ import hapvida from "@/assets/logos/hapvida.png";
 import conectapro from "@/assets/logos/conectapro.png";
 import multclean from "@/assets/logos/multclean.png";
 import farmacias from "@/assets/logos/farmacias-associadas.png";
-import fernandesGas from "@/assets/logos/fernandes-gas.jpg.asset.json";
-import grupoAtiva from "@/assets/logos/grupo-ativa.jpg.asset.json";
-import consigaz from "@/assets/logos/consigaz.png.asset.json";
+const fernandesGas = { url: "/__l5e/assets-v1/d271716c-4348-4cea-bd15-3f04c19d1c83/fernandes-gas.jpg" };
+const grupoAtiva = { url: "/__l5e/assets-v1/12fa60e1-cc36-4bf7-9cb8-1b39a241742e/grupo-ativa.jpg" };
+const consigaz = { url: "/__l5e/assets-v1/93cf5166-3239-47d5-82c2-08449b215d91/consigaz.png" };
 
 const clients = [
   { name: "O Boticário", logo: boticario },
