@@ -2,9 +2,11 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ClientLogos from "@/components/ClientLogos";
 import MetricsBanner from "@/components/MetricsBanner";
-import AboutSection from "@/components/AboutSection";
-import SolutionsOverview from "@/components/SolutionsOverview";
+import OperationSection from "@/components/OperationSection";
+import VendiMaisHighlight from "@/components/VendiMaisHighlight";
 import NexusSection from "@/components/NexusSection";
+import MercuryDifferentials from "@/components/MercuryDifferentials";
+import AboutSection from "@/components/AboutSection";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 
@@ -38,25 +40,27 @@ const Index = () => {
       },
       areaServed: "BR",
       description:
-        "Automação comercial, IA e dados para PMEs. Bots de WhatsApp, dashboards e gestão comercial inteligente.",
+        "Gestão de tráfego, IA, CRM, automação, dados e consultoria estratégica para PMEs. Solução principal: Vendi.Mais®. Tecnologia proprietária: Mercury Nexus®.",
     },
   ];
 
   return (
     <div className="min-h-screen">
       <SEO
-        title="Mercury Gestora — Automação, IA e Dados para PMEs | Vendi.Mais®"
-        description="Mercury Gestora: automação comercial com IA, bots de WhatsApp, dashboards e dados para escalar vendas de PMEs com previsibilidade. Conheça Vendi.Mais® e Mercury Nexus®."
+        title="Mercury Gestora — Tráfego, IA, CRM e Automação para vender mais"
+        description="Tecnologia, estratégia e automação para fazer sua empresa vender mais. Conheça o Vendi.Mais®, a solução comercial completa da Mercury, sustentada pela tecnologia Mercury Nexus®."
         canonical="/"
-        keywords="automação comercial, IA para vendas, bot WhatsApp, chatbot, gestão comercial, dashboards de vendas, Mercury Gestora, Vendi.Mais, Mercury Nexus, automação para PMEs"
+        keywords="Mercury Gestora, Vendi.Mais, Mercury Nexus, gestão de tráfego, automação comercial, IA para vendas, CRM, remarketing, consultoria comercial, bot WhatsApp"
         jsonLd={jsonLd}
       />
       <Navbar />
       <Hero />
       <ClientLogos />
       <MetricsBanner />
+      <OperationSection />
+      <VendiMaisHighlight />
       <NexusSection />
-      <SolutionsOverview />
+      <MercuryDifferentials />
       <AboutSection />
       <Footer />
     </div>
