@@ -28,9 +28,6 @@ const Footer = () => {
             <Link to="/vendimais" className="text-sm text-muted-foreground hover:text-primary transition-colors active:text-primary">
               Vendi.Mais®
             </Link>
-            <Link to="/analisa-pra-mim" className="text-sm text-muted-foreground hover:text-primary transition-colors active:text-primary">
-              Analisa.PraMim
-            </Link>
             <Link to="/suporte" className="text-sm text-muted-foreground hover:text-primary transition-colors active:text-primary">
               Suporte
             </Link>

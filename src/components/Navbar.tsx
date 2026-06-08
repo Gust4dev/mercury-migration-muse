@@ -5,7 +5,6 @@ import mercuryLogo from "@/assets/mercury-logo.png";
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "Analisa.PraMim", href: "/analisa-pra-mim" },
   { label: "Vendi.Mais", href: "/vendimais" },
   { label: "Suporte", href: "/suporte" },
   { label: "Mercury Nexus®", href: "https://mercurynexus.com.br", external: true },
