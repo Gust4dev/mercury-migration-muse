@@ -55,9 +55,9 @@ const Index = () => {
       <Hero />
       <ClientLogos />
       <MetricsBanner />
-      <AboutSection />
-      <SolutionsOverview />
       <NexusSection />
+      <SolutionsOverview />
+      <AboutSection />
       <Footer />
     </div>
   );

@@ -22,27 +22,19 @@ const AboutSection = () => {
   }, []);
 
   return (
-    <section className="bg-background py-14 sm:py-20" ref={ref}>
+    <section className="bg-background py-10 sm:py-14" ref={ref}>
       <div className="container mx-auto px-5 sm:px-4 lg:px-8">
-        <div className={`max-w-3xl mx-auto text-center mb-10 sm:mb-16 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-          <p className="text-primary font-heading font-semibold text-[11px] sm:text-sm uppercase tracking-[0.2em] mb-3 sm:mb-4">
+        <div className={`max-w-2xl mx-auto text-center mb-8 sm:mb-10 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+          <p className="text-primary font-heading font-semibold text-[10px] sm:text-xs uppercase tracking-[0.2em] mb-2 sm:mb-3">
             Quem Somos
           </p>
-          <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4 sm:mb-6 leading-tight">
-            A <span className="text-primary">Mercury Gestora</span> faz a ponte entre a tecnologia de ponta e o seu negócio
+          <h2 className="font-heading text-lg sm:text-xl md:text-2xl font-bold text-foreground mb-3 sm:mb-4 leading-tight">
+            A <span className="text-primary">Mercury Gestora</span> conecta tecnologia de ponta ao seu negócio
           </h2>
-          <p className="text-muted-foreground text-sm sm:text-lg leading-relaxed mb-3 sm:mb-4">
-            Unimos a fronteira da tecnologia com inteligência de dados e gestão estratégica
-            para transformar os setores de pequenas e médias empresas — <strong className="text-foreground">a sua empresa</strong>.
-            Não somos uma agência. Somos o braço de automação, tecnologia e dados que faltava
+          <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">
+            Unimos IA, dados e gestão estratégica para transformar pequenas e médias empresas.
+            Não somos uma agência — somos o braço de automação, tecnologia e dados que faltava
             pro seu negócio, pelo preço certo.
-          </p>
-          <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
-            Fala-se muito de IA, mas pouco se mostra de soluções reais para empresas do dia a dia.
-            O mercado só fala de big techs. Nós viemos para quebrar isso — fazemos a cola entre
-            tecnologias como IA e SaaS e os empreendedores reais. Com tecnologias próprias e
-            patenteadas, estruturas únicas e uma parceria genuína: você nos contrata para resolver
-            seu problema e nós <span className="text-primary font-semibold">resolveremos</span>.
           </p>
         </div>
 
