@@ -1,13 +1,13 @@
-import { Bot, CreditCard, BarChart3, Users, GraduationCap, LayoutDashboard, Globe, ShoppingCart, Cpu } from "lucide-react";
+import { Bot, Repeat, Users, Send, BarChart3, UsersRound, Cpu, LayoutDashboard, ShoppingCart } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const features = [
-  { icon: Bot, title: "Atendente IA", desc: "IA própria Mercury nos bots da estrutura Vendi.Mais" },
-  { icon: CreditCard, title: "Mercury Pay", desc: "Cobranças e gestão financeira centralizadas" },
-  { icon: Users, title: "CRM Integrado", desc: "Dados de todos os seus clientes em um só lugar" },
-  { icon: BarChart3, title: "Mercury Analytics", desc: "Campanhas, bots, vendas — tudo analisado pela nossa IA" },
-  { icon: Globe, title: "Multi-equipe", desc: "Acesso para toda sua equipe com permissões inteligentes" },
-  { icon: GraduationCap, title: "Treinamentos", desc: "Mercury Academy + treinamentos internos da sua empresa" },
+  { icon: Bot, title: "Atendimento IA", desc: "Atendimento inteligente 24 horas por dia." },
+  { icon: Repeat, title: "Remarketing Automático", desc: "Recupere clientes que deixaram de comprar." },
+  { icon: Users, title: "CRM Integrado", desc: "Organize contatos, negociações e oportunidades." },
+  { icon: Send, title: "Envios em Massa", desc: "Dispare campanhas e promoções para sua base." },
+  { icon: BarChart3, title: "Dashboard Analytics", desc: "Acompanhe métricas e resultados em tempo real." },
+  { icon: UsersRound, title: "Multiusuários", desc: "Toda sua equipe trabalhando em um único ambiente." },
 ];
 
 const NexusSection = () => {
@@ -24,21 +24,27 @@ const NexusSection = () => {
   }, []);
 
   return (
-    <section className="bg-secondary py-14 sm:py-20" ref={ref}>
+    <section id="nexus" className="bg-secondary py-14 sm:py-20" ref={ref}>
       <div className="container mx-auto px-5 sm:px-4 lg:px-8">
         {/* Header */}
         <div className={`text-center mb-8 sm:mb-12 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <p className="text-primary font-heading font-semibold text-[11px] sm:text-sm uppercase tracking-[0.2em] mb-3 sm:mb-4">
-            Tecnologias Próprias e Patenteadas
+            Plataforma Principal Mercury
           </p>
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
-            <span className="text-foreground">Mercury</span>{" "}
-            <span className="text-white">Nexus®</span>
+            <span className="text-foreground">Tudo que sua operação precisa</span>{" "}
+            <span className="text-primary">em um só lugar</span>
           </h2>
           <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed text-sm sm:text-base px-2">
-            Uma plataforma <strong className="text-primary">exclusiva para clientes Mercury</strong> que centraliza todas as nossas ferramentas e estruturas em um só lugar.
-            Modelada de acordo com os serviços ativos na sua conta — com IA própria, gestão financeira, analytics e treinamentos.
+            A <span className="text-white font-semibold">Mercury Nexus®</span> centraliza atendimento, CRM, automações,
+            recuperação de clientes, campanhas e análise de dados em uma única plataforma.
           </p>
+
+          <div className="mt-5 sm:mt-7 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-heading font-bold text-base sm:text-xl">
+            <span className="text-primary">Mais vendas.</span>
+            <span className="text-primary">Mais eficiência.</span>
+            <span className="text-primary">Menos trabalho manual.</span>
+          </div>
         </div>
 
         {/* Video */}
@@ -87,11 +93,6 @@ const NexusSection = () => {
             </div>
           ))}
         </div>
-
-        {/* Bottom tagline */}
-        <p className={`text-center text-muted-foreground text-xs sm:text-sm mt-8 sm:mt-10 max-w-2xl mx-auto transition-all duration-700 ${visible ? "opacity-100" : "opacity-0"}`} style={{ transitionDelay: "1200ms" }}>
-          Mais vendas. Mais eficiência. Menos custo. — <span className="text-primary font-semibold">Tudo em um só lugar.</span>
-        </p>
       </div>
     </section>
   );

@@ -1,9 +1,8 @@
 const metrics = [
-  { value: "+57%", label: "aumento de vendas digitais em 60 dias" },
+  { value: "+57%", label: "aumento médio de vendas digitais" },
   { value: "-86%", label: "redução no tempo de resposta" },
-  { value: "+27%", label: "de recorrência" },
-  { value: "0", label: "perca de Leads na estrutura" },
-  { value: "+59%", label: "de eficiência em análise de dados" },
+  { value: "+27%", label: "aumento de recorrência" },
+  { value: "+59%", label: "mais oportunidades aproveitadas" },
 ];
 
 const MetricsBanner = () => {
