@@ -50,7 +50,7 @@ const ClientLogos = () => {
                     src={client.logo}
                     alt={client.name}
                     loading="lazy"
-                    className="w-full h-full object-cover object-center"
+                    className={`w-full h-full object-center ${client.name === "ArtSuprema" ? "object-contain p-2" : "object-cover"}`}
                   />
                 </div>
               ))}
