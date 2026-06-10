@@ -44,7 +44,7 @@ const ClientLogos = () => {
               {clients.map((client) => (
                 <div
                   key={`${client.name}-${copy}`}
-                  className="flex-shrink-0 w-36 h-24 sm:w-48 sm:h-32 rounded-xl overflow-hidden bg-card shadow-md"
+                  className={`flex-shrink-0 w-36 h-24 sm:w-48 sm:h-32 rounded-xl overflow-hidden shadow-md ${client.name === "ArtSuprema" ? "bg-white" : "bg-card"}`}
                 >
                   <img
                     src={client.logo}
