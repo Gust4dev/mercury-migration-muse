@@ -3,8 +3,6 @@ import jaguar from "@/assets/logos/jaguar.png";
 import mouragas from "@/assets/logos/mouragas.png";
 import diskPopular from "@/assets/logos/disk-popular.png";
 import drogariaMg from "@/assets/logos/drogaria-mg.png";
-import oliver from "@/assets/logos/oliver.png";
-import lustShop from "@/assets/logos/lust-shop.png";
 import hapvida from "@/assets/logos/hapvida.png";
 import conectapro from "@/assets/logos/conectapro.png";
 import multclean from "@/assets/logos/multclean.png";
@@ -12,6 +10,7 @@ import farmacias from "@/assets/logos/farmacias-associadas.png";
 import fernandesGas from "@/assets/logos/fernandes-gas.jpg";
 import grupoAtiva from "@/assets/logos/grupo-ativa.jpg";
 import consigaz from "@/assets/logos/consigaz.png";
+import artsuprema from "@/assets/logos/artsuprema.png";
 
 const clients = [
   { name: "O Boticário", logo: boticario },
@@ -19,12 +18,11 @@ const clients = [
   { name: "Mouragas", logo: mouragas },
   { name: "Disk Gás Popular", logo: diskPopular },
   { name: "Drogaria Mato Grosso", logo: drogariaMg },
-  { name: "Oliver Imóveis", logo: oliver },
-  { name: "Lust Shop", logo: lustShop },
   { name: "Hapvida", logo: hapvida },
   { name: "Fernandes Gás", logo: fernandesGas },
   { name: "Grupo Ativa", logo: grupoAtiva },
   { name: "Consigaz", logo: consigaz },
+  { name: "ArtSuprema", logo: artsuprema },
   { name: "ConectaPro", logo: conectapro },
   { name: "MultClean", logo: multclean },
   { name: "Farmácias Associadas", logo: farmacias },
