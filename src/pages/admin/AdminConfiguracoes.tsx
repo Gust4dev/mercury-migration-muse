@@ -4,15 +4,14 @@ import { useToast } from "@/hooks/use-toast";
 import { formatCep } from "@/lib/loja/pricing";
 
 interface Settings {
-  id: string;
+  id: number;
   origin_postal_code: string;
   origin_city: string | null;
   origin_state: string | null;
   handling_days: number;
   quote_ttl_minutes: number;
   shipping_markup_percent: number | null;
-  free_local_delivery: boolean;
-  disabled_services: string[] | null;
+  free_shipping_local: boolean;
 }
 
 const AdminConfiguracoes = () => {
@@ -23,7 +22,7 @@ const AdminConfiguracoes = () => {
   useEffect(() => {
     supabase
       .from("shipping_settings")
-      .select("*")
+      .select("id,origin_postal_code,origin_city,origin_state,handling_days,quote_ttl_minutes,shipping_markup_percent,free_shipping_local")
       .limit(1)
       .maybeSingle()
       .then(({ data }) => setSettings((data as Settings) ?? null));
@@ -41,7 +40,7 @@ const AdminConfiguracoes = () => {
         handling_days: Number(settings.handling_days) || 0,
         quote_ttl_minutes: Number(settings.quote_ttl_minutes) || 30,
         shipping_markup_percent: Number(settings.shipping_markup_percent) || 0,
-        free_local_delivery: settings.free_local_delivery,
+        free_shipping_local: settings.free_shipping_local,
       })
       .eq("id", settings.id);
     setSaving(false);
@@ -128,8 +127,8 @@ const AdminConfiguracoes = () => {
             <label className="flex items-center gap-2 text-sm">
               <input
                 type="checkbox"
-                checked={settings.free_local_delivery}
-                onChange={(e) => setSettings({ ...settings, free_local_delivery: e.target.checked })}
+                checked={settings.free_shipping_local}
+                onChange={(e) => setSettings({ ...settings, free_shipping_local: e.target.checked })}
               />
               Oferecer entrega grátis em Anápolis/GO no checkout
             </label>
