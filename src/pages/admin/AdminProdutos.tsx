@@ -244,6 +244,7 @@ const AdminProdutos = () => {
   };
 
   const input = "w-full h-10 px-3 rounded bg-secondary border border-border text-sm";
+  const lbl = "block text-xs text-muted-foreground mb-1";
   const chip = (active: boolean) =>
     `text-xs px-3 py-1.5 rounded-full border ${active ? "border-primary text-primary" : "border-border text-muted-foreground"}`;
 
