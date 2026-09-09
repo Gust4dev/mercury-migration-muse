@@ -301,38 +301,13 @@ const ProdutoPage = () => {
               </button>
             </div>
 
-            <div className="mt-5 rounded-lg border border-border bg-card p-4">
-              <div className="flex items-center gap-2 text-sm font-semibold">
-                <Truck className="h-4 w-4 text-primary" /> Calcular frete
-              </div>
-              <div className="flex gap-2 mt-2">
-                <input
-                  value={cep}
-                  onChange={(e) => setCep(formatCep(e.target.value))}
-                  placeholder="00000-000"
-                  inputMode="numeric"
-                  className="flex-1 h-10 px-3 rounded bg-secondary border border-border text-sm"
-                  aria-label="CEP para cálculo de frete"
-                />
-                <button onClick={calcShipping} className="h-10 px-4 rounded border border-border text-sm">
-                  Calcular
-                </button>
-              </div>
-              {options.map((o) => (
-                <div key={o.id} className="flex justify-between text-sm mt-2">
-                  <span className="text-muted-foreground">
-                    {o.service} · {o.daysMin}–{o.daysMax} dias úteis
-                  </span>
-                  <span className="font-semibold">{brl(o.price)}</span>
-                </div>
-              ))}
-              <div className="text-[11px] text-muted-foreground mt-2">
-                Valores estimados. O frete final é confirmado no checkout.
-              </div>
-              <div className="text-[11px] text-muted-foreground mt-1">
-                Produção: {product.production_days} dia(s) úteis antes do envio.
-              </div>
+            <div className="mt-5">
+              <ShippingCalculator
+                items={[{ product_id: product.id, quantity: qty }]}
+                initialCep={localStorage.getItem("mercury-loja-cep") ?? ""}
+              />
             </div>
+
           </div>
         </div>
 
