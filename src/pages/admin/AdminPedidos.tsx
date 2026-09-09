@@ -49,7 +49,7 @@ const LABEL: Record<string, string> = {
   paid: "Pago",
   awaiting_artwork: "Aguardando aprovação de arte",
   in_production: "Em produção",
-  ready_for_pickup: "Pronto para retirada",
+  ready_for_pickup: "Pronto para entrega",
   shipped: "Enviado",
   delivered: "Concluído",
   cancelled: "Cancelado",
