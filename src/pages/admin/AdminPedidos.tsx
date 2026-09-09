@@ -269,6 +269,29 @@ const AdminPedidos = () => {
                   ))}
                 </div>
 
+                <div className="rounded border border-border/60 p-3 space-y-1 text-sm">
+                  <div className="font-semibold text-xs uppercase tracking-wide text-muted-foreground">Pagamento</div>
+                  <div>Método: {o.payment_method === "card" ? "Cartão de crédito" : o.payment_method === "pix" ? "PIX" : o.payment_method ?? "-"}</div>
+                  <div>
+                    Status: {PAYMENT_LABEL[o.payment_status] ?? o.payment_status}
+                    {o.payment_status_detail ? ` (${o.payment_status_detail})` : ""}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Mercado Pago Order: {o.mercado_pago_order_id ?? "-"}</div>
+                  <div className="text-xs text-muted-foreground">
+                    Pago em: {o.paid_at ? new Date(o.paid_at).toLocaleString("pt-BR") : "-"}
+                  </div>
+                  {(payments[o.id] ?? []).map((p) => (
+                    <div key={p.id} className="text-xs text-muted-foreground border-t border-border/40 pt-1">
+                      Tentativa {new Date(p.created_at).toLocaleString("pt-BR")} · {p.method ?? "-"} ·{" "}
+                      {PAYMENT_LABEL[p.status] ?? p.status}
+                      {p.status_detail ? ` (${p.status_detail})` : ""} · {brl(Number(p.amount))}
+                      {p.installments ? ` · ${p.installments}x` : ""}
+                      {p.card_last_four ? ` · **** ${p.card_last_four}` : ""}
+                      {p.provider_payment_id ? ` · transação ${p.provider_payment_id}` : ""}
+                    </div>
+                  ))}
+                </div>
+
                 <div className="grid sm:grid-cols-3 gap-3">
                   <select value={o.status} onChange={(e) => update(o.id, { status: e.target.value })} className={input} aria-label="Status do pedido">
                     {STATUSES.map((s) => (
@@ -278,12 +301,13 @@ const AdminPedidos = () => {
                     ))}
                   </select>
                   <select value={o.payment_status} onChange={(e) => update(o.id, { payment_status: e.target.value })} className={input} aria-label="Status do pagamento">
-                    {["pending", "paid", "refunded", "failed"].map((s) => (
+                    {["pending", "in_process", "approved", "rejected", "cancelled", "refunded"].map((s) => (
                       <option key={s} value={s}>
-                        {s}
+                        {PAYMENT_LABEL[s] ?? s}
                       </option>
                     ))}
                   </select>
+
                   <input
                     className={input}
                     placeholder="Código de rastreio"
