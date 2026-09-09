@@ -3,14 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { CreditCard, MapPin, QrCode, Truck } from "lucide-react";
 import SEO from "@/components/SEO";
 import LojaLayout from "@/components/loja/LojaLayout";
+import ShippingCalculator from "@/components/loja/ShippingCalculator";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/loja/useAuth";
 import { useCart } from "@/lib/loja/cart";
-import { brl, estimateShipping, formatCep, onlyDigits, orderNumber, type ShippingOption } from "@/lib/loja/pricing";
+import { brl, formatCep, onlyDigits } from "@/lib/loja/pricing";
+import { normalizeCep, type QuoteOption, type QuoteResult } from "@/lib/loja/shipping";
 
 const CheckoutPage = () => {
-  const { items, subtotal, totalWeight, maxProductionDays, clear } = useCart();
+  const { items, subtotal, maxProductionDays, clear } = useCart();
   const { user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -30,8 +32,8 @@ const CheckoutPage = () => {
     notes: "",
   });
   const [delivery, setDelivery] = useState<"shipping" | "local">("shipping");
-  const [options, setOptions] = useState<ShippingOption[]>([]);
-  const [selectedOption, setSelectedOption] = useState<ShippingOption | null>(null);
+  const [quote, setQuote] = useState<QuoteResult | null>(null);
+  const [selectedOption, setSelectedOption] = useState<QuoteOption | null>(null);
   const [payment, setPayment] = useState<"pix" | "card" | "boleto">("pix");
   const [couponCode, setCouponCode] = useState("");
   const [coupon, setCoupon] = useState<{ code: string; discount: number; freeShipping: boolean } | null>(null);
@@ -40,16 +42,6 @@ const CheckoutPage = () => {
   useEffect(() => {
     if (user) setForm((f) => ({ ...f, email: f.email || user.email || "" }));
   }, [user]);
-
-  useEffect(() => {
-    if (delivery !== "shipping") {
-      setSelectedOption(null);
-      return;
-    }
-    const opts = estimateShipping(form.cep, totalWeight);
-    setOptions(opts);
-    setSelectedOption((prev) => opts.find((o) => o.id === prev?.id) ?? opts[0] ?? null);
-  }, [form.cep, totalWeight, delivery]);
 
   const lookupCep = async (value: string) => {
     const digits = onlyDigits(value);
@@ -66,9 +58,14 @@ const CheckoutPage = () => {
         state: data.uf || f.state,
       }));
     } catch {
-      /* estimativa manual */
+      /* o cliente pode preencher manualmente */
     }
   };
+
+  // Endereço alterado invalida a cotação anterior.
+  const quotedCep = quote ? normalizeCep(localStorage.getItem("mercury-loja-cep") ?? "") : "";
+  const cepMismatch =
+    delivery === "shipping" && !!quote && normalizeCep(form.cep) !== quotedCep && normalizeCep(form.cep).length === 8;
 
   const shippingCost = delivery === "local" || coupon?.freeShipping ? 0 : selectedOption?.price ?? 0;
   const discount = coupon?.discount ?? 0;
@@ -113,9 +110,19 @@ const CheckoutPage = () => {
       toast({ title: "Dados incompletos", description: "Informe nome e e-mail.", variant: "destructive" });
       return;
     }
-    if (delivery === "shipping" && (!form.cep || !form.street || !form.city || !form.state)) {
-      toast({ title: "Endereço incompleto", description: "Preencha o endereço de entrega.", variant: "destructive" });
-      return;
+    if (delivery === "shipping") {
+      if (!form.cep || !form.street || !form.city || !form.state) {
+        toast({ title: "Endereço incompleto", description: "Preencha o endereço de entrega.", variant: "destructive" });
+        return;
+      }
+      if (!quote || !selectedOption || cepMismatch) {
+        toast({
+          title: "Escolha a entrega",
+          description: "Calcule o frete para o CEP informado e selecione uma opção.",
+          variant: "destructive",
+        });
+        return;
+      }
     }
     if (delivery === "local" && !form.street.trim()) {
       toast({ title: "Endereço incompleto", description: "Informe o endereço da entrega em Anápolis.", variant: "destructive" });
@@ -124,66 +131,49 @@ const CheckoutPage = () => {
 
     setSubmitting(true);
     try {
-      const number = orderNumber();
-      const { data: order, error } = await supabase
-        .from("orders")
-        .insert({
-          order_number: number,
-          user_id: user?.id ?? null,
-          customer_name: form.name.trim(),
-          customer_email: form.email.trim().toLowerCase(),
-          customer_phone: form.phone,
-          customer_document: form.document,
+      const { data, error } = await supabase.functions.invoke("create-order", {
+        body: {
+          customer: { name: form.name, email: form.email, phone: form.phone, document: form.document },
+          address: {
+            postal_code: form.cep,
+            street: form.street,
+            number: form.number,
+            complement: form.complement,
+            district: form.district,
+            city: form.city,
+            state: form.state,
+          },
           delivery_method: delivery,
-          pickup_location_id: null,
-          shipping_postal_code: form.cep || null,
-          shipping_street: form.street || null,
-          shipping_number: form.number || null,
-          shipping_complement: form.complement || null,
-          shipping_district: form.district || null,
-          shipping_city: delivery === "local" ? "Anápolis" : form.city || null,
-          shipping_state: delivery === "local" ? "GO" : form.state || null,
-          shipping_carrier: delivery === "shipping" ? selectedOption?.carrier ?? null : "Mercury",
-          shipping_service: delivery === "shipping" ? selectedOption?.service ?? null : "Entrega grátis em Anápolis/GO",
-          shipping_cost: shippingCost,
-          shipping_days_min: selectedOption?.daysMin ?? null,
-          shipping_days_max: selectedOption?.daysMax ?? null,
-          production_days: maxProductionDays,
-          subtotal,
-          discount_total: discount,
+          quote_id: delivery === "shipping" ? quote?.quote_id : null,
+          shipping_service_id: delivery === "shipping" ? selectedOption?.serviceId : null,
           coupon_code: coupon?.code ?? null,
-          total,
           payment_method: payment,
-          payment_status: "pending",
-          status: "awaiting_payment",
-          requires_artwork: items.some((i) => i.requiresArtwork),
           notes: form.notes,
-        })
-        .select("id,order_number")
-        .single();
+          items: items.map((i) => ({
+            product_id: i.productId,
+            quantity: i.quantity,
+            customization: i.customization,
+          })),
+        },
+      });
 
-      if (error) throw error;
-
-      const { error: itemsError } = await supabase.from("order_items").insert(
-        items.map((i) => ({
-          order_id: order.id,
-          product_id: i.productId,
-          product_name: i.name,
-          product_slug: i.slug,
-          product_image: i.image,
-          quantity: i.quantity,
-          unit_price: i.unitPrice,
-          base_price: i.basePrice,
-          line_total: i.unitPrice * i.quantity,
-          production_days: i.productionDays,
-          customization: i.customization,
-          requires_artwork: i.requiresArtwork,
-        })),
-      );
-      if (itemsError) throw itemsError;
+      if (error) {
+        const ctx = (error as { context?: Response }).context;
+        let message = "Tente novamente.";
+        if (ctx && typeof ctx.json === "function") {
+          try {
+            const body = await ctx.json();
+            if (body?.message) message = body.message;
+          } catch {
+            /* mensagem padrão */
+          }
+        }
+        throw new Error(message);
+      }
+      if (!data?.order_number) throw new Error(data?.message ?? "Tente novamente.");
 
       clear();
-      navigate(`/loja/pedido?numero=${order.order_number}&email=${encodeURIComponent(form.email.trim())}`);
+      navigate(`/loja/pedido?numero=${data.order_number}&email=${encodeURIComponent(form.email.trim())}`);
     } catch (err) {
       toast({
         title: "Não foi possível finalizar",
@@ -250,7 +240,10 @@ const CheckoutPage = () => {
               </button>
               <button
                 type="button"
-                onClick={() => setDelivery("local")}
+                onClick={() => {
+                  setDelivery("local");
+                  setSelectedOption(null);
+                }}
                 className={`flex items-center gap-2 h-11 px-3 rounded border text-sm ${delivery === "local" ? "border-primary text-primary" : "border-border text-muted-foreground"}`}
               >
                 <MapPin className="h-4 w-4" /> Entrega grátis em Anápolis/GO
@@ -265,7 +258,11 @@ const CheckoutPage = () => {
                     placeholder="CEP *"
                     inputMode="numeric"
                     value={form.cep}
-                    onChange={(e) => setForm({ ...form, cep: formatCep(e.target.value) })}
+                    onChange={(e) => {
+                      setForm({ ...form, cep: formatCep(e.target.value) });
+                      setQuote(null);
+                      setSelectedOption(null);
+                    }}
                     onBlur={(e) => lookupCep(e.target.value)}
                   />
                   <input className={`${input} sm:col-span-2`} placeholder="Rua *" value={form.street} onChange={(e) => setForm({ ...form, street: e.target.value })} />
@@ -276,24 +273,24 @@ const CheckoutPage = () => {
                   <input className={input} placeholder="UF *" maxLength={2} value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value.toUpperCase() })} />
                 </div>
 
-                {options.length > 0 && (
-                  <div className="space-y-2">
-                    {options.map((o) => (
-                      <label
-                        key={o.id}
-                        className={`flex items-center justify-between gap-3 p-3 rounded border cursor-pointer text-sm ${selectedOption?.id === o.id ? "border-primary" : "border-border"}`}
-                      >
-                        <span className="flex items-center gap-2">
-                          <input type="radio" checked={selectedOption?.id === o.id} onChange={() => setSelectedOption(o)} className="accent-[hsl(var(--primary))]" />
-                          {o.service} · {o.daysMin}–{o.daysMax} dias úteis
-                        </span>
-                        <span className="font-semibold">{brl(o.price)}</span>
-                      </label>
-                    ))}
-                    <p className="text-[11px] text-muted-foreground">
-                      Frete estimado. A cotação definitiva com a transportadora é confirmada antes do envio.
-                    </p>
-                  </div>
+                <ShippingCalculator
+                  title="Calcular entrega"
+                  selectable
+                  items={items.map((i) => ({ product_id: i.productId, quantity: i.quantity }))}
+                  initialCep={form.cep}
+                  selectedServiceId={selectedOption?.serviceId ?? null}
+                  onQuote={setQuote}
+                  onSelect={setSelectedOption}
+                  onCepChange={(cep) => {
+                    setForm((f) => ({ ...f, cep }));
+                    lookupCep(cep);
+                  }}
+                />
+
+                {cepMismatch && (
+                  <p className="text-[11px] text-destructive">
+                    O CEP do endereço mudou. Calcule a entrega novamente antes de finalizar.
+                  </p>
                 )}
               </div>
             ) : (
@@ -391,13 +388,21 @@ const CheckoutPage = () => {
               </div>
             )}
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Frete</span>
+              <span className="text-muted-foreground">
+                Frete {selectedOption ? `· ${selectedOption.carrier} ${selectedOption.service}` : ""}
+              </span>
               <span>{delivery === "local" ? "Grátis" : shippingCost ? brl(shippingCost) : "—"}</span>
             </div>
             <div className="flex justify-between font-bold text-lg pt-2">
               <span>Total</span>
               <span className="text-primary">{brl(total)}</span>
             </div>
+            {delivery === "shipping" && selectedOption && (
+              <div className="text-[11px] text-muted-foreground pt-1">
+                Produção até {quote?.production_days ?? maxProductionDays} dia(s) úteis + entrega em{" "}
+                {selectedOption.daysMin}–{selectedOption.daysMax} dia(s) úteis.
+              </div>
+            )}
           </div>
 
           <button
