@@ -133,28 +133,14 @@ const CarrinhoPage = () => {
                 <span>{brl(subtotal)}</span>
               </div>
               <div className="mt-4">
-                <label className="text-xs text-muted-foreground">Estimar frete</label>
-                <div className="flex gap-2 mt-1">
-                  <input
-                    value={cep}
-                    onChange={(e) => setCep(formatCep(e.target.value))}
-                    placeholder="00000-000"
-                    inputMode="numeric"
-                    className="flex-1 h-10 px-3 rounded bg-secondary border border-border text-sm"
-                  />
-                  <button onClick={calc} className="h-10 px-3 rounded border border-border text-sm">
-                    Calcular
-                  </button>
-                </div>
-                {options.map((o) => (
-                  <div key={o.id} className="flex justify-between text-xs mt-2 text-muted-foreground">
-                    <span>
-                      {o.service} · {o.daysMin}–{o.daysMax} dias
-                    </span>
-                    <span>{brl(o.price)}</span>
-                  </div>
-                ))}
+                <ShippingCalculator
+                  title="Calcular entrega"
+                  items={items.map((i) => ({ product_id: i.productId, quantity: i.quantity }))}
+                  initialCep={cep}
+                  onCepChange={setCep}
+                />
               </div>
+
               {maxProductionDays > 0 && (
                 <div className="text-[11px] text-muted-foreground mt-3">
                   Produção estimada: {maxProductionDays} dia(s) úteis antes do envio.
