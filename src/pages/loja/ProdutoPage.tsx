@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Check, ImageIcon, Minus, Plus, ShieldCheck, Star, Truck } from "lucide-react";
+import { Check, ImageIcon, Minus, Plus, ShieldCheck, Star } from "lucide-react";
 import SEO from "@/components/SEO";
 import LojaLayout from "@/components/loja/LojaLayout";
+import ShippingCalculator from "@/components/loja/ShippingCalculator";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/lib/loja/cart";
-import { brl, estimateShipping, formatCep, unitPriceFor, type ShippingOption } from "@/lib/loja/pricing";
+import { brl, unitPriceFor } from "@/lib/loja/pricing";
 import { fetchApprovedReviews, fetchProductBySlug } from "@/lib/loja/queries";
+
 
 type Product = Awaited<ReturnType<typeof fetchProductBySlug>>;
 
