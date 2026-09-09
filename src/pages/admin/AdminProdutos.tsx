@@ -291,25 +291,77 @@ const AdminProdutos = () => {
             </div>
 
             <div className="grid sm:grid-cols-2 gap-3">
-              <input className={input} placeholder="Nome *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
-              <input className={input} placeholder="Slug (opcional)" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} />
-              <input className={`${input} sm:col-span-2`} placeholder="Resumo curto" value={form.short_description} onChange={(e) => setForm({ ...form, short_description: e.target.value })} />
-              <textarea rows={4} className="sm:col-span-2 w-full px-3 py-2 rounded bg-secondary border border-border text-sm" placeholder="Descrição completa" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
-              <input className={input} type="number" step="0.01" placeholder="Preço *" value={form.price} onChange={(e) => setForm({ ...form, price: Number(e.target.value) })} required />
-              <input className={input} type="number" step="0.01" placeholder="Preço comparativo" value={form.compare_at_price} onChange={(e) => setForm({ ...form, compare_at_price: e.target.value })} />
-              <input className={input} type="number" placeholder="Desconto PIX (%)" value={form.pix_discount_percent} onChange={(e) => setForm({ ...form, pix_discount_percent: Number(e.target.value) })} />
-              <input className={input} type="number" placeholder="Estoque" value={form.stock} onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })} />
-              <input className={input} type="number" placeholder="Dias de produção" value={form.production_days} onChange={(e) => setForm({ ...form, production_days: Number(e.target.value) })} />
-              <input className={input} placeholder="SKU" value={form.sku} onChange={(e) => setForm({ ...form, sku: e.target.value })} />
-              <input className={input} type="number" placeholder="Peso (g)" value={form.weight_g} onChange={(e) => setForm({ ...form, weight_g: Number(e.target.value) })} />
-              <div className="grid grid-cols-3 gap-2">
-                <input className={input} type="number" placeholder="Alt cm" value={form.height_cm} onChange={(e) => setForm({ ...form, height_cm: Number(e.target.value) })} />
-                <input className={input} type="number" placeholder="Larg cm" value={form.width_cm} onChange={(e) => setForm({ ...form, width_cm: Number(e.target.value) })} />
-                <input className={input} type="number" placeholder="Comp cm" value={form.length_cm} onChange={(e) => setForm({ ...form, length_cm: Number(e.target.value) })} />
+              <label className="block">
+                <span className={lbl}>Nome do produto *</span>
+                <input className={input} placeholder="Ex.: Placa NFC personalizada" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+              </label>
+              <label className="block">
+                <span className={lbl}>Slug (link da página) — opcional</span>
+                <input className={input} placeholder="gerado automaticamente" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} />
+              </label>
+              <label className="block sm:col-span-2">
+                <span className={lbl}>Resumo curto</span>
+                <input className={input} placeholder="Frase que aparece na vitrine" value={form.short_description} onChange={(e) => setForm({ ...form, short_description: e.target.value })} />
+              </label>
+              <label className="block sm:col-span-2">
+                <span className={lbl}>Descrição completa</span>
+                <textarea rows={4} className="w-full px-3 py-2 rounded bg-secondary border border-border text-sm" placeholder="Detalhes do produto" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+              </label>
+              <label className="block">
+                <span className={lbl}>Preço de venda (R$) *</span>
+                <input className={input} type="number" step="0.01" value={form.price} onChange={(e) => setForm({ ...form, price: Number(e.target.value) })} required />
+              </label>
+              <label className="block">
+                <span className={lbl}>Preço comparativo (R$) — “de”</span>
+                <input className={input} type="number" step="0.01" placeholder="opcional" value={form.compare_at_price} onChange={(e) => setForm({ ...form, compare_at_price: e.target.value })} />
+              </label>
+              <label className="block">
+                <span className={lbl}>Desconto no PIX (%)</span>
+                <input className={input} type="number" value={form.pix_discount_percent} onChange={(e) => setForm({ ...form, pix_discount_percent: Number(e.target.value) })} />
+              </label>
+              <label className="block">
+                <span className={lbl}>Estoque (unidades)</span>
+                <input className={input} type="number" value={form.stock} onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })} />
+              </label>
+              <label className="block">
+                <span className={lbl}>Prazo de produção (dias)</span>
+                <input className={input} type="number" value={form.production_days} onChange={(e) => setForm({ ...form, production_days: Number(e.target.value) })} />
+              </label>
+              <label className="block">
+                <span className={lbl}>Código interno (SKU)</span>
+                <input className={input} placeholder="opcional" value={form.sku} onChange={(e) => setForm({ ...form, sku: e.target.value })} />
+              </label>
+              <label className="block">
+                <span className={lbl}>Peso (gramas)</span>
+                <input className={input} type="number" value={form.weight_g} onChange={(e) => setForm({ ...form, weight_g: Number(e.target.value) })} />
+              </label>
+              <div>
+                <span className={lbl}>Medidas da embalagem (cm)</span>
+                <div className="grid grid-cols-3 gap-2">
+                  <label className="block">
+                    <span className="text-[10px] text-muted-foreground">Altura</span>
+                    <input className={input} type="number" value={form.height_cm} onChange={(e) => setForm({ ...form, height_cm: Number(e.target.value) })} />
+                  </label>
+                  <label className="block">
+                    <span className="text-[10px] text-muted-foreground">Largura</span>
+                    <input className={input} type="number" value={form.width_cm} onChange={(e) => setForm({ ...form, width_cm: Number(e.target.value) })} />
+                  </label>
+                  <label className="block">
+                    <span className="text-[10px] text-muted-foreground">Comprimento</span>
+                    <input className={input} type="number" value={form.length_cm} onChange={(e) => setForm({ ...form, length_cm: Number(e.target.value) })} />
+                  </label>
+                </div>
               </div>
-              <input className={input} placeholder="Título SEO" value={form.seo_title} onChange={(e) => setForm({ ...form, seo_title: e.target.value })} />
-              <input className={input} placeholder="Descrição SEO" value={form.seo_description} onChange={(e) => setForm({ ...form, seo_description: e.target.value })} />
+              <label className="block">
+                <span className={lbl}>Título para o Google (SEO)</span>
+                <input className={input} placeholder="opcional" value={form.seo_title} onChange={(e) => setForm({ ...form, seo_title: e.target.value })} />
+              </label>
+              <label className="block">
+                <span className={lbl}>Descrição para o Google (SEO)</span>
+                <input className={input} placeholder="opcional" value={form.seo_description} onChange={(e) => setForm({ ...form, seo_description: e.target.value })} />
+              </label>
             </div>
+
 
             <div className="flex flex-wrap gap-3 text-sm">
               {([
