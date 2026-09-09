@@ -142,8 +142,24 @@ const AdminProdutos = () => {
 
   const save = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Sem peso e medidas reais o frete não pode ser calculado.
+    if (
+      form.active &&
+      (Number(form.weight_g) <= 0 ||
+        Number(form.height_cm) <= 0 ||
+        Number(form.width_cm) <= 0 ||
+        Number(form.length_cm) <= 0)
+    ) {
+      toast({
+        title: "Dados de envio faltando",
+        description: "Informe peso (g) e altura, largura e comprimento (cm) da embalagem para publicar o produto.",
+        variant: "destructive",
+      });
+      return;
+    }
     setSaving(true);
     try {
+
       const payload = {
         name: form.name.trim(),
         slug: (form.slug || slugify(form.name)).trim(),

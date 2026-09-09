@@ -467,8 +467,13 @@ export type Database = {
           shipping_days_min: number | null
           shipping_district: string | null
           shipping_number: string | null
+          shipping_origin_postal_code: string | null
           shipping_postal_code: string | null
+          shipping_provider: string | null
+          shipping_quote_data: Json | null
+          shipping_quoted_at: string | null
           shipping_service: string | null
+          shipping_service_id: string | null
           shipping_state: string | null
           shipping_street: string | null
           status: string
@@ -503,8 +508,13 @@ export type Database = {
           shipping_days_min?: number | null
           shipping_district?: string | null
           shipping_number?: string | null
+          shipping_origin_postal_code?: string | null
           shipping_postal_code?: string | null
+          shipping_provider?: string | null
+          shipping_quote_data?: Json | null
+          shipping_quoted_at?: string | null
           shipping_service?: string | null
+          shipping_service_id?: string | null
           shipping_state?: string | null
           shipping_street?: string | null
           status?: string
@@ -539,8 +549,13 @@ export type Database = {
           shipping_days_min?: number | null
           shipping_district?: string | null
           shipping_number?: string | null
+          shipping_origin_postal_code?: string | null
           shipping_postal_code?: string | null
+          shipping_provider?: string | null
+          shipping_quote_data?: Json | null
+          shipping_quoted_at?: string | null
           shipping_service?: string | null
+          shipping_service_id?: string | null
           shipping_state?: string | null
           shipping_street?: string | null
           status?: string
@@ -1051,29 +1066,41 @@ export type Database = {
         Row: {
           created_at: string
           destination_postal_code: string | null
+          expires_at: string | null
           id: string
+          items: Json | null
+          items_hash: string | null
           options: Json | null
           order_id: string | null
           origin_postal_code: string | null
           packages: Json | null
+          provider: string
         }
         Insert: {
           created_at?: string
           destination_postal_code?: string | null
+          expires_at?: string | null
           id?: string
+          items?: Json | null
+          items_hash?: string | null
           options?: Json | null
           order_id?: string | null
           origin_postal_code?: string | null
           packages?: Json | null
+          provider?: string
         }
         Update: {
           created_at?: string
           destination_postal_code?: string | null
+          expires_at?: string | null
           id?: string
+          items?: Json | null
+          items_hash?: string | null
           options?: Json | null
           order_id?: string | null
           origin_postal_code?: string | null
           packages?: Json | null
+          provider?: string
         }
         Relationships: [
           {
@@ -1084,6 +1111,57 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      shipping_settings: {
+        Row: {
+          created_at: string
+          disabled_services: Json
+          free_shipping_local: boolean
+          free_shipping_local_city: string
+          free_shipping_min_total: number | null
+          handling_days: number
+          id: number
+          origin_city: string
+          origin_country: string
+          origin_postal_code: string
+          origin_state: string
+          quote_ttl_minutes: number
+          shipping_markup_percent: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          disabled_services?: Json
+          free_shipping_local?: boolean
+          free_shipping_local_city?: string
+          free_shipping_min_total?: number | null
+          handling_days?: number
+          id?: number
+          origin_city?: string
+          origin_country?: string
+          origin_postal_code?: string
+          origin_state?: string
+          quote_ttl_minutes?: number
+          shipping_markup_percent?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          disabled_services?: Json
+          free_shipping_local?: boolean
+          free_shipping_local_city?: string
+          free_shipping_min_total?: number | null
+          handling_days?: number
+          id?: number
+          origin_city?: string
+          origin_country?: string
+          origin_postal_code?: string
+          origin_state?: string
+          quote_ttl_minutes?: number
+          shipping_markup_percent?: number
+          updated_at?: string
+        }
+        Relationships: []
       }
       suppressed_emails: {
         Row: {

@@ -3,15 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { ImageIcon, Minus, Plus, Trash2 } from "lucide-react";
 import SEO from "@/components/SEO";
 import LojaLayout from "@/components/loja/LojaLayout";
+import ShippingCalculator from "@/components/loja/ShippingCalculator";
 import { useCart } from "@/lib/loja/cart";
-import { brl, estimateShipping, formatCep, unitPriceFor, type ShippingOption } from "@/lib/loja/pricing";
+import { brl, unitPriceFor } from "@/lib/loja/pricing";
 import { supabase } from "@/integrations/supabase/client";
 
 const CarrinhoPage = () => {
-  const { items, subtotal, totalWeight, maxProductionDays, updateQuantity, removeItem } = useCart();
+  const { items, subtotal, maxProductionDays, updateQuantity, removeItem } = useCart();
   const navigate = useNavigate();
   const [cep, setCep] = useState(localStorage.getItem("mercury-loja-cep") ?? "");
-  const [options, setOptions] = useState<ShippingOption[]>([]);
+
   const [tiersByProduct, setTiersByProduct] = useState<
     Record<string, { min_qty: number; max_qty: number | null; unit_price: number }[]>
   >({});
@@ -37,10 +38,8 @@ const CarrinhoPage = () => {
     updateQuantity(key, quantity, price);
   };
 
-  const calc = () => {
-    localStorage.setItem("mercury-loja-cep", cep);
-    setOptions(estimateShipping(cep, totalWeight));
-  };
+
+
 
   return (
     <LojaLayout>
@@ -133,28 +132,14 @@ const CarrinhoPage = () => {
                 <span>{brl(subtotal)}</span>
               </div>
               <div className="mt-4">
-                <label className="text-xs text-muted-foreground">Estimar frete</label>
-                <div className="flex gap-2 mt-1">
-                  <input
-                    value={cep}
-                    onChange={(e) => setCep(formatCep(e.target.value))}
-                    placeholder="00000-000"
-                    inputMode="numeric"
-                    className="flex-1 h-10 px-3 rounded bg-secondary border border-border text-sm"
-                  />
-                  <button onClick={calc} className="h-10 px-3 rounded border border-border text-sm">
-                    Calcular
-                  </button>
-                </div>
-                {options.map((o) => (
-                  <div key={o.id} className="flex justify-between text-xs mt-2 text-muted-foreground">
-                    <span>
-                      {o.service} · {o.daysMin}–{o.daysMax} dias
-                    </span>
-                    <span>{brl(o.price)}</span>
-                  </div>
-                ))}
+                <ShippingCalculator
+                  title="Calcular entrega"
+                  items={items.map((i) => ({ product_id: i.productId, quantity: i.quantity }))}
+                  initialCep={cep}
+                  onCepChange={setCep}
+                />
               </div>
+
               {maxProductionDays > 0 && (
                 <div className="text-[11px] text-muted-foreground mt-3">
                   Produção estimada: {maxProductionDays} dia(s) úteis antes do envio.

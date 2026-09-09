@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Check, ImageIcon, Minus, Plus, ShieldCheck, Star, Truck } from "lucide-react";
+import { Check, ImageIcon, Minus, Plus, ShieldCheck, Star } from "lucide-react";
 import SEO from "@/components/SEO";
 import LojaLayout from "@/components/loja/LojaLayout";
+import ShippingCalculator from "@/components/loja/ShippingCalculator";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/lib/loja/cart";
-import { brl, estimateShipping, formatCep, unitPriceFor, type ShippingOption } from "@/lib/loja/pricing";
+import { brl, unitPriceFor } from "@/lib/loja/pricing";
 import { fetchApprovedReviews, fetchProductBySlug } from "@/lib/loja/queries";
+
 
 type Product = Awaited<ReturnType<typeof fetchProductBySlug>>;
 
@@ -20,8 +22,6 @@ const ProdutoPage = () => {
   const [qty, setQty] = useState(1);
   const [activeImage, setActiveImage] = useState(0);
   const [custom, setCustom] = useState<Record<string, string>>({});
-  const [cep, setCep] = useState("");
-  const [options, setOptions] = useState<ShippingOption[]>([]);
 
   useEffect(() => {
     if (!slug) return;
@@ -114,7 +114,6 @@ const ProdutoPage = () => {
     toast({ title: "Adicionado ao carrinho", description: `${qty}x ${product.name}` });
   };
 
-  const calcShipping = () => setOptions(estimateShipping(cep, Number(product.weight_g || 100) * qty));
 
   return (
     <LojaLayout>
@@ -301,38 +300,13 @@ const ProdutoPage = () => {
               </button>
             </div>
 
-            <div className="mt-5 rounded-lg border border-border bg-card p-4">
-              <div className="flex items-center gap-2 text-sm font-semibold">
-                <Truck className="h-4 w-4 text-primary" /> Calcular frete
-              </div>
-              <div className="flex gap-2 mt-2">
-                <input
-                  value={cep}
-                  onChange={(e) => setCep(formatCep(e.target.value))}
-                  placeholder="00000-000"
-                  inputMode="numeric"
-                  className="flex-1 h-10 px-3 rounded bg-secondary border border-border text-sm"
-                  aria-label="CEP para cálculo de frete"
-                />
-                <button onClick={calcShipping} className="h-10 px-4 rounded border border-border text-sm">
-                  Calcular
-                </button>
-              </div>
-              {options.map((o) => (
-                <div key={o.id} className="flex justify-between text-sm mt-2">
-                  <span className="text-muted-foreground">
-                    {o.service} · {o.daysMin}–{o.daysMax} dias úteis
-                  </span>
-                  <span className="font-semibold">{brl(o.price)}</span>
-                </div>
-              ))}
-              <div className="text-[11px] text-muted-foreground mt-2">
-                Valores estimados. O frete final é confirmado no checkout.
-              </div>
-              <div className="text-[11px] text-muted-foreground mt-1">
-                Produção: {product.production_days} dia(s) úteis antes do envio.
-              </div>
+            <div className="mt-5">
+              <ShippingCalculator
+                items={[{ product_id: product.id, quantity: qty }]}
+                initialCep={localStorage.getItem("mercury-loja-cep") ?? ""}
+              />
             </div>
+
           </div>
         </div>
 
