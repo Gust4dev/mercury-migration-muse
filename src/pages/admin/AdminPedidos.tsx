@@ -166,6 +166,43 @@ const AdminPedidos = () => {
 
             {expanded === o.id && (
               <div className="border-t border-border p-4 space-y-4">
+                <div className="grid sm:grid-cols-2 gap-4 text-sm">
+                  <div className="space-y-1">
+                    <div className="font-semibold text-xs uppercase tracking-wide text-muted-foreground">Cliente</div>
+                    <div>{o.customer_name}</div>
+                    <div>{o.customer_email}</div>
+                    <div>Telefone: {o.customer_phone || "-"}</div>
+                    <div>CPF/CNPJ: {o.customer_document || "-"}</div>
+                    <div className="text-xs text-muted-foreground">
+                      Pedido feito em {new Date(o.created_at).toLocaleString("pt-BR")}
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="font-semibold text-xs uppercase tracking-wide text-muted-foreground">
+                      {o.delivery_method === "local" ? "Entrega grátis em Anápolis/GO" : "Endereço de entrega"}
+                    </div>
+                    <div>
+                      {[o.shipping_street, o.shipping_number].filter(Boolean).join(", ") || "-"}
+                      {o.shipping_complement ? ` - ${o.shipping_complement}` : ""}
+                    </div>
+                    <div>{[o.shipping_district, o.shipping_city, o.shipping_state].filter(Boolean).join(" · ") || "-"}</div>
+                    <div>CEP: {o.shipping_postal_code || "-"}</div>
+                    {o.delivery_method !== "local" && (
+                      <div className="text-xs text-muted-foreground">
+                        Frete: {o.shipping_carrier ?? "-"} {o.shipping_service ?? ""} · {brl(Number(o.shipping_cost))}
+                      </div>
+                    )}
+                    <div className="text-xs text-muted-foreground">Produção: {o.production_days} dia(s)</div>
+                  </div>
+                </div>
+
+                {o.notes && (
+                  <div className="text-sm">
+                    <span className="text-muted-foreground">Observações: </span>
+                    {o.notes}
+                  </div>
+                )}
+
                 <div className="text-sm space-y-1">
                   {(items[o.id] ?? []).map((i) => (
                     <div key={i.id} className="flex justify-between gap-3">
