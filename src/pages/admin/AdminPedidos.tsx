@@ -261,11 +261,25 @@ const AdminPedidos = () => {
                   </button>
                 </div>
 
-                <div className="text-xs text-muted-foreground">
-                  {o.delivery_method === "local"
-                    ? "Entrega grátis em Anápolis/GO"
-                    : `Entrega: ${o.shipping_city ?? "-"}/${o.shipping_state ?? "-"}`} ·
-                  {" "}Pagamento: {o.payment_method ?? "-"}
+                <div className="text-sm space-y-1 border-t border-border/50 pt-3">
+                  <div className="flex justify-between text-muted-foreground">
+                    <span>Subtotal</span>
+                    <span>{brl(Number(o.subtotal))}</span>
+                  </div>
+                  {Number(o.discount_total) > 0 && (
+                    <div className="flex justify-between text-primary">
+                      <span>Desconto {o.coupon_code ? `(${o.coupon_code})` : ""}</span>
+                      <span>-{brl(Number(o.discount_total))}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-muted-foreground">
+                    <span>Frete</span>
+                    <span>{brl(Number(o.shipping_cost))}</span>
+                  </div>
+                  <div className="flex justify-between font-bold">
+                    <span>Total · Pagamento: {o.payment_method ?? "-"}</span>
+                    <span className="text-primary">{brl(Number(o.total))}</span>
+                  </div>
                 </div>
               </div>
             )}
