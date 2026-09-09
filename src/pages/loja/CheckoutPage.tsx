@@ -250,11 +250,10 @@ const CheckoutPage = () => {
               </button>
               <button
                 type="button"
-                onClick={() => setDelivery("pickup")}
-                disabled={pickups.length === 0}
-                className={`flex items-center gap-2 h-11 px-3 rounded border text-sm disabled:opacity-40 ${delivery === "pickup" ? "border-primary text-primary" : "border-border text-muted-foreground"}`}
+                onClick={() => setDelivery("local")}
+                className={`flex items-center gap-2 h-11 px-3 rounded border text-sm ${delivery === "local" ? "border-primary text-primary" : "border-border text-muted-foreground"}`}
               >
-                <Store className="h-4 w-4" /> Retirar no local
+                <MapPin className="h-4 w-4" /> Entrega grátis em Anápolis/GO
               </button>
             </div>
 
