@@ -452,10 +452,13 @@ export type Database = {
           delivery_method: string
           discount_total: number
           id: string
+          mercado_pago_order_id: string | null
           notes: string | null
           order_number: string
+          paid_at: string | null
           payment_method: string | null
           payment_status: string
+          payment_status_detail: string | null
           pickup_location_id: string | null
           production_days: number
           requires_artwork: boolean
@@ -493,10 +496,13 @@ export type Database = {
           delivery_method?: string
           discount_total?: number
           id?: string
+          mercado_pago_order_id?: string | null
           notes?: string | null
           order_number: string
+          paid_at?: string | null
           payment_method?: string | null
           payment_status?: string
+          payment_status_detail?: string | null
           pickup_location_id?: string | null
           production_days?: number
           requires_artwork?: boolean
@@ -534,10 +540,13 @@ export type Database = {
           delivery_method?: string
           discount_total?: number
           id?: string
+          mercado_pago_order_id?: string | null
           notes?: string | null
           order_number?: string
+          paid_at?: string | null
           payment_method?: string | null
           payment_status?: string
+          payment_status_detail?: string | null
           pickup_location_id?: string | null
           production_days?: number
           requires_artwork?: boolean
@@ -575,41 +584,110 @@ export type Database = {
           },
         ]
       }
+      payment_webhook_events: {
+        Row: {
+          created_at: string
+          event_id: string
+          id: string
+          payload: Json | null
+          processed_at: string | null
+          provider: string
+          resource_id: string | null
+          topic: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          id?: string
+          payload?: Json | null
+          processed_at?: string | null
+          provider?: string
+          resource_id?: string | null
+          topic?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          id?: string
+          payload?: Json | null
+          processed_at?: string | null
+          provider?: string
+          resource_id?: string | null
+          topic?: string | null
+        }
+        Relationships: []
+      }
       payments: {
         Row: {
           amount: number
+          card_brand: string | null
+          card_last_four: string | null
           created_at: string
+          environment: string
+          expires_at: string | null
+          external_reference: string | null
           id: string
+          idempotency_key: string | null
+          installments: number | null
+          mercado_pago_order_id: string | null
           method: string | null
           order_id: string
+          paid_at: string | null
           provider: string | null
           provider_payment_id: string | null
+          qr_code: string | null
+          qr_code_base64: string | null
           raw: Json | null
           status: string
+          status_detail: string | null
           updated_at: string
         }
         Insert: {
           amount?: number
+          card_brand?: string | null
+          card_last_four?: string | null
           created_at?: string
+          environment?: string
+          expires_at?: string | null
+          external_reference?: string | null
           id?: string
+          idempotency_key?: string | null
+          installments?: number | null
+          mercado_pago_order_id?: string | null
           method?: string | null
           order_id: string
+          paid_at?: string | null
           provider?: string | null
           provider_payment_id?: string | null
+          qr_code?: string | null
+          qr_code_base64?: string | null
           raw?: Json | null
           status?: string
+          status_detail?: string | null
           updated_at?: string
         }
         Update: {
           amount?: number
+          card_brand?: string | null
+          card_last_four?: string | null
           created_at?: string
+          environment?: string
+          expires_at?: string | null
+          external_reference?: string | null
           id?: string
+          idempotency_key?: string | null
+          installments?: number | null
+          mercado_pago_order_id?: string | null
           method?: string | null
           order_id?: string
+          paid_at?: string | null
           provider?: string | null
           provider_payment_id?: string | null
+          qr_code?: string | null
+          qr_code_base64?: string | null
           raw?: Json | null
           status?: string
+          status_detail?: string | null
           updated_at?: string
         }
         Relationships: [

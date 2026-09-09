@@ -35,6 +35,25 @@ interface Order {
   tracking_code: string | null;
   requires_artwork: boolean;
   created_at: string;
+  mercado_pago_order_id: string | null;
+  payment_status_detail: string | null;
+  paid_at: string | null;
+}
+
+interface PaymentRow {
+  id: string;
+  provider: string | null;
+  method: string | null;
+  status: string;
+  status_detail: string | null;
+  amount: number;
+  installments: number | null;
+  card_last_four: string | null;
+  card_brand: string | null;
+  mercado_pago_order_id: string | null;
+  provider_payment_id: string | null;
+  paid_at: string | null;
+  created_at: string;
 }
 
 interface Item {
@@ -46,6 +65,16 @@ interface Item {
   line_total: number;
   customization: Record<string, string> | null;
 }
+
+const PAYMENT_LABEL: Record<string, string> = {
+  pending: "Aguardando pagamento",
+  approved: "Pagamento aprovado",
+  rejected: "Pagamento recusado",
+  cancelled: "Pagamento cancelado",
+  refunded: "Pagamento reembolsado",
+  in_process: "Pagamento em análise",
+};
+
 
 const STATUSES = [
   "awaiting_payment",
@@ -73,6 +102,7 @@ const AdminPedidos = () => {
   const { toast } = useToast();
   const [orders, setOrders] = useState<Order[]>([]);
   const [items, setItems] = useState<Record<string, Item[]>>({});
+  const [payments, setPayments] = useState<Record<string, PaymentRow[]>>({});
   const [expanded, setExpanded] = useState<string | null>(null);
   const [filter, setFilter] = useState("all");
 
@@ -91,7 +121,16 @@ const AdminPedidos = () => {
       const { data } = await supabase.from("order_items").select("*").eq("order_id", id);
       setItems((p) => ({ ...p, [id]: (data as Item[]) ?? [] }));
     }
+    if (!payments[id]) {
+      const { data } = await supabase
+        .from("payments")
+        .select("*")
+        .eq("order_id", id)
+        .order("created_at", { ascending: false });
+      setPayments((p) => ({ ...p, [id]: (data as PaymentRow[]) ?? [] }));
+    }
   };
+
 
   const removeOrder = async (o: Order) => {
     if (!window.confirm(`Excluir o pedido ${o.order_number}? Essa ação não pode ser desfeita.`)) return;
