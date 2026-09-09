@@ -11,12 +11,26 @@ interface Order {
   customer_name: string;
   customer_email: string;
   customer_phone: string | null;
+  customer_document: string | null;
   status: string;
   payment_status: string;
   payment_method: string | null;
   delivery_method: string;
+  shipping_postal_code: string | null;
+  shipping_street: string | null;
+  shipping_number: string | null;
+  shipping_complement: string | null;
+  shipping_district: string | null;
   shipping_city: string | null;
   shipping_state: string | null;
+  shipping_cost: number;
+  shipping_carrier: string | null;
+  shipping_service: string | null;
+  subtotal: number;
+  discount_total: number;
+  coupon_code: string | null;
+  production_days: number;
+  notes: string | null;
   total: number;
   tracking_code: string | null;
   requires_artwork: boolean;
@@ -152,6 +166,43 @@ const AdminPedidos = () => {
 
             {expanded === o.id && (
               <div className="border-t border-border p-4 space-y-4">
+                <div className="grid sm:grid-cols-2 gap-4 text-sm">
+                  <div className="space-y-1">
+                    <div className="font-semibold text-xs uppercase tracking-wide text-muted-foreground">Cliente</div>
+                    <div>{o.customer_name}</div>
+                    <div>{o.customer_email}</div>
+                    <div>Telefone: {o.customer_phone || "-"}</div>
+                    <div>CPF/CNPJ: {o.customer_document || "-"}</div>
+                    <div className="text-xs text-muted-foreground">
+                      Pedido feito em {new Date(o.created_at).toLocaleString("pt-BR")}
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="font-semibold text-xs uppercase tracking-wide text-muted-foreground">
+                      {o.delivery_method === "local" ? "Entrega grátis em Anápolis/GO" : "Endereço de entrega"}
+                    </div>
+                    <div>
+                      {[o.shipping_street, o.shipping_number].filter(Boolean).join(", ") || "-"}
+                      {o.shipping_complement ? ` - ${o.shipping_complement}` : ""}
+                    </div>
+                    <div>{[o.shipping_district, o.shipping_city, o.shipping_state].filter(Boolean).join(" · ") || "-"}</div>
+                    <div>CEP: {o.shipping_postal_code || "-"}</div>
+                    {o.delivery_method !== "local" && (
+                      <div className="text-xs text-muted-foreground">
+                        Frete: {o.shipping_carrier ?? "-"} {o.shipping_service ?? ""} · {brl(Number(o.shipping_cost))}
+                      </div>
+                    )}
+                    <div className="text-xs text-muted-foreground">Produção: {o.production_days} dia(s)</div>
+                  </div>
+                </div>
+
+                {o.notes && (
+                  <div className="text-sm">
+                    <span className="text-muted-foreground">Observações: </span>
+                    {o.notes}
+                  </div>
+                )}
+
                 <div className="text-sm space-y-1">
                   {(items[o.id] ?? []).map((i) => (
                     <div key={i.id} className="flex justify-between gap-3">
@@ -210,11 +261,25 @@ const AdminPedidos = () => {
                   </button>
                 </div>
 
-                <div className="text-xs text-muted-foreground">
-                  {o.delivery_method === "local"
-                    ? "Entrega grátis em Anápolis/GO"
-                    : `Entrega: ${o.shipping_city ?? "-"}/${o.shipping_state ?? "-"}`} ·
-                  {" "}Pagamento: {o.payment_method ?? "-"}
+                <div className="text-sm space-y-1 border-t border-border/50 pt-3">
+                  <div className="flex justify-between text-muted-foreground">
+                    <span>Subtotal</span>
+                    <span>{brl(Number(o.subtotal))}</span>
+                  </div>
+                  {Number(o.discount_total) > 0 && (
+                    <div className="flex justify-between text-primary">
+                      <span>Desconto {o.coupon_code ? `(${o.coupon_code})` : ""}</span>
+                      <span>-{brl(Number(o.discount_total))}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-muted-foreground">
+                    <span>Frete</span>
+                    <span>{brl(Number(o.shipping_cost))}</span>
+                  </div>
+                  <div className="flex justify-between font-bold">
+                    <span>Total · Pagamento: {o.payment_method ?? "-"}</span>
+                    <span className="text-primary">{brl(Number(o.total))}</span>
+                  </div>
                 </div>
               </div>
             )}
