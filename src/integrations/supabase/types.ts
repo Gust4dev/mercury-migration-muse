@@ -1135,6 +1135,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_delete_order: { Args: { _order_id: string }; Returns: boolean }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
