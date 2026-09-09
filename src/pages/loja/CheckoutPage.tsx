@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { CreditCard, MapPin, QrCode, Store, Truck } from "lucide-react";
+import { CreditCard, MapPin, QrCode, Truck } from "lucide-react";
 import SEO from "@/components/SEO";
 import LojaLayout from "@/components/loja/LojaLayout";
 import { useToast } from "@/hooks/use-toast";
@@ -8,7 +8,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/loja/useAuth";
 import { useCart } from "@/lib/loja/cart";
 import { brl, estimateShipping, formatCep, onlyDigits, orderNumber, type ShippingOption } from "@/lib/loja/pricing";
-import { fetchPickupLocations } from "@/lib/loja/queries";
 
 const CheckoutPage = () => {
   const { items, subtotal, totalWeight, maxProductionDays, clear } = useCart();
