@@ -200,7 +200,13 @@ const AdminPedidos = () => {
               <div className="text-right">
                 <div className="font-bold text-primary">{brl(Number(o.total))}</div>
                 <div className="text-xs text-muted-foreground">{LABEL[o.status] ?? o.status}</div>
+                <div className="text-[11px] text-muted-foreground">
+                  {o.payment_method === "card" ? "Cartão" : o.payment_method === "pix" ? "PIX" : o.payment_method ?? "-"} ·{" "}
+                  {PAYMENT_LABEL[o.payment_status] ?? o.payment_status}
+                  {o.paid_at ? ` · ${new Date(o.paid_at).toLocaleDateString("pt-BR")}` : ""}
+                </div>
               </div>
+
             </button>
 
             {expanded === o.id && (
