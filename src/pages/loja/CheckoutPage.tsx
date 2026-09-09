@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { CreditCard, MapPin, QrCode, Store, Truck } from "lucide-react";
+import { CreditCard, MapPin, QrCode, Truck } from "lucide-react";
 import SEO from "@/components/SEO";
 import LojaLayout from "@/components/loja/LojaLayout";
 import { useToast } from "@/hooks/use-toast";
@@ -8,7 +8,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/loja/useAuth";
 import { useCart } from "@/lib/loja/cart";
 import { brl, estimateShipping, formatCep, onlyDigits, orderNumber, type ShippingOption } from "@/lib/loja/pricing";
-import { fetchPickupLocations } from "@/lib/loja/queries";
 
 const CheckoutPage = () => {
   const { items, subtotal, totalWeight, maxProductionDays, clear } = useCart();
@@ -30,22 +29,13 @@ const CheckoutPage = () => {
     state: "",
     notes: "",
   });
-  const [delivery, setDelivery] = useState<"shipping" | "pickup">("shipping");
+  const [delivery, setDelivery] = useState<"shipping" | "local">("shipping");
   const [options, setOptions] = useState<ShippingOption[]>([]);
   const [selectedOption, setSelectedOption] = useState<ShippingOption | null>(null);
-  const [pickups, setPickups] = useState<Awaited<ReturnType<typeof fetchPickupLocations>>>([]);
-  const [pickupId, setPickupId] = useState<string>("");
   const [payment, setPayment] = useState<"pix" | "card" | "boleto">("pix");
   const [couponCode, setCouponCode] = useState("");
   const [coupon, setCoupon] = useState<{ code: string; discount: number; freeShipping: boolean } | null>(null);
   const [submitting, setSubmitting] = useState(false);
-
-  useEffect(() => {
-    fetchPickupLocations().then((p) => {
-      setPickups(p);
-      if (p[0]) setPickupId(p[0].id);
-    });
-  }, []);
 
   useEffect(() => {
     if (user) setForm((f) => ({ ...f, email: f.email || user.email || "" }));
@@ -80,7 +70,7 @@ const CheckoutPage = () => {
     }
   };
 
-  const shippingCost = delivery === "pickup" || coupon?.freeShipping ? 0 : selectedOption?.price ?? 0;
+  const shippingCost = delivery === "local" || coupon?.freeShipping ? 0 : selectedOption?.price ?? 0;
   const discount = coupon?.discount ?? 0;
   const total = Math.max(0, subtotal - discount) + shippingCost;
 
@@ -127,6 +117,10 @@ const CheckoutPage = () => {
       toast({ title: "Endereço incompleto", description: "Preencha o endereço de entrega.", variant: "destructive" });
       return;
     }
+    if (delivery === "local" && !form.street.trim()) {
+      toast({ title: "Endereço incompleto", description: "Informe o endereço da entrega em Anápolis.", variant: "destructive" });
+      return;
+    }
 
     setSubmitting(true);
     try {
@@ -141,16 +135,16 @@ const CheckoutPage = () => {
           customer_phone: form.phone,
           customer_document: form.document,
           delivery_method: delivery,
-          pickup_location_id: delivery === "pickup" ? pickupId || null : null,
-          shipping_postal_code: delivery === "shipping" ? form.cep : null,
-          shipping_street: delivery === "shipping" ? form.street : null,
-          shipping_number: delivery === "shipping" ? form.number : null,
-          shipping_complement: delivery === "shipping" ? form.complement : null,
-          shipping_district: delivery === "shipping" ? form.district : null,
-          shipping_city: delivery === "shipping" ? form.city : null,
-          shipping_state: delivery === "shipping" ? form.state : null,
-          shipping_carrier: delivery === "shipping" ? selectedOption?.carrier ?? null : null,
-          shipping_service: delivery === "shipping" ? selectedOption?.service ?? null : null,
+          pickup_location_id: null,
+          shipping_postal_code: form.cep || null,
+          shipping_street: form.street || null,
+          shipping_number: form.number || null,
+          shipping_complement: form.complement || null,
+          shipping_district: form.district || null,
+          shipping_city: delivery === "local" ? "Anápolis" : form.city || null,
+          shipping_state: delivery === "local" ? "GO" : form.state || null,
+          shipping_carrier: delivery === "shipping" ? selectedOption?.carrier ?? null : "Mercury",
+          shipping_service: delivery === "shipping" ? selectedOption?.service ?? null : "Entrega grátis em Anápolis/GO",
           shipping_cost: shippingCost,
           shipping_days_min: selectedOption?.daysMin ?? null,
           shipping_days_max: selectedOption?.daysMax ?? null,
@@ -256,11 +250,10 @@ const CheckoutPage = () => {
               </button>
               <button
                 type="button"
-                onClick={() => setDelivery("pickup")}
-                disabled={pickups.length === 0}
-                className={`flex items-center gap-2 h-11 px-3 rounded border text-sm disabled:opacity-40 ${delivery === "pickup" ? "border-primary text-primary" : "border-border text-muted-foreground"}`}
+                onClick={() => setDelivery("local")}
+                className={`flex items-center gap-2 h-11 px-3 rounded border text-sm ${delivery === "local" ? "border-primary text-primary" : "border-border text-muted-foreground"}`}
               >
-                <Store className="h-4 w-4" /> Retirar no local
+                <MapPin className="h-4 w-4" /> Entrega grátis em Anápolis/GO
               </button>
             </div>
 
@@ -304,22 +297,26 @@ const CheckoutPage = () => {
                 )}
               </div>
             ) : (
-              <div className="space-y-2">
-                {pickups.map((p) => (
-                  <label
-                    key={p.id}
-                    className={`flex items-start gap-2 p-3 rounded border cursor-pointer text-sm ${pickupId === p.id ? "border-primary" : "border-border"}`}
-                  >
-                    <input type="radio" checked={pickupId === p.id} onChange={() => setPickupId(p.id)} className="accent-[hsl(var(--primary))] mt-1" />
-                    <span>
-                      <span className="font-medium flex items-center gap-1">
-                        <MapPin className="h-3.5 w-3.5 text-primary" /> {p.name}
-                      </span>
-                      <span className="block text-xs text-muted-foreground">{p.address}</span>
-                      {p.opening_hours && <span className="block text-xs text-muted-foreground">{p.opening_hours}</span>}
-                    </span>
-                  </label>
-                ))}
+              <div className="space-y-3">
+                <p className="text-xs text-muted-foreground">
+                  Entregamos gratuitamente em Anápolis/GO. Informe o endereço para a nossa equipe combinar a entrega.
+                </p>
+                <div className="grid sm:grid-cols-3 gap-3">
+                  <input className={`${input} sm:col-span-2`} placeholder="Rua *" value={form.street} onChange={(e) => setForm({ ...form, street: e.target.value })} />
+                  <input className={input} placeholder="Número" value={form.number} onChange={(e) => setForm({ ...form, number: e.target.value })} />
+                  <input className={input} placeholder="Bairro" value={form.district} onChange={(e) => setForm({ ...form, district: e.target.value })} />
+                  <input className={`${input} sm:col-span-2`} placeholder="Complemento / ponto de referência" value={form.complement} onChange={(e) => setForm({ ...form, complement: e.target.value })} />
+                  <input
+                    className={input}
+                    placeholder="CEP"
+                    inputMode="numeric"
+                    value={form.cep}
+                    onChange={(e) => setForm({ ...form, cep: formatCep(e.target.value) })}
+                  />
+                  <div className="sm:col-span-2 flex items-center gap-2 h-10 px-3 rounded bg-secondary border border-border text-sm text-muted-foreground">
+                    <MapPin className="h-4 w-4 text-primary" /> Anápolis / GO · frete grátis
+                  </div>
+                </div>
               </div>
             )}
           </section>
@@ -395,7 +392,7 @@ const CheckoutPage = () => {
             )}
             <div className="flex justify-between">
               <span className="text-muted-foreground">Frete</span>
-              <span>{delivery === "pickup" ? "Retirada" : shippingCost ? brl(shippingCost) : "—"}</span>
+              <span>{delivery === "local" ? "Grátis" : shippingCost ? brl(shippingCost) : "—"}</span>
             </div>
             <div className="flex justify-between font-bold text-lg pt-2">
               <span>Total</span>

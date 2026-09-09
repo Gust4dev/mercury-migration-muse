@@ -48,7 +48,7 @@ const STATUS_LABEL: Record<string, string> = {
   paid: "Pagamento confirmado",
   awaiting_artwork: "Aguardando aprovação de arte",
   in_production: "Em produção",
-  ready_for_pickup: "Pronto para retirada",
+  ready_for_pickup: "Pronto para entrega",
   shipped: "Enviado",
   delivered: "Concluído",
   cancelled: "Cancelado",
@@ -227,7 +227,7 @@ const PedidoPage = () => {
                   </div>
                 )}
                 <div className="flex justify-between text-muted-foreground">
-                  <span>{order.delivery_method === "pickup" ? "Retirada" : "Frete"}</span>
+                  <span>{order.delivery_method === "local" ? "Entrega em Anápolis" : "Frete"}</span>
                   <span>{brl(Number(order.shipping_cost))}</span>
                 </div>
                 <div className="flex justify-between font-bold">

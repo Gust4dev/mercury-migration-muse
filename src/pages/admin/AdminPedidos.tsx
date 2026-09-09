@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { brl } from "@/lib/loja/pricing";
@@ -48,7 +49,7 @@ const LABEL: Record<string, string> = {
   paid: "Pago",
   awaiting_artwork: "Aguardando aprovação de arte",
   in_production: "Em produção",
-  ready_for_pickup: "Pronto para retirada",
+  ready_for_pickup: "Pronto para entrega",
   shipped: "Enviado",
   delivered: "Concluído",
   cancelled: "Cancelado",
@@ -75,6 +76,16 @@ const AdminPedidos = () => {
     if (!items[id]) {
       const { data } = await supabase.from("order_items").select("*").eq("order_id", id);
       setItems((p) => ({ ...p, [id]: (data as Item[]) ?? [] }));
+    }
+  };
+
+  const removeOrder = async (o: Order) => {
+    if (!window.confirm(`Excluir o pedido ${o.order_number}? Essa ação não pode ser desfeita.`)) return;
+    const { error } = await supabase.rpc("admin_delete_order", { _order_id: o.id });
+    if (error) toast({ title: "Erro ao excluir", description: error.message, variant: "destructive" });
+    else {
+      setOrders((p) => p.filter((x) => x.id !== o.id));
+      toast({ title: "Pedido excluído" });
     }
   };
 
@@ -185,13 +196,24 @@ const AdminPedidos = () => {
                   />
                 </div>
 
-                <label className="inline-flex items-center gap-2 h-9 px-3 rounded border border-border text-sm cursor-pointer">
-                  Enviar arte para aprovação
-                  <input type="file" accept="image/*" hidden onChange={(e) => sendArtwork(o.id, e.target.files?.[0] ?? null)} />
-                </label>
+                <div className="flex flex-wrap items-center gap-3">
+                  <label className="inline-flex items-center gap-2 h-9 px-3 rounded border border-border text-sm cursor-pointer">
+                    Enviar arte para aprovação
+                    <input type="file" accept="image/*" hidden onChange={(e) => sendArtwork(o.id, e.target.files?.[0] ?? null)} />
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => removeOrder(o)}
+                    className="inline-flex items-center gap-2 h-9 px-3 rounded border border-destructive/50 text-destructive text-sm hover:bg-destructive/10"
+                  >
+                    <Trash2 className="h-4 w-4" /> Excluir pedido
+                  </button>
+                </div>
 
                 <div className="text-xs text-muted-foreground">
-                  {o.delivery_method === "pickup" ? "Retirada no local" : `Entrega: ${o.shipping_city ?? "-"}/${o.shipping_state ?? "-"}`} ·
+                  {o.delivery_method === "local"
+                    ? "Entrega grátis em Anápolis/GO"
+                    : `Entrega: ${o.shipping_city ?? "-"}/${o.shipping_state ?? "-"}`} ·
                   {" "}Pagamento: {o.payment_method ?? "-"}
                 </div>
               </div>

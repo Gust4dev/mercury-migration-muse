@@ -365,7 +365,7 @@ const ProdutoPage = () => {
         )}
 
         <div className="mt-10 flex flex-wrap gap-4 text-xs text-muted-foreground">
-          {["Produção sob medida", "Aprovação de arte", "Retirada local disponível", "Frete para todo o Brasil"].map(
+          {["Produção sob medida", "Aprovação de arte", "Entrega grátis em Anápolis/GO", "Frete para todo o Brasil"].map(
             (t) => (
               <span key={t} className="inline-flex items-center gap-1">
                 <Check className="h-3.5 w-3.5 text-primary" /> {t}
