@@ -35,6 +35,25 @@ interface Order {
   tracking_code: string | null;
   requires_artwork: boolean;
   created_at: string;
+  mercado_pago_order_id: string | null;
+  payment_status_detail: string | null;
+  paid_at: string | null;
+}
+
+interface PaymentRow {
+  id: string;
+  provider: string | null;
+  method: string | null;
+  status: string;
+  status_detail: string | null;
+  amount: number;
+  installments: number | null;
+  card_last_four: string | null;
+  card_brand: string | null;
+  mercado_pago_order_id: string | null;
+  provider_payment_id: string | null;
+  paid_at: string | null;
+  created_at: string;
 }
 
 interface Item {
@@ -46,6 +65,16 @@ interface Item {
   line_total: number;
   customization: Record<string, string> | null;
 }
+
+const PAYMENT_LABEL: Record<string, string> = {
+  pending: "Aguardando pagamento",
+  approved: "Pagamento aprovado",
+  rejected: "Pagamento recusado",
+  cancelled: "Pagamento cancelado",
+  refunded: "Pagamento reembolsado",
+  in_process: "Pagamento em análise",
+};
+
 
 const STATUSES = [
   "awaiting_payment",
@@ -73,6 +102,7 @@ const AdminPedidos = () => {
   const { toast } = useToast();
   const [orders, setOrders] = useState<Order[]>([]);
   const [items, setItems] = useState<Record<string, Item[]>>({});
+  const [payments, setPayments] = useState<Record<string, PaymentRow[]>>({});
   const [expanded, setExpanded] = useState<string | null>(null);
   const [filter, setFilter] = useState("all");
 
@@ -91,7 +121,16 @@ const AdminPedidos = () => {
       const { data } = await supabase.from("order_items").select("*").eq("order_id", id);
       setItems((p) => ({ ...p, [id]: (data as Item[]) ?? [] }));
     }
+    if (!payments[id]) {
+      const { data } = await supabase
+        .from("payments")
+        .select("*")
+        .eq("order_id", id)
+        .order("created_at", { ascending: false });
+      setPayments((p) => ({ ...p, [id]: (data as PaymentRow[]) ?? [] }));
+    }
   };
+
 
   const removeOrder = async (o: Order) => {
     if (!window.confirm(`Excluir o pedido ${o.order_number}? Essa ação não pode ser desfeita.`)) return;
@@ -161,7 +200,13 @@ const AdminPedidos = () => {
               <div className="text-right">
                 <div className="font-bold text-primary">{brl(Number(o.total))}</div>
                 <div className="text-xs text-muted-foreground">{LABEL[o.status] ?? o.status}</div>
+                <div className="text-[11px] text-muted-foreground">
+                  {o.payment_method === "card" ? "Cartão" : o.payment_method === "pix" ? "PIX" : o.payment_method ?? "-"} ·{" "}
+                  {PAYMENT_LABEL[o.payment_status] ?? o.payment_status}
+                  {o.paid_at ? ` · ${new Date(o.paid_at).toLocaleDateString("pt-BR")}` : ""}
+                </div>
               </div>
+
             </button>
 
             {expanded === o.id && (
@@ -224,6 +269,29 @@ const AdminPedidos = () => {
                   ))}
                 </div>
 
+                <div className="rounded border border-border/60 p-3 space-y-1 text-sm">
+                  <div className="font-semibold text-xs uppercase tracking-wide text-muted-foreground">Pagamento</div>
+                  <div>Método: {o.payment_method === "card" ? "Cartão de crédito" : o.payment_method === "pix" ? "PIX" : o.payment_method ?? "-"}</div>
+                  <div>
+                    Status: {PAYMENT_LABEL[o.payment_status] ?? o.payment_status}
+                    {o.payment_status_detail ? ` (${o.payment_status_detail})` : ""}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Mercado Pago Order: {o.mercado_pago_order_id ?? "-"}</div>
+                  <div className="text-xs text-muted-foreground">
+                    Pago em: {o.paid_at ? new Date(o.paid_at).toLocaleString("pt-BR") : "-"}
+                  </div>
+                  {(payments[o.id] ?? []).map((p) => (
+                    <div key={p.id} className="text-xs text-muted-foreground border-t border-border/40 pt-1">
+                      Tentativa {new Date(p.created_at).toLocaleString("pt-BR")} · {p.method ?? "-"} ·{" "}
+                      {PAYMENT_LABEL[p.status] ?? p.status}
+                      {p.status_detail ? ` (${p.status_detail})` : ""} · {brl(Number(p.amount))}
+                      {p.installments ? ` · ${p.installments}x` : ""}
+                      {p.card_last_four ? ` · **** ${p.card_last_four}` : ""}
+                      {p.provider_payment_id ? ` · transação ${p.provider_payment_id}` : ""}
+                    </div>
+                  ))}
+                </div>
+
                 <div className="grid sm:grid-cols-3 gap-3">
                   <select value={o.status} onChange={(e) => update(o.id, { status: e.target.value })} className={input} aria-label="Status do pedido">
                     {STATUSES.map((s) => (
@@ -233,12 +301,13 @@ const AdminPedidos = () => {
                     ))}
                   </select>
                   <select value={o.payment_status} onChange={(e) => update(o.id, { payment_status: e.target.value })} className={input} aria-label="Status do pagamento">
-                    {["pending", "paid", "refunded", "failed"].map((s) => (
+                    {["pending", "in_process", "approved", "rejected", "cancelled", "refunded"].map((s) => (
                       <option key={s} value={s}>
-                        {s}
+                        {PAYMENT_LABEL[s] ?? s}
                       </option>
                     ))}
                   </select>
+
                   <input
                     className={input}
                     placeholder="Código de rastreio"

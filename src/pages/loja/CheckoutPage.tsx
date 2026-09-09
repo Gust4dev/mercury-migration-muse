@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { CreditCard, MapPin, QrCode, Truck } from "lucide-react";
+import { Link } from "react-router-dom";
+import { MapPin, Truck } from "lucide-react";
 import SEO from "@/components/SEO";
 import LojaLayout from "@/components/loja/LojaLayout";
 import ShippingCalculator from "@/components/loja/ShippingCalculator";
+import MercadoPagoCheckout from "@/components/loja/MercadoPagoCheckout";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/loja/useAuth";
@@ -11,11 +12,23 @@ import { useCart } from "@/lib/loja/cart";
 import { brl, formatCep, onlyDigits } from "@/lib/loja/pricing";
 import { normalizeCep, type QuoteOption, type QuoteResult } from "@/lib/loja/shipping";
 
+interface CreatedOrder {
+  order_number: string;
+  email: string;
+  total: number;
+  subtotal: number;
+  discount: number;
+  shipping: number;
+  deliveryLabel: string;
+  addressLabel: string;
+  document: string;
+}
+
+
 const CheckoutPage = () => {
   const { items, subtotal, maxProductionDays, clear } = useCart();
   const { user } = useAuth();
   const { toast } = useToast();
-  const navigate = useNavigate();
 
   const [form, setForm] = useState({
     name: "",
@@ -34,10 +47,11 @@ const CheckoutPage = () => {
   const [delivery, setDelivery] = useState<"shipping" | "local">("shipping");
   const [quote, setQuote] = useState<QuoteResult | null>(null);
   const [selectedOption, setSelectedOption] = useState<QuoteOption | null>(null);
-  const [payment, setPayment] = useState<"pix" | "card" | "boleto">("pix");
   const [couponCode, setCouponCode] = useState("");
   const [coupon, setCoupon] = useState<{ code: string; discount: number; freeShipping: boolean } | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [created, setCreated] = useState<CreatedOrder | null>(null);
+
 
   useEffect(() => {
     if (user) setForm((f) => ({ ...f, email: f.email || user.email || "" }));
@@ -147,7 +161,7 @@ const CheckoutPage = () => {
           quote_id: delivery === "shipping" ? quote?.quote_id : null,
           shipping_service_id: delivery === "shipping" ? selectedOption?.serviceId : null,
           coupon_code: coupon?.code ?? null,
-          payment_method: payment,
+          payment_method: "pix",
           notes: form.notes,
           items: items.map((i) => ({
             product_id: i.productId,
@@ -173,7 +187,22 @@ const CheckoutPage = () => {
       if (!data?.order_number) throw new Error(data?.message ?? "Tente novamente.");
 
       clear();
-      navigate(`/loja/pedido?numero=${data.order_number}&email=${encodeURIComponent(form.email.trim())}`);
+      setCreated({
+        order_number: data.order_number,
+        email: form.email.trim(),
+        total: Number(data.total ?? total),
+        subtotal: Number(data.subtotal ?? subtotal),
+        discount: Number(data.discount ?? discount),
+        shipping: Number(data.shipping_cost ?? shippingCost),
+        deliveryLabel:
+          delivery === "local"
+            ? "Entrega grátis em Anápolis/GO"
+            : `${selectedOption?.carrier ?? ""} ${selectedOption?.service ?? ""}`.trim(),
+        addressLabel: [form.street, form.number, form.district, form.city, form.state].filter(Boolean).join(", "),
+        document: form.document,
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
     } catch (err) {
       toast({
         title: "Não foi possível finalizar",
@@ -185,7 +214,30 @@ const CheckoutPage = () => {
     }
   };
 
+  if (created) {
+    return (
+      <LojaLayout>
+        <SEO title="Pagamento | Mercury Loja" description="Pagamento do seu pedido na Mercury Loja." canonical="/loja/checkout" noindex />
+        <div className="container mx-auto px-4 lg:px-8 py-8 max-w-2xl">
+          <h1 className="font-heading text-2xl font-bold mb-5">Pagamento</h1>
+          <MercadoPagoCheckout
+            orderNumber={created.order_number}
+            email={created.email}
+            total={created.total}
+            document={created.document}
+            deliveryLabel={created.deliveryLabel}
+            addressLabel={created.addressLabel}
+            subtotal={created.subtotal}
+            discount={created.discount}
+            shipping={created.shipping}
+          />
+        </div>
+      </LojaLayout>
+    );
+  }
+
   if (items.length === 0) {
+
     return (
       <LojaLayout>
         <div className="container mx-auto px-4 py-20 text-center">
@@ -320,26 +372,10 @@ const CheckoutPage = () => {
 
           <section className="rounded-lg border border-border bg-card p-4 space-y-3">
             <div className="font-semibold text-sm">Pagamento</div>
-            <div className="grid sm:grid-cols-3 gap-3">
-              {[
-                { id: "pix" as const, label: "PIX", icon: QrCode },
-                { id: "card" as const, label: "Cartão", icon: CreditCard },
-                { id: "boleto" as const, label: "Boleto", icon: CreditCard },
-              ].map((m) => (
-                <button
-                  key={m.id}
-                  type="button"
-                  onClick={() => setPayment(m.id)}
-                  className={`flex items-center gap-2 h-11 px-3 rounded border text-sm ${payment === m.id ? "border-primary text-primary" : "border-border text-muted-foreground"}`}
-                >
-                  <m.icon className="h-4 w-4" /> {m.label}
-                </button>
-              ))}
-            </div>
             <p className="text-[11px] text-muted-foreground">
-              O pedido é registrado e nossa equipe envia as instruções de pagamento. A integração automática com o
-              gateway pode ser ativada a qualquer momento.
+              Na próxima etapa você escolhe entre PIX ou cartão de crédito, sem sair do site.
             </p>
+
             <textarea
               rows={3}
               placeholder="Observações do pedido (opcional)"
