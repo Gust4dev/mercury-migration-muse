@@ -445,11 +445,22 @@ const AdminProdutos = () => {
                   + faixa
                 </button>
               </div>
+              <p className="text-xs text-muted-foreground mb-2">Defina preços menores por unidade conforme a quantidade comprada.</p>
               {tiers.map((t, i) => (
-                <div key={i} className="grid grid-cols-[1fr_1fr_1fr_auto] gap-2 mb-2">
-                  <input className={input} type="number" placeholder="Qtd mín" value={t.min_qty} onChange={(e) => setTiers(tiers.map((x, ix) => (ix === i ? { ...x, min_qty: Number(e.target.value) } : x)))} />
-                  <input className={input} type="number" placeholder="Qtd máx" value={t.max_qty ?? ""} onChange={(e) => setTiers(tiers.map((x, ix) => (ix === i ? { ...x, max_qty: e.target.value ? Number(e.target.value) : null } : x)))} />
-                  <input className={input} type="number" step="0.01" placeholder="Preço un." value={t.unit_price} onChange={(e) => setTiers(tiers.map((x, ix) => (ix === i ? { ...x, unit_price: Number(e.target.value) } : x)))} />
+                <div key={i} className="grid grid-cols-[1fr_1fr_1fr_auto] gap-2 mb-2 items-end">
+                  <label className="block">
+                    <span className={lbl}>Quantidade mínima</span>
+                    <input className={input} type="number" value={t.min_qty} onChange={(e) => setTiers(tiers.map((x, ix) => (ix === i ? { ...x, min_qty: Number(e.target.value) } : x)))} />
+                  </label>
+                  <label className="block">
+                    <span className={lbl}>Quantidade máxima</span>
+                    <input className={input} type="number" placeholder="sem limite" value={t.max_qty ?? ""} onChange={(e) => setTiers(tiers.map((x, ix) => (ix === i ? { ...x, max_qty: e.target.value ? Number(e.target.value) : null } : x)))} />
+                  </label>
+                  <label className="block">
+                    <span className={lbl}>Preço por unidade (R$)</span>
+                    <input className={input} type="number" step="0.01" value={t.unit_price} onChange={(e) => setTiers(tiers.map((x, ix) => (ix === i ? { ...x, unit_price: Number(e.target.value) } : x)))} />
+                  </label>
+
                   <button type="button" onClick={() => setTiers(tiers.filter((_, ix) => ix !== i))} className="text-muted-foreground hover:text-destructive" aria-label="Remover faixa">
                     <Trash2 className="h-4 w-4" />
                   </button>
