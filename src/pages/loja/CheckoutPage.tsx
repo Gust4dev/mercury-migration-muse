@@ -70,7 +70,7 @@ const CheckoutPage = () => {
     }
   };
 
-  const shippingCost = delivery === "pickup" || coupon?.freeShipping ? 0 : selectedOption?.price ?? 0;
+  const shippingCost = delivery === "local" || coupon?.freeShipping ? 0 : selectedOption?.price ?? 0;
   const discount = coupon?.discount ?? 0;
   const total = Math.max(0, subtotal - discount) + shippingCost;
 
@@ -117,6 +117,10 @@ const CheckoutPage = () => {
       toast({ title: "Endereço incompleto", description: "Preencha o endereço de entrega.", variant: "destructive" });
       return;
     }
+    if (delivery === "local" && !form.street.trim()) {
+      toast({ title: "Endereço incompleto", description: "Informe o endereço da entrega em Anápolis.", variant: "destructive" });
+      return;
+    }
 
     setSubmitting(true);
     try {
@@ -131,16 +135,16 @@ const CheckoutPage = () => {
           customer_phone: form.phone,
           customer_document: form.document,
           delivery_method: delivery,
-          pickup_location_id: delivery === "pickup" ? pickupId || null : null,
-          shipping_postal_code: delivery === "shipping" ? form.cep : null,
-          shipping_street: delivery === "shipping" ? form.street : null,
-          shipping_number: delivery === "shipping" ? form.number : null,
-          shipping_complement: delivery === "shipping" ? form.complement : null,
-          shipping_district: delivery === "shipping" ? form.district : null,
-          shipping_city: delivery === "shipping" ? form.city : null,
-          shipping_state: delivery === "shipping" ? form.state : null,
-          shipping_carrier: delivery === "shipping" ? selectedOption?.carrier ?? null : null,
-          shipping_service: delivery === "shipping" ? selectedOption?.service ?? null : null,
+          pickup_location_id: null,
+          shipping_postal_code: form.cep || null,
+          shipping_street: form.street || null,
+          shipping_number: form.number || null,
+          shipping_complement: form.complement || null,
+          shipping_district: form.district || null,
+          shipping_city: delivery === "local" ? "Anápolis" : form.city || null,
+          shipping_state: delivery === "local" ? "GO" : form.state || null,
+          shipping_carrier: delivery === "shipping" ? selectedOption?.carrier ?? null : "Mercury",
+          shipping_service: delivery === "shipping" ? selectedOption?.service ?? null : "Entrega grátis em Anápolis/GO",
           shipping_cost: shippingCost,
           shipping_days_min: selectedOption?.daysMin ?? null,
           shipping_days_max: selectedOption?.daysMax ?? null,
