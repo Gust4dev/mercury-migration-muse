@@ -3,15 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { ImageIcon, Minus, Plus, Trash2 } from "lucide-react";
 import SEO from "@/components/SEO";
 import LojaLayout from "@/components/loja/LojaLayout";
+import ShippingCalculator from "@/components/loja/ShippingCalculator";
 import { useCart } from "@/lib/loja/cart";
-import { brl, estimateShipping, formatCep, unitPriceFor, type ShippingOption } from "@/lib/loja/pricing";
+import { brl, unitPriceFor } from "@/lib/loja/pricing";
 import { supabase } from "@/integrations/supabase/client";
 
 const CarrinhoPage = () => {
-  const { items, subtotal, totalWeight, maxProductionDays, updateQuantity, removeItem } = useCart();
+  const { items, subtotal, maxProductionDays, updateQuantity, removeItem } = useCart();
   const navigate = useNavigate();
   const [cep, setCep] = useState(localStorage.getItem("mercury-loja-cep") ?? "");
-  const [options, setOptions] = useState<ShippingOption[]>([]);
+
   const [tiersByProduct, setTiersByProduct] = useState<
     Record<string, { min_qty: number; max_qty: number | null; unit_price: number }[]>
   >({});
@@ -37,10 +38,8 @@ const CarrinhoPage = () => {
     updateQuantity(key, quantity, price);
   };
 
-  const calc = () => {
-    localStorage.setItem("mercury-loja-cep", cep);
-    setOptions(estimateShipping(cep, totalWeight));
-  };
+
+
 
   return (
     <LojaLayout>
