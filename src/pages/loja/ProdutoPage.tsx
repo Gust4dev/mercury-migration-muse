@@ -22,8 +22,6 @@ const ProdutoPage = () => {
   const [qty, setQty] = useState(1);
   const [activeImage, setActiveImage] = useState(0);
   const [custom, setCustom] = useState<Record<string, string>>({});
-  const [cep, setCep] = useState("");
-  const [options, setOptions] = useState<ShippingOption[]>([]);
 
   useEffect(() => {
     if (!slug) return;
@@ -116,7 +114,6 @@ const ProdutoPage = () => {
     toast({ title: "Adicionado ao carrinho", description: `${qty}x ${product.name}` });
   };
 
-  const calcShipping = () => setOptions(estimateShipping(cep, Number(product.weight_g || 100) * qty));
 
   return (
     <LojaLayout>
