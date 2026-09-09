@@ -1,32 +1,12 @@
-// Cliente backend do Mercado Pago. O Access Token NUNCA sai daqui.
+// Cliente backend do Mercado Pago (PRODUÇÃO). O Access Token NUNCA sai daqui.
 
-export type MpEnvironment = "test" | "production";
+export const mpEnvironment = () => (Deno.env.get("PAYMENT_ENVIRONMENT") ?? "production").toLowerCase();
 
-export const mpEnvironment = (): MpEnvironment =>
-  (Deno.env.get("PAYMENT_ENVIRONMENT") ?? "test").toLowerCase() === "production" ? "production" : "test";
+const env = (name: string) => (Deno.env.get(name) ?? "").trim();
 
-const pick = (...names: string[]) => {
-  for (const n of names) {
-    const v = Deno.env.get(n);
-    if (v && v.trim()) return v.trim();
-  }
-  return "";
-};
-
-export const mpAccessToken = () =>
-  mpEnvironment() === "production"
-    ? pick("MERCADO_PAGO_ACCESS_TOKEN_PROD", "MERCADO_PAGO_ACCESS_TOKEN")
-    : pick("MERCADO_PAGO_ACCESS_TOKEN_TEST", "MERCADO_PAGO_ACCESS_TOKEN");
-
-export const mpPublicKey = () =>
-  mpEnvironment() === "production"
-    ? pick("MERCADO_PAGO_PUBLIC_KEY_PROD", "MERCADO_PAGO_PUBLIC_KEY")
-    : pick("MERCADO_PAGO_PUBLIC_KEY_TEST", "MERCADO_PAGO_PUBLIC_KEY");
-
-export const mpWebhookSecret = () =>
-  mpEnvironment() === "production"
-    ? pick("MERCADO_PAGO_WEBHOOK_SECRET_PROD", "MERCADO_PAGO_WEBHOOK_SECRET")
-    : pick("MERCADO_PAGO_WEBHOOK_SECRET_TEST", "MERCADO_PAGO_WEBHOOK_SECRET");
+export const mpAccessToken = () => env("MERCADO_PAGO_ACCESS_TOKEN");
+export const mpPublicKey = () => env("MERCADO_PAGO_PUBLIC_KEY");
+export const mpWebhookSecret = () => env("MERCADO_PAGO_WEBHOOK_SECRET");
 
 const BASE = "https://api.mercadopago.com";
 
@@ -98,12 +78,8 @@ export function extractPayment(order: Record<string, unknown>) {
     methodType: pm.type ? String(pm.type) : null,
     installments: pm.installments ? Number(pm.installments) : null,
     cardLastFour: (() => {
-      const card = (payment.payment_method as Record<string, unknown> | undefined)?.card as
-        | Record<string, unknown>
-        | undefined;
-      const direct = (payment as Record<string, unknown>).card as Record<string, unknown> | undefined;
-      const c = card ?? direct;
-      const v = c?.last_four_digits ?? c?.last_four;
+      const card = (pm.card ?? (payment as Record<string, unknown>).card) as Record<string, unknown> | undefined;
+      const v = card?.last_four_digits ?? card?.last_four;
       return v ? String(v) : null;
     })(),
     qrCode: pm.qr_code ? String(pm.qr_code) : null,
