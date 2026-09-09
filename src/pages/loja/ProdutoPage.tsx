@@ -1,0 +1,381 @@
+import { useEffect, useMemo, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { Check, ImageIcon, Minus, Plus, ShieldCheck, Star, Truck } from "lucide-react";
+import SEO from "@/components/SEO";
+import LojaLayout from "@/components/loja/LojaLayout";
+import { useToast } from "@/hooks/use-toast";
+import { useCart } from "@/lib/loja/cart";
+import { brl, estimateShipping, formatCep, unitPriceFor, type ShippingOption } from "@/lib/loja/pricing";
+import { fetchApprovedReviews, fetchProductBySlug } from "@/lib/loja/queries";
+
+type Product = Awaited<ReturnType<typeof fetchProductBySlug>>;
+
+const ProdutoPage = () => {
+  const { slug } = useParams();
+  const { addItem } = useCart();
+  const { toast } = useToast();
+  const [product, setProduct] = useState<Product>(null);
+  const [reviews, setReviews] = useState<Awaited<ReturnType<typeof fetchApprovedReviews>>>([]);
+  const [loading, setLoading] = useState(true);
+  const [qty, setQty] = useState(1);
+  const [activeImage, setActiveImage] = useState(0);
+  const [custom, setCustom] = useState<Record<string, string>>({});
+  const [cep, setCep] = useState("");
+  const [options, setOptions] = useState<ShippingOption[]>([]);
+
+  useEffect(() => {
+    if (!slug) return;
+    setLoading(true);
+    fetchProductBySlug(slug)
+      .then(async (p) => {
+        setProduct(p);
+        setQty(1);
+        setCustom({});
+        if (p) setReviews(await fetchApprovedReviews(p.id));
+      })
+      .finally(() => setLoading(false));
+  }, [slug]);
+
+  const images = useMemo(
+    () => [...((product?.product_images as { url: string; alt: string | null; sort_order: number }[]) || [])].sort(
+      (a, b) => a.sort_order - b.sort_order,
+    ),
+    [product],
+  );
+
+  const tiers = useMemo(
+    () =>
+      [...((product?.quantity_pricing as { min_qty: number; max_qty: number | null; unit_price: number }[]) || [])].sort(
+        (a, b) => a.min_qty - b.min_qty,
+      ),
+    [product],
+  );
+
+  const fields = useMemo(
+    () =>
+      [...((product?.customization_fields as {
+        id: string;
+        label: string;
+        field_key: string;
+        field_type: string;
+        help_text: string | null;
+        required: boolean;
+        options: unknown;
+        sort_order: number;
+      }[]) || [])].sort((a, b) => a.sort_order - b.sort_order),
+    [product],
+  );
+
+  if (loading) {
+    return (
+      <LojaLayout>
+        <div className="container mx-auto px-4 py-20 text-muted-foreground">Carregando produto...</div>
+      </LojaLayout>
+    );
+  }
+
+  if (!product) {
+    return (
+      <LojaLayout>
+        <div className="container mx-auto px-4 py-20 text-center">
+          <h1 className="font-heading text-2xl font-bold">Produto não encontrado</h1>
+          <Link to="/loja/catalogo" className="text-primary hover:underline mt-3 inline-block">
+            Voltar ao catálogo
+          </Link>
+        </div>
+      </LojaLayout>
+    );
+  }
+
+  const unit = unitPriceFor(Number(product.price), tiers, qty);
+  const total = unit * qty;
+  const pixDiscount = Number(product.pix_discount_percent || 0);
+
+  const handleAdd = () => {
+    for (const f of fields) {
+      if (f.required && !custom[f.field_key]?.trim()) {
+        toast({ title: "Personalização incompleta", description: `Preencha: ${f.label}`, variant: "destructive" });
+        return;
+      }
+    }
+    addItem({
+      productId: product.id,
+      slug: product.slug,
+      name: product.name,
+      image: images[0]?.url ?? null,
+      quantity: qty,
+      basePrice: Number(product.price),
+      unitPrice: unit,
+      productionDays: Number(product.production_days || 0),
+      requiresArtwork: !!product.customizable,
+      weightGrams: Number(product.weight_g || 100),
+      customization: custom,
+    });
+    toast({ title: "Adicionado ao carrinho", description: `${qty}x ${product.name}` });
+  };
+
+  const calcShipping = () => setOptions(estimateShipping(cep, Number(product.weight_g || 100) * qty));
+
+  return (
+    <LojaLayout>
+      <SEO
+        title={`${product.seo_title || product.name} | Mercury Loja`}
+        description={
+          product.seo_description ||
+          product.short_description ||
+          `${product.name} personalizado para sua empresa. Compre na Mercury Loja com produção sob medida.`
+        }
+        canonical={`/loja/produto/${product.slug}`}
+        ogType="product"
+        ogImage={images[0]?.url}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Product",
+          name: product.name,
+          description: product.short_description || product.description || product.name,
+          image: images.map((i) => i.url),
+          sku: product.sku || product.id,
+          brand: { "@type": "Brand", name: "Mercury Gestora" },
+          offers: {
+            "@type": "Offer",
+            price: Number(product.price).toFixed(2),
+            priceCurrency: "BRL",
+            availability: "https://schema.org/InStock",
+            url: `https://mercurygestora.com.br/loja/produto/${product.slug}`,
+          },
+        }}
+      />
+
+      <div className="container mx-auto px-4 lg:px-8 py-6">
+        <nav className="text-xs text-muted-foreground mb-4">
+          <Link to="/loja" className="hover:text-primary">
+            Loja
+          </Link>{" "}
+          / <span className="text-foreground">{product.name}</span>
+        </nav>
+
+        <div className="grid lg:grid-cols-2 gap-8">
+          <div>
+            <div className="aspect-square rounded-xl border border-border bg-secondary overflow-hidden flex items-center justify-center">
+              {images[activeImage] ? (
+                <img
+                  src={images[activeImage].url}
+                  alt={images[activeImage].alt || product.name}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <ImageIcon className="h-12 w-12 text-muted-foreground" />
+              )}
+            </div>
+            {images.length > 1 && (
+              <div className="flex gap-2 mt-3 overflow-x-auto">
+                {images.map((img, i) => (
+                  <button
+                    key={img.url + i}
+                    onClick={() => setActiveImage(i)}
+                    className={`h-16 w-16 rounded border overflow-hidden shrink-0 ${
+                      i === activeImage ? "border-primary" : "border-border"
+                    }`}
+                  >
+                    <img src={img.url} alt={img.alt || product.name} className="h-full w-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div>
+            <h1 className="font-heading text-2xl sm:text-3xl font-bold">{product.name}</h1>
+            {product.reviews_count > 0 && (
+              <div className="flex items-center gap-1 text-sm text-muted-foreground mt-2">
+                <Star className="h-4 w-4 fill-primary text-primary" />
+                {Number(product.rating).toFixed(1)} · {product.reviews_count} avaliação(ões)
+              </div>
+            )}
+            {product.short_description && (
+              <p className="text-muted-foreground mt-3">{product.short_description}</p>
+            )}
+
+            <div className="mt-5">
+              <div className="text-3xl font-heading font-bold text-primary">{brl(unit)}</div>
+              {pixDiscount > 0 && (
+                <div className="text-sm text-muted-foreground">
+                  {brl(unit * (1 - pixDiscount / 100))} no PIX ({pixDiscount}% de desconto)
+                </div>
+              )}
+              <div className="text-sm text-muted-foreground">Total: {brl(total)}</div>
+            </div>
+
+            {tiers.length > 0 && (
+              <div className="mt-4 rounded-lg border border-border bg-card p-3">
+                <div className="text-sm font-semibold mb-2">Quanto mais, mais barato</div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+                  {tiers.map((t, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setQty(t.min_qty)}
+                      className="rounded border border-border px-2 py-1.5 text-left hover:border-primary/60"
+                    >
+                      <div className="text-muted-foreground">
+                        {t.min_qty}
+                        {t.max_qty ? `–${t.max_qty}` : "+"} un.
+                      </div>
+                      <div className="font-bold text-primary">{brl(Number(t.unit_price))}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {fields.length > 0 && (
+              <div className="mt-5 rounded-lg border border-border bg-card p-4 space-y-3">
+                <div className="font-semibold text-sm">Personalização</div>
+                {fields.map((f) => {
+                  const opts = Array.isArray(f.options) ? (f.options as string[]) : [];
+                  return (
+                    <div key={f.id}>
+                      <label className="block text-xs text-muted-foreground mb-1">
+                        {f.label} {f.required && <span className="text-primary">*</span>}
+                      </label>
+                      {f.field_type === "select" && opts.length > 0 ? (
+                        <select
+                          value={custom[f.field_key] ?? ""}
+                          onChange={(e) => setCustom((c) => ({ ...c, [f.field_key]: e.target.value }))}
+                          className="w-full h-10 px-3 rounded bg-secondary border border-border text-sm"
+                        >
+                          <option value="">Selecione</option>
+                          {opts.map((o) => (
+                            <option key={o} value={o}>
+                              {o}
+                            </option>
+                          ))}
+                        </select>
+                      ) : f.field_type === "textarea" ? (
+                        <textarea
+                          rows={3}
+                          maxLength={500}
+                          value={custom[f.field_key] ?? ""}
+                          onChange={(e) => setCustom((c) => ({ ...c, [f.field_key]: e.target.value }))}
+                          className="w-full px-3 py-2 rounded bg-secondary border border-border text-sm"
+                        />
+                      ) : (
+                        <input
+                          type={f.field_type === "color" ? "text" : "text"}
+                          maxLength={200}
+                          value={custom[f.field_key] ?? ""}
+                          onChange={(e) => setCustom((c) => ({ ...c, [f.field_key]: e.target.value }))}
+                          className="w-full h-10 px-3 rounded bg-secondary border border-border text-sm"
+                        />
+                      )}
+                      {f.help_text && <div className="text-[11px] text-muted-foreground mt-1">{f.help_text}</div>}
+                    </div>
+                  );
+                })}
+                <div className="text-[11px] text-muted-foreground flex items-start gap-1.5">
+                  <ShieldCheck className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
+                  Enviaremos a arte para sua aprovação antes de iniciar a produção.
+                </div>
+              </div>
+            )}
+
+            <div className="flex items-center gap-3 mt-5">
+              <div className="flex items-center border border-border rounded-md">
+                <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="h-11 w-11 grid place-items-center" aria-label="Diminuir quantidade">
+                  <Minus className="h-4 w-4" />
+                </button>
+                <input
+                  value={qty}
+                  onChange={(e) => setQty(Math.max(1, Number(e.target.value.replace(/\D/g, "")) || 1))}
+                  className="w-14 h-11 bg-transparent text-center text-sm"
+                  aria-label="Quantidade"
+                />
+                <button onClick={() => setQty((q) => q + 1)} className="h-11 w-11 grid place-items-center" aria-label="Aumentar quantidade">
+                  <Plus className="h-4 w-4" />
+                </button>
+              </div>
+              <button
+                onClick={handleAdd}
+                className="flex-1 h-11 rounded-md bg-primary text-primary-foreground font-bold hover:opacity-90"
+              >
+                Adicionar ao carrinho
+              </button>
+            </div>
+
+            <div className="mt-5 rounded-lg border border-border bg-card p-4">
+              <div className="flex items-center gap-2 text-sm font-semibold">
+                <Truck className="h-4 w-4 text-primary" /> Calcular frete
+              </div>
+              <div className="flex gap-2 mt-2">
+                <input
+                  value={cep}
+                  onChange={(e) => setCep(formatCep(e.target.value))}
+                  placeholder="00000-000"
+                  inputMode="numeric"
+                  className="flex-1 h-10 px-3 rounded bg-secondary border border-border text-sm"
+                  aria-label="CEP para cálculo de frete"
+                />
+                <button onClick={calcShipping} className="h-10 px-4 rounded border border-border text-sm">
+                  Calcular
+                </button>
+              </div>
+              {options.map((o) => (
+                <div key={o.id} className="flex justify-between text-sm mt-2">
+                  <span className="text-muted-foreground">
+                    {o.service} · {o.daysMin}–{o.daysMax} dias úteis
+                  </span>
+                  <span className="font-semibold">{brl(o.price)}</span>
+                </div>
+              ))}
+              <div className="text-[11px] text-muted-foreground mt-2">
+                Valores estimados. O frete final é confirmado no checkout.
+              </div>
+              <div className="text-[11px] text-muted-foreground mt-1">
+                Produção: {product.production_days} dia(s) úteis antes do envio.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {product.description && (
+          <section className="mt-10 max-w-3xl">
+            <h2 className="font-heading text-xl font-bold mb-3">Descrição</h2>
+            <p className="text-muted-foreground whitespace-pre-line">{product.description}</p>
+          </section>
+        )}
+
+        {reviews.length > 0 && (
+          <section className="mt-10 max-w-3xl">
+            <h2 className="font-heading text-xl font-bold mb-3">Avaliações</h2>
+            <div className="space-y-3">
+              {reviews.map((r) => (
+                <div key={r.id} className="rounded-lg border border-border bg-card p-3">
+                  <div className="flex items-center gap-2 text-sm font-semibold">
+                    {r.author_name || "Cliente"}
+                    <span className="flex items-center gap-0.5 text-primary">
+                      {Array.from({ length: r.rating }).map((_, i) => (
+                        <Star key={i} className="h-3 w-3 fill-primary" />
+                      ))}
+                    </span>
+                  </div>
+                  {r.comment && <p className="text-sm text-muted-foreground mt-1">{r.comment}</p>}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <div className="mt-10 flex flex-wrap gap-4 text-xs text-muted-foreground">
+          {["Produção sob medida", "Aprovação de arte", "Retirada local disponível", "Frete para todo o Brasil"].map(
+            (t) => (
+              <span key={t} className="inline-flex items-center gap-1">
+                <Check className="h-3.5 w-3.5 text-primary" /> {t}
+              </span>
+            ),
+          )}
+        </div>
+      </div>
+    </LojaLayout>
+  );
+};
+
+export default ProdutoPage;
