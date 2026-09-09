@@ -6,9 +6,11 @@ import mercuryLogo from "@/assets/mercury-logo.png";
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Vendi.Mais", href: "/vendimais" },
+  { label: "Loja", href: "/loja" },
   { label: "Suporte", href: "/suporte" },
   { label: "Mercury Nexus®", href: "https://mercurynexus.com.br", external: true },
 ];
+
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
