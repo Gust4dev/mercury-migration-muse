@@ -29,22 +29,13 @@ const CheckoutPage = () => {
     state: "",
     notes: "",
   });
-  const [delivery, setDelivery] = useState<"shipping" | "pickup">("shipping");
+  const [delivery, setDelivery] = useState<"shipping" | "local">("shipping");
   const [options, setOptions] = useState<ShippingOption[]>([]);
   const [selectedOption, setSelectedOption] = useState<ShippingOption | null>(null);
-  const [pickups, setPickups] = useState<Awaited<ReturnType<typeof fetchPickupLocations>>>([]);
-  const [pickupId, setPickupId] = useState<string>("");
   const [payment, setPayment] = useState<"pix" | "card" | "boleto">("pix");
   const [couponCode, setCouponCode] = useState("");
   const [coupon, setCoupon] = useState<{ code: string; discount: number; freeShipping: boolean } | null>(null);
   const [submitting, setSubmitting] = useState(false);
-
-  useEffect(() => {
-    fetchPickupLocations().then((p) => {
-      setPickups(p);
-      if (p[0]) setPickupId(p[0].id);
-    });
-  }, []);
 
   useEffect(() => {
     if (user) setForm((f) => ({ ...f, email: f.email || user.email || "" }));
