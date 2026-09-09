@@ -297,22 +297,26 @@ const CheckoutPage = () => {
                 )}
               </div>
             ) : (
-              <div className="space-y-2">
-                {pickups.map((p) => (
-                  <label
-                    key={p.id}
-                    className={`flex items-start gap-2 p-3 rounded border cursor-pointer text-sm ${pickupId === p.id ? "border-primary" : "border-border"}`}
-                  >
-                    <input type="radio" checked={pickupId === p.id} onChange={() => setPickupId(p.id)} className="accent-[hsl(var(--primary))] mt-1" />
-                    <span>
-                      <span className="font-medium flex items-center gap-1">
-                        <MapPin className="h-3.5 w-3.5 text-primary" /> {p.name}
-                      </span>
-                      <span className="block text-xs text-muted-foreground">{p.address}</span>
-                      {p.opening_hours && <span className="block text-xs text-muted-foreground">{p.opening_hours}</span>}
-                    </span>
-                  </label>
-                ))}
+              <div className="space-y-3">
+                <p className="text-xs text-muted-foreground">
+                  Entregamos gratuitamente em Anápolis/GO. Informe o endereço para a nossa equipe combinar a entrega.
+                </p>
+                <div className="grid sm:grid-cols-3 gap-3">
+                  <input className={`${input} sm:col-span-2`} placeholder="Rua *" value={form.street} onChange={(e) => setForm({ ...form, street: e.target.value })} />
+                  <input className={input} placeholder="Número" value={form.number} onChange={(e) => setForm({ ...form, number: e.target.value })} />
+                  <input className={input} placeholder="Bairro" value={form.district} onChange={(e) => setForm({ ...form, district: e.target.value })} />
+                  <input className={`${input} sm:col-span-2`} placeholder="Complemento / ponto de referência" value={form.complement} onChange={(e) => setForm({ ...form, complement: e.target.value })} />
+                  <input
+                    className={input}
+                    placeholder="CEP"
+                    inputMode="numeric"
+                    value={form.cep}
+                    onChange={(e) => setForm({ ...form, cep: formatCep(e.target.value) })}
+                  />
+                  <div className="sm:col-span-2 flex items-center gap-2 h-10 px-3 rounded bg-secondary border border-border text-sm text-muted-foreground">
+                    <MapPin className="h-4 w-4 text-primary" /> Anápolis / GO · frete grátis
+                  </div>
+                </div>
               </div>
             )}
           </section>
@@ -388,7 +392,7 @@ const CheckoutPage = () => {
             )}
             <div className="flex justify-between">
               <span className="text-muted-foreground">Frete</span>
-              <span>{delivery === "pickup" ? "Retirada" : shippingCost ? brl(shippingCost) : "—"}</span>
+              <span>{delivery === "local" ? "Grátis" : shippingCost ? brl(shippingCost) : "—"}</span>
             </div>
             <div className="flex justify-between font-bold text-lg pt-2">
               <span>Total</span>
