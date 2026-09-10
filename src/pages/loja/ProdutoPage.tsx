@@ -124,17 +124,33 @@ const ProdutoPage = () => {
     );
   }
 
-  const unit = unitPriceFor(Number(product.price), tiers, qty);
+  // Preço base já com as variações escolhidas; a faixa por quantidade continua valendo.
+  const variantBase = basePriceWithVariants(Number(product.price), selectedOptions);
+  const variantExtra = variantBase - Number(product.price);
+  const unit = Math.max(0, unitPriceFor(Number(product.price), tiers, qty) + variantExtra);
   const total = unit * qty;
   const pixDiscount = Number(product.pix_discount_percent || 0);
+  const pendingVariant = missingRequiredVariant(variants, selection);
+
+  const selectedVariantList = variants
+    .filter((v) => selection[v.id])
+    .map((v) => {
+      const option = v.product_variant_options.find((o) => o.id === selection[v.id])!;
+      return { variantId: v.id, variant: v.name, optionId: option.id, option: option.label };
+    });
 
   const handleAdd = () => {
+    if (pendingVariant) {
+      toast({ title: "Escolha uma opção", description: `Selecione: ${pendingVariant}`, variant: "destructive" });
+      return;
+    }
     for (const f of fields) {
       if (f.required && !custom[f.field_key]?.trim()) {
         toast({ title: "Personalização incompleta", description: `Preencha: ${f.label}`, variant: "destructive" });
         return;
       }
     }
+    const optionWeight = selectedOptions.map((o) => o.weight_g).filter((w) => w != null && Number(w) > 0) as number[];
     addItem({
       productId: product.id,
       slug: product.slug,
@@ -145,8 +161,9 @@ const ProdutoPage = () => {
       unitPrice: unit,
       productionDays: Number(product.production_days || 0),
       requiresArtwork: !!product.customizable,
-      weightGrams: Number(product.weight_g || 100),
+      weightGrams: optionWeight.length ? Math.max(...optionWeight) : Number(product.weight_g || 100),
       customization: custom,
+      variants: selectedVariantList,
     });
     toast({ title: "Adicionado ao carrinho", description: `${qty}x ${product.name}` });
   };
