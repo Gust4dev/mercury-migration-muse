@@ -130,7 +130,7 @@ const AdminConfiguracoes = () => {
                 checked={settings.free_shipping_local}
                 onChange={(e) => setSettings({ ...settings, free_shipping_local: e.target.checked })}
               />
-              Oferecer entrega grátis em Anápolis/GO no checkout
+              Entrega grátis automática para CEPs 75xxx (Anápolis/GO e região)
             </label>
 
             <button
