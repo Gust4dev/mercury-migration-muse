@@ -268,6 +268,7 @@ const AdminProdutos = () => {
         supabase.from("product_images").delete().eq("product_id", productId),
         supabase.from("quantity_pricing").delete().eq("product_id", productId),
         supabase.from("customization_fields").delete().eq("product_id", productId),
+        supabase.from("product_variants").delete().eq("product_id", productId),
         supabase.from("product_categories").delete().eq("product_id", productId),
         supabase.from("product_segments").delete().eq("product_id", productId),
       ]);
