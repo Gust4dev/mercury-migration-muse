@@ -142,7 +142,7 @@ Deno.serve(async (req) => {
         origin_postal_code: settings.origin_postal_code,
         destination_postal_code: cep,
         packages: pack,
-        options: finalOptions,
+        options: storedOptions,
         items,
         items_hash: hash,
         provider: "melhor_envio",
@@ -155,7 +155,7 @@ Deno.serve(async (req) => {
 
     return json({
       quote_id: quote.id,
-      options: finalOptions,
+      options: storedOptions,
       expires_at: expiresAt,
       production_days: productionDays + Number(settings.handling_days || 0),
       requires_artwork: requiresArtwork,
