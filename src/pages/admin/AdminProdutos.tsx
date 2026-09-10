@@ -151,6 +151,43 @@ const AdminProdutos = () => {
         help_text: f.help_text ?? "",
       })),
     );
+    setVariantGroups(
+      [...((p.product_variants as {
+        name: string;
+        required: boolean;
+        sort_order: number;
+        product_variant_options: {
+          label: string;
+          price_delta: number;
+          price_override: number | null;
+          available: boolean;
+          weight_g: number | null;
+          width_cm: number | null;
+          height_cm: number | null;
+          length_cm: number | null;
+          image_urls: string[] | null;
+          sort_order: number;
+        }[];
+      }[]) ?? [])]
+        .sort((a, b) => a.sort_order - b.sort_order)
+        .map((v) => ({
+          name: v.name,
+          required: v.required,
+          options: [...(v.product_variant_options ?? [])]
+            .sort((a, b) => a.sort_order - b.sort_order)
+            .map((o) => ({
+              label: o.label,
+              price_delta: Number(o.price_delta || 0),
+              price_override: o.price_override != null ? String(o.price_override) : "",
+              available: o.available,
+              weight_g: o.weight_g != null ? String(o.weight_g) : "",
+              width_cm: o.width_cm != null ? String(o.width_cm) : "",
+              height_cm: o.height_cm != null ? String(o.height_cm) : "",
+              length_cm: o.length_cm != null ? String(o.length_cm) : "",
+              image_urls: o.image_urls ?? [],
+            })),
+        })),
+    );
     setSelCats(((p.product_categories as { category_id: string }[]) ?? []).map((c) => c.category_id));
     setSelSegs(((p.product_segments as { segment_id: string }[]) ?? []).map((s) => s.segment_id));
     setOpen(true);
