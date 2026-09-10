@@ -64,6 +64,7 @@ interface Item {
   unit_price: number;
   line_total: number;
   customization: Record<string, string> | null;
+  variants: { variant: string; option: string }[] | null;
 }
 
 const PAYMENT_LABEL: Record<string, string> = {
@@ -119,7 +120,7 @@ const AdminPedidos = () => {
     setExpanded(expanded === id ? null : id);
     if (!items[id]) {
       const { data } = await supabase.from("order_items").select("*").eq("order_id", id);
-      setItems((p) => ({ ...p, [id]: (data as Item[]) ?? [] }));
+      setItems((p) => ({ ...p, [id]: (data as unknown as Item[]) ?? [] }));
     }
     if (!payments[id]) {
       const { data } = await supabase
@@ -255,6 +256,11 @@ const AdminPedidos = () => {
                         <div>
                           {i.quantity}x {i.product_name}
                         </div>
+                        {Array.isArray(i.variants) && i.variants.length > 0 && (
+                          <div className="text-[11px] text-primary">
+                            {i.variants.map((v) => `${v.variant}: ${v.option}`).join(" · ")}
+                          </div>
+                        )}
                         {i.customization && Object.keys(i.customization).length > 0 && (
                           <div className="text-[11px] text-muted-foreground">
                             {Object.entries(i.customization)

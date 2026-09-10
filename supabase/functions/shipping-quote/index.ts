@@ -30,7 +30,7 @@ Deno.serve(async (req) => {
     const settings = await loadSettings(supabase);
     const loaded = await loadItems(supabase, rawItems);
     if ("error" in loaded) return json(loaded.error, 400);
-    const { items, products } = loaded;
+    const { items, products, lines } = loaded;
 
     const hash = itemsHash(items);
     const nowIso = new Date().toISOString();
@@ -65,18 +65,16 @@ Deno.serve(async (req) => {
       });
     }
 
-    const packItems: PackItemInput[] = items.map((i) => {
-      const p = products.find((pp) => pp.id === i.product_id)!;
-      return {
-        weight_g: Number(p.weight_g),
-        width_cm: Number(p.width_cm),
-        height_cm: Number(p.height_cm),
-        length_cm: Number(p.length_cm),
-        max_per_package: p.max_per_package,
-        quantity: i.quantity,
-        unit_price: Number(p.price),
-      };
-    });
+    // Peso e medidas podem ser específicos da variação escolhida.
+    const packItems: PackItemInput[] = lines.map((l) => ({
+      weight_g: Number(l.weight_g),
+      width_cm: Number(l.width_cm),
+      height_cm: Number(l.height_cm),
+      length_cm: Number(l.length_cm),
+      max_per_package: l.product.max_per_package,
+      quantity: l.quantity,
+      unit_price: Number(l.basePrice),
+    }));
 
     const pack = buildPackage(packItems);
 

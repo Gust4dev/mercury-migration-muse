@@ -130,7 +130,7 @@ export async function fetchProductBySlug(slug: string) {
   const { data, error } = await supabase
     .from("products")
     .select(
-      "*,product_images(id,url,alt,sort_order),quantity_pricing(id,min_qty,max_qty,unit_price),customization_fields(id,label,field_key,field_type,help_text,required,options,sort_order),product_categories(categories(name,slug)),product_segments(segments(name,slug))",
+      "*,product_images(id,url,alt,sort_order),quantity_pricing(id,min_qty,max_qty,unit_price),customization_fields(id,label,field_key,field_type,help_text,required,options,sort_order),product_variants(id,name,required,sort_order,product_variant_options(id,variant_id,label,price_delta,price_override,available,weight_g,width_cm,height_cm,length_cm,image_urls,sort_order)),product_categories(categories(name,slug)),product_segments(segments(name,slug))",
     )
     .eq("slug", slug)
     .eq("active", true)

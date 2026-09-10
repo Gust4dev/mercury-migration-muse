@@ -8,6 +8,14 @@ import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/lib/loja/cart";
 import { brl, unitPriceFor } from "@/lib/loja/pricing";
 import { fetchApprovedReviews, fetchProductBySlug } from "@/lib/loja/queries";
+import {
+  basePriceWithVariants,
+  missingRequiredVariant,
+  sortVariants,
+  variantImages,
+  type ProductVariant,
+  type VariantOption,
+} from "@/lib/loja/variants";
 
 
 type Product = Awaited<ReturnType<typeof fetchProductBySlug>>;
@@ -22,6 +30,8 @@ const ProdutoPage = () => {
   const [qty, setQty] = useState(1);
   const [activeImage, setActiveImage] = useState(0);
   const [custom, setCustom] = useState<Record<string, string>>({});
+  /** variantId -> optionId escolhido */
+  const [selection, setSelection] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (!slug) return;
@@ -31,17 +41,44 @@ const ProdutoPage = () => {
         setProduct(p);
         setQty(1);
         setCustom({});
+        setSelection({});
+        setActiveImage(0);
         if (p) setReviews(await fetchApprovedReviews(p.id));
       })
       .finally(() => setLoading(false));
   }, [slug]);
 
-  const images = useMemo(
+  const variants = useMemo(
+    () => sortVariants(product?.product_variants as ProductVariant[] | undefined),
+    [product],
+  );
+
+  const selectedOptions = useMemo(
+    () =>
+      variants
+        .map((v) => v.product_variant_options.find((o) => o.id === selection[v.id]))
+        .filter(Boolean) as VariantOption[],
+    [variants, selection],
+  );
+
+  const baseImages = useMemo(
     () => [...((product?.product_images as { url: string; alt: string | null; sort_order: number }[]) || [])].sort(
       (a, b) => a.sort_order - b.sort_order,
     ),
     [product],
   );
+
+  // Imagens da opção escolhida; sem imagens específicas, mantém as do produto.
+  const images = useMemo(() => {
+    const specific = variantImages(selectedOptions);
+    return specific.length
+      ? specific.map((url, i) => ({ url, alt: null as string | null, sort_order: i }))
+      : baseImages;
+  }, [selectedOptions, baseImages]);
+
+  useEffect(() => {
+    setActiveImage(0);
+  }, [images]);
 
   const tiers = useMemo(
     () =>
@@ -87,17 +124,33 @@ const ProdutoPage = () => {
     );
   }
 
-  const unit = unitPriceFor(Number(product.price), tiers, qty);
+  // Preço base já com as variações escolhidas; a faixa por quantidade continua valendo.
+  const variantBase = basePriceWithVariants(Number(product.price), selectedOptions);
+  const variantExtra = variantBase - Number(product.price);
+  const unit = Math.max(0, unitPriceFor(Number(product.price), tiers, qty) + variantExtra);
   const total = unit * qty;
   const pixDiscount = Number(product.pix_discount_percent || 0);
+  const pendingVariant = missingRequiredVariant(variants, selection);
+
+  const selectedVariantList = variants
+    .filter((v) => selection[v.id])
+    .map((v) => {
+      const option = v.product_variant_options.find((o) => o.id === selection[v.id])!;
+      return { variantId: v.id, variant: v.name, optionId: option.id, option: option.label };
+    });
 
   const handleAdd = () => {
+    if (pendingVariant) {
+      toast({ title: "Escolha uma opção", description: `Selecione: ${pendingVariant}`, variant: "destructive" });
+      return;
+    }
     for (const f of fields) {
       if (f.required && !custom[f.field_key]?.trim()) {
         toast({ title: "Personalização incompleta", description: `Preencha: ${f.label}`, variant: "destructive" });
         return;
       }
     }
+    const optionWeight = selectedOptions.map((o) => o.weight_g).filter((w) => w != null && Number(w) > 0) as number[];
     addItem({
       productId: product.id,
       slug: product.slug,
@@ -108,8 +161,9 @@ const ProdutoPage = () => {
       unitPrice: unit,
       productionDays: Number(product.production_days || 0),
       requiresArtwork: !!product.customizable,
-      weightGrams: Number(product.weight_g || 100),
+      weightGrams: optionWeight.length ? Math.max(...optionWeight) : Number(product.weight_g || 100),
       customization: custom,
+      variants: selectedVariantList,
     });
     toast({ title: "Adicionado ao carrinho", description: `${qty}x ${product.name}` });
   };
@@ -226,6 +280,46 @@ const ProdutoPage = () => {
               </div>
             )}
 
+            {variants.length > 0 && (
+              <div className="mt-5 space-y-4">
+                {variants.map((v) => (
+                  <div key={v.id}>
+                    <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
+                      {v.name} {v.required && <span className="text-primary">*</span>}
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {v.product_variant_options.map((o) => {
+                        const active = selection[v.id] === o.id;
+                        return (
+                          <button
+                            key={o.id}
+                            type="button"
+                            disabled={!o.available}
+                            onClick={() => setSelection((s) => ({ ...s, [v.id]: o.id }))}
+                            className={`px-4 h-11 rounded-md border text-sm transition-colors ${
+                              active
+                                ? "border-primary text-primary bg-primary/10 font-semibold"
+                                : "border-border text-foreground hover:border-primary/60"
+                            } ${o.available ? "" : "opacity-40 cursor-not-allowed line-through"}`}
+                          >
+                            {o.label}
+                            {Number(o.price_delta) > 0 && o.price_override == null && (
+                              <span className="ml-1 text-[11px] text-muted-foreground">
+                                +{brl(Number(o.price_delta))}
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+                {pendingVariant && (
+                  <p className="text-xs text-primary">Escolha uma opção de “{pendingVariant}” para continuar.</p>
+                )}
+              </div>
+            )}
+
             {fields.length > 0 && (
               <div className="mt-5 rounded-lg border border-border bg-card p-4 space-y-3">
                 <div className="font-semibold text-sm">Personalização</div>
@@ -294,17 +388,30 @@ const ProdutoPage = () => {
               </div>
               <button
                 onClick={handleAdd}
-                className="flex-1 h-11 rounded-md bg-primary text-primary-foreground font-bold hover:opacity-90"
+                disabled={!!pendingVariant}
+                className="flex-1 h-11 rounded-md bg-primary text-primary-foreground font-bold hover:opacity-90 disabled:opacity-50"
               >
-                Adicionar ao carrinho
+                {pendingVariant ? `Escolha: ${pendingVariant}` : "Adicionar ao carrinho"}
               </button>
             </div>
 
             <div className="mt-5">
-              <ShippingCalculator
-                items={[{ product_id: product.id, quantity: qty }]}
-                title="Frete e prazo de entrega"
-              />
+              {pendingVariant ? (
+                <p className="text-xs text-muted-foreground">
+                  Escolha as opções do produto para calcularmos o frete.
+                </p>
+              ) : (
+                <ShippingCalculator
+                  items={[
+                    {
+                      product_id: product.id,
+                      quantity: qty,
+                      variant_option_ids: selectedOptions.map((o) => o.id),
+                    },
+                  ]}
+                  title="Frete e prazo de entrega"
+                />
+              )}
             </div>
 
           </div>

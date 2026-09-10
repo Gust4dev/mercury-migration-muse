@@ -1,7 +1,7 @@
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { isValidCep, normalizeCep } from "../_shared/shipping/packing.ts";
-import { itemsHash, loadItems, loadSettings, priceItems } from "../_shared/shipping/quote-core.ts";
+import { itemsHash, lineKey, loadItems, loadSettings, priceItems } from "../_shared/shipping/quote-core.ts";
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -46,9 +46,9 @@ Deno.serve(async (req) => {
 
     const loaded = await loadItems(supabase, Array.isArray(body?.items) ? body.items : []);
     if ("error" in loaded) return json(loaded.error, 400);
-    const { items, products } = loaded;
+    const { items, products, lines } = loaded;
 
-    const priced = await priceItems(supabase, items, products);
+    const priced = await priceItems(supabase, lines);
     const subtotal = Number(priced.reduce((s, p) => s + p.lineTotal, 0).toFixed(2));
     const settings = await loadSettings(supabase);
 
@@ -216,9 +216,10 @@ Deno.serve(async (req) => {
     const customizations: Record<string, Record<string, string>> = {};
     for (const r of (Array.isArray(body?.items) ? body.items : []) as {
       product_id: string;
+      variant_option_ids?: string[];
       customization?: Record<string, string>;
     }[]) {
-      if (r.customization) customizations[r.product_id] = r.customization;
+      if (r.customization) customizations[lineKey(String(r.product_id), r.variant_option_ids ?? [])] = r.customization;
     }
 
     const { error: itemsError } = await supabase.from("order_items").insert(
@@ -232,7 +233,8 @@ Deno.serve(async (req) => {
         base_price: Number(p.product.price),
         line_total: p.lineTotal,
         production_days: Number(p.product.production_days || 0),
-        customization: customizations[p.product.id] ?? {},
+        customization: customizations[p.line.key] ?? {},
+        variants: p.line.variants,
         requires_artwork: p.product.customizable,
       })),
     );

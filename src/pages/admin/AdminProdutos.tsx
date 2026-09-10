@@ -22,6 +22,35 @@ interface Tier { min_qty: number; max_qty: number | null; unit_price: number }
 interface Field { label: string; field_key: string; field_type: string; required: boolean; options: string; help_text: string }
 interface ImageRow { url: string; alt: string }
 
+interface VariantOptionForm {
+  label: string;
+  price_delta: number;
+  price_override: string;
+  available: boolean;
+  weight_g: string;
+  width_cm: string;
+  height_cm: string;
+  length_cm: string;
+  image_urls: string[];
+}
+interface VariantForm {
+  name: string;
+  required: boolean;
+  options: VariantOptionForm[];
+}
+
+const emptyOption = (): VariantOptionForm => ({
+  label: "",
+  price_delta: 0,
+  price_override: "",
+  available: true,
+  weight_g: "",
+  width_cm: "",
+  height_cm: "",
+  length_cm: "",
+  image_urls: [],
+});
+
 const emptyForm = {
   id: "",
   name: "",
@@ -57,6 +86,7 @@ const AdminProdutos = () => {
   const [images, setImages] = useState<ImageRow[]>([]);
   const [tiers, setTiers] = useState<Tier[]>([]);
   const [fields, setFields] = useState<Field[]>([]);
+  const [variantGroups, setVariantGroups] = useState<VariantForm[]>([]);
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [segments, setSegments] = useState<{ id: string; name: string }[]>([]);
   const [selCats, setSelCats] = useState<string[]>([]);
@@ -83,6 +113,7 @@ const AdminProdutos = () => {
     setImages([]);
     setTiers([]);
     setFields([]);
+    setVariantGroups([]);
     setSelCats([]);
     setSelSegs([]);
     setOpen(true);
@@ -92,7 +123,7 @@ const AdminProdutos = () => {
     const { data } = await supabase
       .from("products")
       .select(
-        "*,product_images(url,alt,sort_order),quantity_pricing(min_qty,max_qty,unit_price),customization_fields(label,field_key,field_type,required,options,help_text,sort_order),product_categories(category_id),product_segments(segment_id)",
+        "*,product_images(url,alt,sort_order),quantity_pricing(min_qty,max_qty,unit_price),customization_fields(label,field_key,field_type,required,options,help_text,sort_order),product_variants(name,required,sort_order,product_variant_options(label,price_delta,price_override,available,weight_g,width_cm,height_cm,length_cm,image_urls,sort_order)),product_categories(category_id),product_segments(segment_id)",
       )
       .eq("id", id)
       .maybeSingle();
@@ -120,6 +151,43 @@ const AdminProdutos = () => {
         help_text: f.help_text ?? "",
       })),
     );
+    setVariantGroups(
+      [...((p.product_variants as {
+        name: string;
+        required: boolean;
+        sort_order: number;
+        product_variant_options: {
+          label: string;
+          price_delta: number;
+          price_override: number | null;
+          available: boolean;
+          weight_g: number | null;
+          width_cm: number | null;
+          height_cm: number | null;
+          length_cm: number | null;
+          image_urls: string[] | null;
+          sort_order: number;
+        }[];
+      }[]) ?? [])]
+        .sort((a, b) => a.sort_order - b.sort_order)
+        .map((v) => ({
+          name: v.name,
+          required: v.required,
+          options: [...(v.product_variant_options ?? [])]
+            .sort((a, b) => a.sort_order - b.sort_order)
+            .map((o) => ({
+              label: o.label,
+              price_delta: Number(o.price_delta || 0),
+              price_override: o.price_override != null ? String(o.price_override) : "",
+              available: o.available,
+              weight_g: o.weight_g != null ? String(o.weight_g) : "",
+              width_cm: o.width_cm != null ? String(o.width_cm) : "",
+              height_cm: o.height_cm != null ? String(o.height_cm) : "",
+              length_cm: o.length_cm != null ? String(o.length_cm) : "",
+              image_urls: o.image_urls ?? [],
+            })),
+        })),
+    );
     setSelCats(((p.product_categories as { category_id: string }[]) ?? []).map((c) => c.category_id));
     setSelSegs(((p.product_segments as { segment_id: string }[]) ?? []).map((s) => s.segment_id));
     setOpen(true);
@@ -133,6 +201,39 @@ const AdminProdutos = () => {
         const { url } = await uploadLojaImage(file);
         setImages((prev) => [...prev, { url, alt: "" }]);
       }
+    } catch (err) {
+      toast({ title: "Erro no upload", description: err instanceof Error ? err.message : "Tente novamente.", variant: "destructive" });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const patchOption = (gi: number, oi: number, patch: Partial<VariantOptionForm>) =>
+    setVariantGroups((gs) =>
+      gs.map((g, i) =>
+        i === gi ? { ...g, options: g.options.map((o, j) => (j === oi ? { ...o, ...patch } : o)) } : g,
+      ),
+    );
+
+  const handleOptionUpload = async (gi: number, oi: number, files: FileList | null) => {
+    if (!files?.length) return;
+    setUploading(true);
+    try {
+      const urls: string[] = [];
+      for (const file of Array.from(files)) {
+        const { url } = await uploadLojaImage(file);
+        urls.push(url);
+      }
+      setVariantGroups((gs) =>
+        gs.map((g, i) =>
+          i === gi
+            ? {
+                ...g,
+                options: g.options.map((o, j) => (j === oi ? { ...o, image_urls: [...o.image_urls, ...urls] } : o)),
+              }
+            : g,
+        ),
+      );
     } catch (err) {
       toast({ title: "Erro no upload", description: err instanceof Error ? err.message : "Tente novamente.", variant: "destructive" });
     } finally {
@@ -200,6 +301,7 @@ const AdminProdutos = () => {
         supabase.from("product_images").delete().eq("product_id", productId),
         supabase.from("quantity_pricing").delete().eq("product_id", productId),
         supabase.from("customization_fields").delete().eq("product_id", productId),
+        supabase.from("product_variants").delete().eq("product_id", productId),
         supabase.from("product_categories").delete().eq("product_id", productId),
         supabase.from("product_segments").delete().eq("product_id", productId),
       ]);
@@ -242,6 +344,37 @@ const AdminProdutos = () => {
         inserts.push(Promise.resolve(supabase.from("product_segments").insert(selSegs.map((s) => ({ product_id: productId, segment_id: s })))));
 
       await Promise.all(inserts);
+
+      // Variações dinâmicas: cada grupo precisa do id para gravar as opções.
+      const num = (v: string) => (v.trim() === "" ? null : Number(v));
+      for (const [gi, g] of variantGroups.entries()) {
+        const name = g.name.trim();
+        const options = g.options.filter((o) => o.label.trim());
+        if (!name || !options.length) continue;
+        const { data: variantRow, error: variantError } = await supabase
+          .from("product_variants")
+          .insert({ product_id: productId, name, required: g.required, sort_order: gi })
+          .select("id")
+          .single();
+        if (variantError) throw variantError;
+        const { error: optionsError } = await supabase.from("product_variant_options").insert(
+          options.map((o, oi) => ({
+            variant_id: variantRow.id,
+            label: o.label.trim(),
+            price_delta: Number(o.price_delta || 0),
+            price_override: num(o.price_override),
+            available: o.available,
+            weight_g: num(o.weight_g),
+            width_cm: num(o.width_cm),
+            height_cm: num(o.height_cm),
+            length_cm: num(o.length_cm),
+            image_urls: o.image_urls,
+            sort_order: oi,
+          })),
+        );
+        if (optionsError) throw optionsError;
+      }
+
 
       toast({ title: "Produto salvo" });
       setOpen(false);
@@ -511,6 +644,191 @@ const AdminProdutos = () => {
                     <input type="checkbox" checked={f.required} onChange={(e) => setFields(fields.map((x, ix) => (ix === i ? { ...x, required: e.target.checked } : x)))} className="accent-[hsl(var(--primary))]" />
                     Obrigatório
                   </label>
+                </div>
+              ))}
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <span className="font-semibold text-sm">Variações do produto</span>
+                <button
+                  type="button"
+                  onClick={() => setVariantGroups([...variantGroups, { name: "", required: true, options: [emptyOption()] }])}
+                  className="text-xs text-primary"
+                >
+                  + adicionar variação
+                </button>
+              </div>
+              <p className="text-xs text-muted-foreground mb-3">
+                Crie livremente o nome da variação (ex.: Tipo, Cor, Tamanho) e as opções que o cliente poderá escolher.
+                Produtos sem variações continuam funcionando normalmente.
+              </p>
+
+              {variantGroups.map((g, gi) => (
+                <div key={gi} className="rounded-lg border border-border p-3 mb-3 space-y-3">
+                  <div className="grid sm:grid-cols-[1fr_auto_auto] gap-2 items-center">
+                    <div>
+                      <label className="block text-[11px] text-muted-foreground mb-1">Nome da variação</label>
+                      <input
+                        className={input}
+                        placeholder="Ex.: Tipo"
+                        value={g.name}
+                        onChange={(e) =>
+                          setVariantGroups(variantGroups.map((x, i) => (i === gi ? { ...x, name: e.target.value } : x)))
+                        }
+                      />
+                    </div>
+                    <label className="flex items-center gap-1.5 text-xs mt-4">
+                      <input
+                        type="checkbox"
+                        checked={g.required}
+                        onChange={(e) =>
+                          setVariantGroups(variantGroups.map((x, i) => (i === gi ? { ...x, required: e.target.checked } : x)))
+                        }
+                        className="accent-[hsl(var(--primary))]"
+                      />
+                      Obrigatória
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setVariantGroups(variantGroups.filter((_, i) => i !== gi))}
+                      className="text-muted-foreground hover:text-destructive mt-4"
+                      aria-label="Remover variação"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+
+                  {g.options.map((o, oi) => (
+                    <div key={oi} className="rounded border border-border/60 p-2 space-y-2">
+                      <div className="grid sm:grid-cols-[1fr_auto_auto] gap-2 items-center">
+                        <div>
+                          <label className="block text-[11px] text-muted-foreground mb-1">Nome da opção</label>
+                          <input
+                            className={input}
+                            placeholder="Ex.: Parede"
+                            value={o.label}
+                            onChange={(e) => patchOption(gi, oi, { label: e.target.value })}
+                          />
+                        </div>
+                        <label className="flex items-center gap-1.5 text-xs mt-4">
+                          <input
+                            type="checkbox"
+                            checked={o.available}
+                            onChange={(e) => patchOption(gi, oi, { available: e.target.checked })}
+                            className="accent-[hsl(var(--primary))]"
+                          />
+                          Disponível
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setVariantGroups(
+                              variantGroups.map((x, i) =>
+                                i === gi ? { ...x, options: x.options.filter((_, j) => j !== oi) } : x,
+                              ),
+                            )
+                          }
+                          className="text-muted-foreground hover:text-destructive mt-4"
+                          aria-label="Remover opção"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+
+                      <div className="grid sm:grid-cols-2 gap-2">
+                        <div>
+                          <label className="block text-[11px] text-muted-foreground mb-1">Acréscimo no preço (R$)</label>
+                          <input
+                            className={input}
+                            type="number"
+                            step="0.01"
+                            value={o.price_delta}
+                            onChange={(e) => patchOption(gi, oi, { price_delta: Number(e.target.value) })}
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[11px] text-muted-foreground mb-1">
+                            Preço fixo desta opção (R$) — opcional
+                          </label>
+                          <input
+                            className={input}
+                            type="number"
+                            step="0.01"
+                            placeholder="Deixe vazio para usar o preço do produto"
+                            value={o.price_override}
+                            onChange={(e) => patchOption(gi, oi, { price_override: e.target.value })}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        {([
+                          ["weight_g", "Peso (g)"],
+                          ["height_cm", "Altura (cm)"],
+                          ["width_cm", "Largura (cm)"],
+                          ["length_cm", "Comprimento (cm)"],
+                        ] as [keyof VariantOptionForm, string][]).map(([key, label]) => (
+                          <div key={key}>
+                            <label className="block text-[11px] text-muted-foreground mb-1">{label}</label>
+                            <input
+                              className={input}
+                              type="number"
+                              step="0.01"
+                              placeholder="Padrão do produto"
+                              value={o[key] as string}
+                              onChange={(e) => patchOption(gi, oi, { [key]: e.target.value } as Partial<VariantOptionForm>)}
+                            />
+                          </div>
+                        ))}
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] text-muted-foreground mb-1">
+                          Fotos desta opção (opcional)
+                        </label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          disabled={uploading}
+                          onChange={(e) => handleOptionUpload(gi, oi, e.target.files)}
+                          className="text-xs"
+                        />
+                        {o.image_urls.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            {o.image_urls.map((url, ii) => (
+                              <div key={url + ii} className="relative">
+                                <img src={url} alt="" className="h-14 w-14 rounded object-cover border border-border" />
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    patchOption(gi, oi, { image_urls: o.image_urls.filter((_, k) => k !== ii) })
+                                  }
+                                  className="absolute -top-1 -right-1 bg-background border border-border rounded-full p-0.5"
+                                  aria-label="Remover foto"
+                                >
+                                  <Trash2 className="h-3 w-3" />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setVariantGroups(
+                        variantGroups.map((x, i) => (i === gi ? { ...x, options: [...x.options, emptyOption()] } : x)),
+                      )
+                    }
+                    className="text-xs text-primary"
+                  >
+                    + adicionar opção
+                  </button>
                 </div>
               ))}
             </div>

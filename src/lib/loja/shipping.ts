@@ -26,9 +26,15 @@ export const isValidCep = (value: string) => /^[0-9]{8}$/.test(normalizeCep(valu
 export class ShippingError extends Error {}
 
 /** Cotação real de frete. Peso, medidas e preços são lidos no backend. */
+export interface QuoteRequestItem {
+  product_id: string;
+  quantity: number;
+  variant_option_ids?: string[];
+}
+
 export async function quoteShipping(
   destinationCep: string,
-  items: { product_id: string; quantity: number }[],
+  items: QuoteRequestItem[],
 ): Promise<QuoteResult> {
   if (!isValidCep(destinationCep)) throw new ShippingError("Informe um CEP válido.");
   if (items.length === 0) throw new ShippingError("Nenhum item para cotar.");

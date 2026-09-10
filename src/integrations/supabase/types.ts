@@ -389,6 +389,7 @@ export type Database = {
           requires_artwork: boolean
           sku: string | null
           unit_price: number
+          variants: Json
         }
         Insert: {
           base_price?: number | null
@@ -406,6 +407,7 @@ export type Database = {
           requires_artwork?: boolean
           sku?: string | null
           unit_price: number
+          variants?: Json
         }
         Update: {
           base_price?: number | null
@@ -423,6 +425,7 @@ export type Database = {
           requires_artwork?: boolean
           sku?: string | null
           unit_price?: number
+          variants?: Json
         }
         Relationships: [
           {
@@ -833,6 +836,97 @@ export type Database = {
             columns: ["segment_id"]
             isOneToOne: false
             referencedRelation: "segments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_variant_options: {
+        Row: {
+          available: boolean
+          created_at: string
+          height_cm: number | null
+          id: string
+          image_urls: string[]
+          label: string
+          length_cm: number | null
+          price_delta: number
+          price_override: number | null
+          sort_order: number
+          variant_id: string
+          weight_g: number | null
+          width_cm: number | null
+        }
+        Insert: {
+          available?: boolean
+          created_at?: string
+          height_cm?: number | null
+          id?: string
+          image_urls?: string[]
+          label: string
+          length_cm?: number | null
+          price_delta?: number
+          price_override?: number | null
+          sort_order?: number
+          variant_id: string
+          weight_g?: number | null
+          width_cm?: number | null
+        }
+        Update: {
+          available?: boolean
+          created_at?: string
+          height_cm?: number | null
+          id?: string
+          image_urls?: string[]
+          label?: string
+          length_cm?: number | null
+          price_delta?: number
+          price_override?: number | null
+          sort_order?: number
+          variant_id?: string
+          weight_g?: number | null
+          width_cm?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_variant_options_variant_id_fkey"
+            columns: ["variant_id"]
+            isOneToOne: false
+            referencedRelation: "product_variants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_variants: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          product_id: string
+          required: boolean
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          product_id: string
+          required?: boolean
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          product_id?: string
+          required?: boolean
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_variants_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
             referencedColumns: ["id"]
           },
         ]

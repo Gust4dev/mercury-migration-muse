@@ -8,7 +8,7 @@ import MercadoPagoCheckout from "@/components/loja/MercadoPagoCheckout";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/loja/useAuth";
-import { useCart } from "@/lib/loja/cart";
+import { useCart, variantOptionIds } from "@/lib/loja/cart";
 import { brl, formatCep } from "@/lib/loja/pricing";
 import { getSavedCep, isCepComplete, lookupCep, saveCep } from "@/lib/loja/cep";
 import { normalizeCep, type QuoteOption, type QuoteResult } from "@/lib/loja/shipping";
@@ -182,6 +182,7 @@ const CheckoutPage = () => {
             product_id: i.productId,
             quantity: i.quantity,
             customization: i.customization,
+            variant_option_ids: variantOptionIds(i),
           })),
         },
       });
@@ -352,7 +353,11 @@ const CheckoutPage = () => {
                 <ShippingCalculator
                   title="Opções de entrega"
                   selectable
-                  items={items.map((i) => ({ product_id: i.productId, quantity: i.quantity }))}
+                  items={items.map((i) => ({
+                    product_id: i.productId,
+                    quantity: i.quantity,
+                    variant_option_ids: variantOptionIds(i),
+                  }))}
                   initialCep={form.cep}
                   selectedServiceId={selectedOption?.serviceId ?? null}
                   onQuote={setQuote}
@@ -416,8 +421,15 @@ const CheckoutPage = () => {
           <div className="space-y-2 max-h-60 overflow-y-auto">
             {items.map((i) => (
               <div key={i.key} className="flex justify-between text-sm gap-2">
-                <span className="text-muted-foreground line-clamp-1">
-                  {i.quantity}x {i.name}
+                <span className="text-muted-foreground">
+                  <span className="line-clamp-1">
+                    {i.quantity}x {i.name}
+                  </span>
+                  {(i.variants ?? []).length > 0 && (
+                    <span className="block text-[11px]">
+                      {(i.variants ?? []).map((v) => `${v.variant}: ${v.option}`).join(" · ")}
+                    </span>
+                  )}
                 </span>
                 <span>{brl(i.unitPrice * i.quantity)}</span>
               </div>
