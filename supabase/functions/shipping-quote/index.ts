@@ -103,6 +103,21 @@ Deno.serve(async (req) => {
       .filter((o) => !disabled.has(o.serviceId))
       .map((o) => ({ ...o, price: Number((o.price * (1 + markup / 100)).toFixed(2)) }));
 
+    // Entrega grátis local: qualquer CEP 75xxx (Anápolis/GO e região) recebe a opção gratuita,
+    // já em primeiro lugar e pré-selecionada no checkout.
+    if (settings.free_shipping_local && cep.startsWith("75")) {
+      finalOptions.unshift({
+        id: "local-free",
+        provider: "melhor_envio",
+        carrier: "Mercury",
+        service: "Entrega grátis — Anápolis/GO e região",
+        serviceId: "local-free",
+        price: 0,
+        daysMin: 1,
+        daysMax: 2,
+      });
+    }
+
     if (finalOptions.length === 0) {
       return json(
         { error: "no_services", message: "Nenhuma transportadora atende este CEP no momento." },
