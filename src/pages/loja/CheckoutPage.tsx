@@ -182,6 +182,7 @@ const CheckoutPage = () => {
             product_id: i.productId,
             quantity: i.quantity,
             customization: i.customization,
+            variant_option_ids: variantOptionIds(i),
           })),
         },
       });
@@ -352,7 +353,11 @@ const CheckoutPage = () => {
                 <ShippingCalculator
                   title="Opções de entrega"
                   selectable
-                  items={items.map((i) => ({ product_id: i.productId, quantity: i.quantity }))}
+                  items={items.map((i) => ({
+                    product_id: i.productId,
+                    quantity: i.quantity,
+                    variant_option_ids: variantOptionIds(i),
+                  }))}
                   initialCep={form.cep}
                   selectedServiceId={selectedOption?.serviceId ?? null}
                   onQuote={setQuote}
