@@ -22,6 +22,35 @@ interface Tier { min_qty: number; max_qty: number | null; unit_price: number }
 interface Field { label: string; field_key: string; field_type: string; required: boolean; options: string; help_text: string }
 interface ImageRow { url: string; alt: string }
 
+interface VariantOptionForm {
+  label: string;
+  price_delta: number;
+  price_override: string;
+  available: boolean;
+  weight_g: string;
+  width_cm: string;
+  height_cm: string;
+  length_cm: string;
+  image_urls: string[];
+}
+interface VariantForm {
+  name: string;
+  required: boolean;
+  options: VariantOptionForm[];
+}
+
+const emptyOption = (): VariantOptionForm => ({
+  label: "",
+  price_delta: 0,
+  price_override: "",
+  available: true,
+  weight_g: "",
+  width_cm: "",
+  height_cm: "",
+  length_cm: "",
+  image_urls: [],
+});
+
 const emptyForm = {
   id: "",
   name: "",
