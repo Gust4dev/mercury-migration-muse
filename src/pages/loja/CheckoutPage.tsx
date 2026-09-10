@@ -165,9 +165,9 @@ const CheckoutPage = () => {
             city: form.city,
             state: form.state,
           },
-          delivery_method: delivery,
-          quote_id: delivery === "shipping" ? quote?.quote_id : null,
-          shipping_service_id: delivery === "shipping" ? selectedOption?.serviceId : null,
+          delivery_method: "shipping",
+          quote_id: quote?.quote_id,
+          shipping_service_id: selectedOption?.serviceId,
           coupon_code: coupon?.code ?? null,
           payment_method: "pix",
           notes: form.notes,
@@ -203,10 +203,7 @@ const CheckoutPage = () => {
         subtotal: Number(data.subtotal ?? subtotal),
         discount: Number(data.discount ?? discount),
         shipping: Number(data.shipping_cost ?? shippingCost),
-        deliveryLabel:
-          delivery === "local"
-            ? "Entrega grátis em Anápolis/GO"
-            : `${selectedOption?.carrier ?? ""} ${selectedOption?.service ?? ""}`.trim(),
+        deliveryLabel: `${selectedOption?.carrier ?? ""} ${selectedOption?.service ?? ""}`.trim(),
         addressLabel: [form.street, form.number, form.district, form.city, form.state].filter(Boolean).join(", "),
         document: form.document,
       });
