@@ -86,6 +86,7 @@ const AdminProdutos = () => {
   const [images, setImages] = useState<ImageRow[]>([]);
   const [tiers, setTiers] = useState<Tier[]>([]);
   const [fields, setFields] = useState<Field[]>([]);
+  const [variantGroups, setVariantGroups] = useState<VariantForm[]>([]);
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [segments, setSegments] = useState<{ id: string; name: string }[]>([]);
   const [selCats, setSelCats] = useState<string[]>([]);
@@ -112,6 +113,7 @@ const AdminProdutos = () => {
     setImages([]);
     setTiers([]);
     setFields([]);
+    setVariantGroups([]);
     setSelCats([]);
     setSelSegs([]);
     setOpen(true);
@@ -121,7 +123,7 @@ const AdminProdutos = () => {
     const { data } = await supabase
       .from("products")
       .select(
-        "*,product_images(url,alt,sort_order),quantity_pricing(min_qty,max_qty,unit_price),customization_fields(label,field_key,field_type,required,options,help_text,sort_order),product_categories(category_id),product_segments(segment_id)",
+        "*,product_images(url,alt,sort_order),quantity_pricing(min_qty,max_qty,unit_price),customization_fields(label,field_key,field_type,required,options,help_text,sort_order),product_variants(name,required,sort_order,product_variant_options(label,price_delta,price_override,available,weight_g,width_cm,height_cm,length_cm,image_urls,sort_order)),product_categories(category_id),product_segments(segment_id)",
       )
       .eq("id", id)
       .maybeSingle();
