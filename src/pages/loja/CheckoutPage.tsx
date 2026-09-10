@@ -93,9 +93,9 @@ const CheckoutPage = () => {
 
   // Endereço alterado invalida a cotação anterior.
   const cepMismatch =
-    delivery === "shipping" && !!quote && normalizeCep(form.cep) !== quotedCep && normalizeCep(form.cep).length === 8;
+    !!quote && normalizeCep(form.cep) !== quotedCep && normalizeCep(form.cep).length === 8;
 
-  const shippingCost = delivery === "local" || coupon?.freeShipping ? 0 : selectedOption?.price ?? 0;
+  const shippingCost = coupon?.freeShipping ? 0 : selectedOption?.price ?? 0;
   const discount = coupon?.discount ?? 0;
   const total = Math.max(0, subtotal - discount) + shippingCost;
 
@@ -138,22 +138,16 @@ const CheckoutPage = () => {
       toast({ title: "Dados incompletos", description: "Informe nome e e-mail.", variant: "destructive" });
       return;
     }
-    if (delivery === "shipping") {
-      if (!form.cep || !form.street || !form.city || !form.state) {
-        toast({ title: "Endereço incompleto", description: "Preencha o endereço de entrega.", variant: "destructive" });
-        return;
-      }
-      if (!quote || !selectedOption || cepMismatch) {
-        toast({
-          title: "Escolha a entrega",
-          description: "Calcule o frete para o CEP informado e selecione uma opção.",
-          variant: "destructive",
-        });
-        return;
-      }
+    if (!form.cep || !form.street || !form.city || !form.state) {
+      toast({ title: "Endereço incompleto", description: "Preencha o endereço de entrega.", variant: "destructive" });
+      return;
     }
-    if (delivery === "local" && !form.street.trim()) {
-      toast({ title: "Endereço incompleto", description: "Informe o endereço da entrega em Anápolis.", variant: "destructive" });
+    if (!quote || !selectedOption || cepMismatch) {
+      toast({
+        title: "Escolha a entrega",
+        description: "Calcule o frete para o CEP informado e selecione uma opção.",
+        variant: "destructive",
+      });
       return;
     }
 
