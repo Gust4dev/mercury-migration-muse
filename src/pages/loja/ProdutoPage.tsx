@@ -396,16 +396,22 @@ const ProdutoPage = () => {
             </div>
 
             <div className="mt-5">
-              <ShippingCalculator
-                items={[
-                  {
-                    product_id: product.id,
-                    quantity: qty,
-                    variant_option_ids: pendingVariant ? [] : selectedOptions.map((o) => o.id),
-                  },
-                ]}
-                title="Frete e prazo de entrega"
-              />
+              {pendingVariant ? (
+                <p className="text-xs text-muted-foreground">
+                  Escolha as opções do produto para calcularmos o frete.
+                </p>
+              ) : (
+                <ShippingCalculator
+                  items={[
+                    {
+                      product_id: product.id,
+                      quantity: qty,
+                      variant_option_ids: selectedOptions.map((o) => o.id),
+                    },
+                  ]}
+                  title="Frete e prazo de entrega"
+                />
+              )}
             </div>
 
           </div>
