@@ -64,7 +64,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   }, [items]);
 
   const addItem = useCallback((item: Omit<CartItem, "key">) => {
-    const key = makeKey(item.productId, item.customization);
+    const key = makeKey(item.productId, item.customization, item.variants);
     setItems((prev) => {
       const existing = prev.find((i) => i.key === key);
       if (existing) {
