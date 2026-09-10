@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles, Truck, ShieldCheck, Store } from "lucide-react";
+import { ArrowRight, Store } from "lucide-react";
 import SEO from "@/components/SEO";
 import LojaLayout from "@/components/loja/LojaLayout";
 import ProductCard from "@/components/loja/ProductCard";
