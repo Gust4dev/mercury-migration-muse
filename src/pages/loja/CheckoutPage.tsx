@@ -9,7 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/loja/useAuth";
 import { useCart } from "@/lib/loja/cart";
-import { brl, formatCep, onlyDigits } from "@/lib/loja/pricing";
+import { brl, formatCep } from "@/lib/loja/pricing";
+import { getSavedCep, isCepComplete, lookupCep, saveCep } from "@/lib/loja/cep";
 import { normalizeCep, type QuoteOption, type QuoteResult } from "@/lib/loja/shipping";
 
 interface CreatedOrder {
