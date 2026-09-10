@@ -413,13 +413,13 @@ const CheckoutPage = () => {
               <span className="text-muted-foreground">
                 Frete {selectedOption ? `· ${selectedOption.carrier} ${selectedOption.service}` : ""}
               </span>
-              <span>{delivery === "local" ? "Grátis" : shippingCost ? brl(shippingCost) : "—"}</span>
+              <span>{selectedOption ? (shippingCost === 0 ? "Grátis" : brl(shippingCost)) : "—"}</span>
             </div>
             <div className="flex justify-between font-bold text-lg pt-2">
               <span>Total</span>
               <span className="text-primary">{brl(total)}</span>
             </div>
-            {delivery === "shipping" && selectedOption && (
+            {selectedOption && (
               <div className="text-[11px] text-muted-foreground pt-1">
                 Produção até {quote?.production_days ?? maxProductionDays} dia(s) úteis + entrega em{" "}
                 {selectedOption.daysMin}–{selectedOption.daysMax} dia(s) úteis.
