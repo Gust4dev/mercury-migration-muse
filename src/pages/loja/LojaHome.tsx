@@ -91,19 +91,6 @@ const LojaHome = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-8">
-            {[
-              { icon: Sparkles, title: "Personalização real", text: "Logo, cores, QR Code e dados da sua empresa." },
-              { icon: Truck, title: "Frete calculado", text: "Estimativa por CEP e entrega grátis em Anápolis/GO." },
-              { icon: ShieldCheck, title: "Aprovação de arte", text: "Você aprova o layout antes da produção." },
-            ].map((f) => (
-              <div key={f.title} className="rounded-lg border border-border bg-card p-4">
-                <f.icon className="h-5 w-5 text-primary" />
-                <div className="font-semibold text-sm mt-2">{f.title}</div>
-                <div className="text-xs text-muted-foreground mt-1">{f.text}</div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
