@@ -1,5 +1,12 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
+export interface CartItemVariant {
+  variantId: string;
+  variant: string;
+  optionId: string;
+  option: string;
+}
+
 export interface CartItem {
   key: string;
   productId: string;
@@ -13,6 +20,8 @@ export interface CartItem {
   requiresArtwork: boolean;
   weightGrams: number;
   customization: Record<string, string>;
+  /** Variações escolhidas pelo cliente (vazio em produtos sem variações). */
+  variants?: CartItemVariant[];
 }
 
 interface CartContextValue {
@@ -30,8 +39,11 @@ interface CartContextValue {
 const STORAGE_KEY = "mercury-loja-cart-v1";
 const CartContext = createContext<CartContextValue | null>(null);
 
-const makeKey = (productId: string, customization: Record<string, string>) =>
-  `${productId}::${JSON.stringify(customization ?? {})}`;
+export const variantOptionIds = (item: { variants?: CartItemVariant[] }) =>
+  (item.variants ?? []).map((v) => v.optionId);
+
+const makeKey = (productId: string, customization: Record<string, string>, variants?: CartItemVariant[]) =>
+  `${productId}::${JSON.stringify(customization ?? {})}::${variantOptionIds({ variants }).sort().join(",")}`;
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>(() => {
