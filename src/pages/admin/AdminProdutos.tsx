@@ -208,6 +208,39 @@ const AdminProdutos = () => {
     }
   };
 
+  const patchOption = (gi: number, oi: number, patch: Partial<VariantOptionForm>) =>
+    setVariantGroups((gs) =>
+      gs.map((g, i) =>
+        i === gi ? { ...g, options: g.options.map((o, j) => (j === oi ? { ...o, ...patch } : o)) } : g,
+      ),
+    );
+
+  const handleOptionUpload = async (gi: number, oi: number, files: FileList | null) => {
+    if (!files?.length) return;
+    setUploading(true);
+    try {
+      const urls: string[] = [];
+      for (const file of Array.from(files)) {
+        const { url } = await uploadLojaImage(file);
+        urls.push(url);
+      }
+      setVariantGroups((gs) =>
+        gs.map((g, i) =>
+          i === gi
+            ? {
+                ...g,
+                options: g.options.map((o, j) => (j === oi ? { ...o, image_urls: [...o.image_urls, ...urls] } : o)),
+              }
+            : g,
+        ),
+      );
+    } catch (err) {
+      toast({ title: "Erro no upload", description: err instanceof Error ? err.message : "Tente novamente.", variant: "destructive" });
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const save = async (e: React.FormEvent) => {
     e.preventDefault();
     // Sem peso e medidas reais o frete não pode ser calculado.
