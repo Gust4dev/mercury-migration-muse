@@ -388,15 +388,22 @@ const ProdutoPage = () => {
               </div>
               <button
                 onClick={handleAdd}
-                className="flex-1 h-11 rounded-md bg-primary text-primary-foreground font-bold hover:opacity-90"
+                disabled={!!pendingVariant}
+                className="flex-1 h-11 rounded-md bg-primary text-primary-foreground font-bold hover:opacity-90 disabled:opacity-50"
               >
-                Adicionar ao carrinho
+                {pendingVariant ? `Escolha: ${pendingVariant}` : "Adicionar ao carrinho"}
               </button>
             </div>
 
             <div className="mt-5">
               <ShippingCalculator
-                items={[{ product_id: product.id, quantity: qty }]}
+                items={[
+                  {
+                    product_id: product.id,
+                    quantity: qty,
+                    variant_option_ids: pendingVariant ? [] : selectedOptions.map((o) => o.id),
+                  },
+                ]}
                 title="Frete e prazo de entrega"
               />
             </div>
