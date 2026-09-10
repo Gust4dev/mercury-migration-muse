@@ -8,6 +8,14 @@ import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/lib/loja/cart";
 import { brl, unitPriceFor } from "@/lib/loja/pricing";
 import { fetchApprovedReviews, fetchProductBySlug } from "@/lib/loja/queries";
+import {
+  basePriceWithVariants,
+  missingRequiredVariant,
+  sortVariants,
+  variantImages,
+  type ProductVariant,
+  type VariantOption,
+} from "@/lib/loja/variants";
 
 
 type Product = Awaited<ReturnType<typeof fetchProductBySlug>>;
