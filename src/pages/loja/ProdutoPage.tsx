@@ -48,12 +48,37 @@ const ProdutoPage = () => {
       .finally(() => setLoading(false));
   }, [slug]);
 
-  const images = useMemo(
+  const variants = useMemo(
+    () => sortVariants(product?.product_variants as ProductVariant[] | undefined),
+    [product],
+  );
+
+  const selectedOptions = useMemo(
+    () =>
+      variants
+        .map((v) => v.product_variant_options.find((o) => o.id === selection[v.id]))
+        .filter(Boolean) as VariantOption[],
+    [variants, selection],
+  );
+
+  const baseImages = useMemo(
     () => [...((product?.product_images as { url: string; alt: string | null; sort_order: number }[]) || [])].sort(
       (a, b) => a.sort_order - b.sort_order,
     ),
     [product],
   );
+
+  // Imagens da opção escolhida; sem imagens específicas, mantém as do produto.
+  const images = useMemo(() => {
+    const specific = variantImages(selectedOptions);
+    return specific.length
+      ? specific.map((url, i) => ({ url, alt: null as string | null, sort_order: i }))
+      : baseImages;
+  }, [selectedOptions, baseImages]);
+
+  useEffect(() => {
+    setActiveImage(0);
+  }, [images]);
 
   const tiers = useMemo(
     () =>
