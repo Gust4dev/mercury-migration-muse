@@ -46,9 +46,9 @@ Deno.serve(async (req) => {
 
     const loaded = await loadItems(supabase, Array.isArray(body?.items) ? body.items : []);
     if ("error" in loaded) return json(loaded.error, 400);
-    const { items, products } = loaded;
+    const { items, products, lines } = loaded;
 
-    const priced = await priceItems(supabase, items, products);
+    const priced = await priceItems(supabase, lines);
     const subtotal = Number(priced.reduce((s, p) => s + p.lineTotal, 0).toFixed(2));
     const settings = await loadSettings(supabase);
 
