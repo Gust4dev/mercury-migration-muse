@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Loader2, RefreshCw, Truck } from "lucide-react";
 import { brl, formatCep } from "@/lib/loja/pricing";
+import { getSavedCep, isCepComplete, saveCep } from "@/lib/loja/cep";
 import { quoteShipping, ShippingError, type QuoteOption, type QuoteResult } from "@/lib/loja/shipping";
 
 interface Props {
@@ -24,42 +25,59 @@ const ShippingCalculator = ({
   onSelect,
   onCepChange,
 }: Props) => {
-  const [cep, setCep] = useState(formatCep(initialCep));
+  const [cep, setCep] = useState(formatCep(initialCep || getSavedCep()));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [quote, setQuote] = useState<QuoteResult | null>(null);
 
-  // Alterou itens/quantidade -> a cotação anterior deixa de valer.
-  const signature = items.map((i) => `${i.product_id}:${i.quantity}`).sort().join("|");
+  // Sincroniza quando a página dona do estado altera o CEP.
   useEffect(() => {
-    setQuote(null);
-    setError(null);
-    onQuote?.(null);
-    onSelect?.(null);
+    if (initialCep && formatCep(initialCep) !== cep) setCep(formatCep(initialCep));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [signature]);
+  }, [initialCep]);
 
-  const calculate = async () => {
-    if (loading) return;
+  const signature = items.map((i) => `${i.product_id}:${i.quantity}`).sort().join("|");
+  const requestId = useRef(0);
+
+  const calculate = async (targetCep: string) => {
+    const id = ++requestId.current;
     setLoading(true);
     setError(null);
     try {
-      const result = await quoteShipping(cep, items);
-      localStorage.setItem("mercury-loja-cep", cep);
+      const result = await quoteShipping(targetCep, items);
+      if (id !== requestId.current) return;
+      saveCep(targetCep);
       setQuote(result);
       onQuote?.(result);
-      onCepChange?.(cep);
+      onCepChange?.(formatCep(targetCep));
       if (selectable) onSelect?.(result.options[0] ?? null);
       if (result.options.length === 0) setError("Nenhuma transportadora atende este CEP no momento.");
     } catch (err) {
+      if (id !== requestId.current) return;
       setQuote(null);
       onQuote?.(null);
       onSelect?.(null);
       setError(err instanceof ShippingError ? err.message : "Não foi possível calcular a entrega neste momento.");
     } finally {
-      setLoading(false);
+      if (id === requestId.current) setLoading(false);
     }
   };
+
+  // Cotação automática: CEP válido + itens definidos.
+  useEffect(() => {
+    // Qualquer mudança invalida a cotação anterior.
+    requestId.current++;
+    setQuote(null);
+    setError(null);
+    onQuote?.(null);
+    onSelect?.(null);
+    setLoading(false);
+
+    if (!isCepComplete(cep) || items.length === 0) return;
+    const t = setTimeout(() => calculate(cep), 600);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cep, signature]);
 
   return (
     <div className="rounded-lg border border-border bg-card p-4">
@@ -70,30 +88,28 @@ const ShippingCalculator = ({
       <div className="flex gap-2 mt-2">
         <input
           value={cep}
-          onChange={(e) => {
-            setCep(formatCep(e.target.value));
-            setQuote(null);
-            onQuote?.(null);
-            onSelect?.(null);
-          }}
+          onChange={(e) => setCep(formatCep(e.target.value))}
           placeholder="00000-000"
           inputMode="numeric"
           aria-label="CEP de entrega"
           className="flex-1 h-11 px-3 rounded bg-secondary border border-border text-sm"
         />
-        <button
-          type="button"
-          onClick={calculate}
-          disabled={loading}
-          className="h-11 px-4 rounded border border-border text-sm font-semibold disabled:opacity-60"
-        >
-          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Calcular"}
-        </button>
+        {loading && (
+          <div className="h-11 w-11 grid place-items-center text-muted-foreground">
+            <Loader2 className="h-4 w-4 animate-spin" />
+          </div>
+        )}
       </div>
+
+      {!loading && !error && !quote && !isCepComplete(cep) && (
+        <p className="mt-2 text-[11px] text-muted-foreground">
+          Informe o CEP e calculamos a entrega automaticamente.
+        </p>
+      )}
 
       {loading && (
         <div className="mt-3 space-y-2" aria-live="polite">
-          <p className="text-xs text-muted-foreground">Calculando as melhores opções de entrega...</p>
+          <p className="text-xs text-muted-foreground">Calculando opções de entrega...</p>
           {[0, 1].map((i) => (
             <div key={i} className="h-12 rounded bg-secondary animate-pulse" />
           ))}
@@ -105,7 +121,7 @@ const ShippingCalculator = ({
           <p>{error}</p>
           <button
             type="button"
-            onClick={calculate}
+            onClick={() => calculate(cep)}
             className="inline-flex items-center gap-1.5 h-9 px-3 rounded border border-border"
           >
             <RefreshCw className="h-3.5 w-3.5" /> Tentar novamente

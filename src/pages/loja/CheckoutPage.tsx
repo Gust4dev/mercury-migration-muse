@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { MapPin, Truck } from "lucide-react";
 import SEO from "@/components/SEO";
@@ -9,7 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/loja/useAuth";
 import { useCart } from "@/lib/loja/cart";
-import { brl, formatCep, onlyDigits } from "@/lib/loja/pricing";
+import { brl, formatCep } from "@/lib/loja/pricing";
+import { getSavedCep, isCepComplete, lookupCep, saveCep } from "@/lib/loja/cep";
 import { normalizeCep, type QuoteOption, type QuoteResult } from "@/lib/loja/shipping";
 
 interface CreatedOrder {
@@ -35,7 +36,7 @@ const CheckoutPage = () => {
     email: "",
     phone: "",
     document: "",
-    cep: localStorage.getItem("mercury-loja-cep") ?? "",
+    cep: getSavedCep(),
     street: "",
     number: "",
     complement: "",
@@ -51,33 +52,47 @@ const CheckoutPage = () => {
   const [coupon, setCoupon] = useState<{ code: string; discount: number; freeShipping: boolean } | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [created, setCreated] = useState<CreatedOrder | null>(null);
+  const [cepStatus, setCepStatus] = useState<"idle" | "loading" | "done" | "notfound">("idle");
+  const [quotedCep, setQuotedCep] = useState("");
+  const lastLookup = useRef("");
 
 
   useEffect(() => {
     if (user) setForm((f) => ({ ...f, email: f.email || user.email || "" }));
   }, [user]);
 
-  const lookupCep = async (value: string) => {
-    const digits = onlyDigits(value);
-    if (digits.length !== 8) return;
-    try {
-      const res = await fetch(`https://viacep.com.br/ws/${digits}/json/`);
-      const data = await res.json();
-      if (data.erro) return;
+  // Consulta o ViaCEP automaticamente assim que o CEP fica completo.
+  useEffect(() => {
+    if (!isCepComplete(form.cep)) {
+      setCepStatus("idle");
+      return;
+    }
+    if (normalizeCep(form.cep) === lastLookup.current) return;
+    lastLookup.current = normalizeCep(form.cep);
+    let active = true;
+    setCepStatus("loading");
+    lookupCep(form.cep).then((address) => {
+      if (!active) return;
+      if (!address) {
+        setCepStatus("notfound");
+        return;
+      }
+      setCepStatus("done");
+      saveCep(form.cep);
       setForm((f) => ({
         ...f,
-        street: data.logradouro || f.street,
-        district: data.bairro || f.district,
-        city: data.localidade || f.city,
-        state: data.uf || f.state,
+        street: address.street || f.street,
+        district: address.district || f.district,
+        city: address.city || f.city,
+        state: address.state || f.state,
       }));
-    } catch {
-      /* o cliente pode preencher manualmente */
-    }
-  };
+    });
+    return () => {
+      active = false;
+    };
+  }, [form.cep]);
 
   // Endereço alterado invalida a cotação anterior.
-  const quotedCep = quote ? normalizeCep(localStorage.getItem("mercury-loja-cep") ?? "") : "";
   const cepMismatch =
     delivery === "shipping" && !!quote && normalizeCep(form.cep) !== quotedCep && normalizeCep(form.cep).length === 8;
 
@@ -314,8 +329,8 @@ const CheckoutPage = () => {
                       setForm({ ...form, cep: formatCep(e.target.value) });
                       setQuote(null);
                       setSelectedOption(null);
+                      setQuotedCep("");
                     }}
-                    onBlur={(e) => lookupCep(e.target.value)}
                   />
                   <input className={`${input} sm:col-span-2`} placeholder="Rua *" value={form.street} onChange={(e) => setForm({ ...form, street: e.target.value })} />
                   <input className={input} placeholder="Número" value={form.number} onChange={(e) => setForm({ ...form, number: e.target.value })} />
@@ -325,8 +340,17 @@ const CheckoutPage = () => {
                   <input className={input} placeholder="UF *" maxLength={2} value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value.toUpperCase() })} />
                 </div>
 
+                {cepStatus === "loading" && (
+                  <p className="text-[11px] text-muted-foreground">Buscando endereço...</p>
+                )}
+                {cepStatus === "notfound" && (
+                  <p className="text-[11px] text-muted-foreground">
+                    Não encontramos esse CEP. Você pode preencher o endereço manualmente.
+                  </p>
+                )}
+
                 <ShippingCalculator
-                  title="Calcular entrega"
+                  title="Opções de entrega"
                   selectable
                   items={items.map((i) => ({ product_id: i.productId, quantity: i.quantity }))}
                   initialCep={form.cep}
@@ -335,13 +359,13 @@ const CheckoutPage = () => {
                   onSelect={setSelectedOption}
                   onCepChange={(cep) => {
                     setForm((f) => ({ ...f, cep }));
-                    lookupCep(cep);
+                    setQuotedCep(normalizeCep(cep));
                   }}
                 />
 
                 {cepMismatch && (
                   <p className="text-[11px] text-destructive">
-                    O CEP do endereço mudou. Calcule a entrega novamente antes de finalizar.
+                    O CEP do endereço mudou. Aguarde o novo cálculo da entrega antes de finalizar.
                   </p>
                 )}
               </div>
