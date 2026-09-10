@@ -421,8 +421,15 @@ const CheckoutPage = () => {
           <div className="space-y-2 max-h-60 overflow-y-auto">
             {items.map((i) => (
               <div key={i.key} className="flex justify-between text-sm gap-2">
-                <span className="text-muted-foreground line-clamp-1">
-                  {i.quantity}x {i.name}
+                <span className="text-muted-foreground">
+                  <span className="line-clamp-1">
+                    {i.quantity}x {i.name}
+                  </span>
+                  {(i.variants ?? []).length > 0 && (
+                    <span className="block text-[11px]">
+                      {(i.variants ?? []).map((v) => `${v.variant}: ${v.option}`).join(" · ")}
+                    </span>
+                  )}
                 </span>
                 <span>{brl(i.unitPrice * i.quantity)}</span>
               </div>

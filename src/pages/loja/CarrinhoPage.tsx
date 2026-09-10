@@ -4,7 +4,7 @@ import { ImageIcon, Minus, Plus, Trash2 } from "lucide-react";
 import SEO from "@/components/SEO";
 import LojaLayout from "@/components/loja/LojaLayout";
 import ShippingCalculator from "@/components/loja/ShippingCalculator";
-import { useCart } from "@/lib/loja/cart";
+import { useCart, variantOptionIds } from "@/lib/loja/cart";
 import { brl, unitPriceFor } from "@/lib/loja/pricing";
 import { getSavedCep } from "@/lib/loja/cep";
 import { supabase } from "@/integrations/supabase/client";
@@ -80,6 +80,15 @@ const CarrinhoPage = () => {
                     <Link to={`/loja/produto/${item.slug}`} className="text-sm font-medium hover:text-primary">
                       {item.name}
                     </Link>
+                    {(item.variants ?? []).length > 0 && (
+                      <ul className="text-[11px] text-muted-foreground mt-1 space-y-0.5">
+                        {(item.variants ?? []).map((v) => (
+                          <li key={v.variantId}>
+                            <span className="text-foreground/80">{v.variant}:</span> {v.option}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                     {Object.entries(item.customization || {}).filter(([, v]) => v).length > 0 && (
                       <ul className="text-[11px] text-muted-foreground mt-1 space-y-0.5">
                         {Object.entries(item.customization)
@@ -135,7 +144,11 @@ const CarrinhoPage = () => {
               <div className="mt-4">
                 <ShippingCalculator
                   title="Calcular entrega"
-                  items={items.map((i) => ({ product_id: i.productId, quantity: i.quantity }))}
+                  items={items.map((i) => ({
+                    product_id: i.productId,
+                    quantity: i.quantity,
+                    variant_option_ids: variantOptionIds(i),
+                  }))}
                   initialCep={cep}
                   onCepChange={setCep}
                 />
