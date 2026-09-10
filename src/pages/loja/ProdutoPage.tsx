@@ -303,7 +303,7 @@ const ProdutoPage = () => {
             <div className="mt-5">
               <ShippingCalculator
                 items={[{ product_id: product.id, quantity: qty }]}
-                initialCep={localStorage.getItem("mercury-loja-cep") ?? ""}
+                title="Frete e prazo de entrega"
               />
             </div>
 

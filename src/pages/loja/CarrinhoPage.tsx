@@ -6,12 +6,13 @@ import LojaLayout from "@/components/loja/LojaLayout";
 import ShippingCalculator from "@/components/loja/ShippingCalculator";
 import { useCart } from "@/lib/loja/cart";
 import { brl, unitPriceFor } from "@/lib/loja/pricing";
+import { getSavedCep } from "@/lib/loja/cep";
 import { supabase } from "@/integrations/supabase/client";
 
 const CarrinhoPage = () => {
   const { items, subtotal, maxProductionDays, updateQuantity, removeItem } = useCart();
   const navigate = useNavigate();
-  const [cep, setCep] = useState(localStorage.getItem("mercury-loja-cep") ?? "");
+  const [cep, setCep] = useState(getSavedCep());
 
   const [tiersByProduct, setTiersByProduct] = useState<
     Record<string, { min_qty: number; max_qty: number | null; unit_price: number }[]>
