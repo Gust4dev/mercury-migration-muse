@@ -648,6 +648,191 @@ const AdminProdutos = () => {
               ))}
             </div>
 
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <span className="font-semibold text-sm">Variações do produto</span>
+                <button
+                  type="button"
+                  onClick={() => setVariantGroups([...variantGroups, { name: "", required: true, options: [emptyOption()] }])}
+                  className="text-xs text-primary"
+                >
+                  + adicionar variação
+                </button>
+              </div>
+              <p className="text-xs text-muted-foreground mb-3">
+                Crie livremente o nome da variação (ex.: Tipo, Cor, Tamanho) e as opções que o cliente poderá escolher.
+                Produtos sem variações continuam funcionando normalmente.
+              </p>
+
+              {variantGroups.map((g, gi) => (
+                <div key={gi} className="rounded-lg border border-border p-3 mb-3 space-y-3">
+                  <div className="grid sm:grid-cols-[1fr_auto_auto] gap-2 items-center">
+                    <div>
+                      <label className="block text-[11px] text-muted-foreground mb-1">Nome da variação</label>
+                      <input
+                        className={input}
+                        placeholder="Ex.: Tipo"
+                        value={g.name}
+                        onChange={(e) =>
+                          setVariantGroups(variantGroups.map((x, i) => (i === gi ? { ...x, name: e.target.value } : x)))
+                        }
+                      />
+                    </div>
+                    <label className="flex items-center gap-1.5 text-xs mt-4">
+                      <input
+                        type="checkbox"
+                        checked={g.required}
+                        onChange={(e) =>
+                          setVariantGroups(variantGroups.map((x, i) => (i === gi ? { ...x, required: e.target.checked } : x)))
+                        }
+                        className="accent-[hsl(var(--primary))]"
+                      />
+                      Obrigatória
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setVariantGroups(variantGroups.filter((_, i) => i !== gi))}
+                      className="text-muted-foreground hover:text-destructive mt-4"
+                      aria-label="Remover variação"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+
+                  {g.options.map((o, oi) => (
+                    <div key={oi} className="rounded border border-border/60 p-2 space-y-2">
+                      <div className="grid sm:grid-cols-[1fr_auto_auto] gap-2 items-center">
+                        <div>
+                          <label className="block text-[11px] text-muted-foreground mb-1">Nome da opção</label>
+                          <input
+                            className={input}
+                            placeholder="Ex.: Parede"
+                            value={o.label}
+                            onChange={(e) => patchOption(gi, oi, { label: e.target.value })}
+                          />
+                        </div>
+                        <label className="flex items-center gap-1.5 text-xs mt-4">
+                          <input
+                            type="checkbox"
+                            checked={o.available}
+                            onChange={(e) => patchOption(gi, oi, { available: e.target.checked })}
+                            className="accent-[hsl(var(--primary))]"
+                          />
+                          Disponível
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setVariantGroups(
+                              variantGroups.map((x, i) =>
+                                i === gi ? { ...x, options: x.options.filter((_, j) => j !== oi) } : x,
+                              ),
+                            )
+                          }
+                          className="text-muted-foreground hover:text-destructive mt-4"
+                          aria-label="Remover opção"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+
+                      <div className="grid sm:grid-cols-2 gap-2">
+                        <div>
+                          <label className="block text-[11px] text-muted-foreground mb-1">Acréscimo no preço (R$)</label>
+                          <input
+                            className={input}
+                            type="number"
+                            step="0.01"
+                            value={o.price_delta}
+                            onChange={(e) => patchOption(gi, oi, { price_delta: Number(e.target.value) })}
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[11px] text-muted-foreground mb-1">
+                            Preço fixo desta opção (R$) — opcional
+                          </label>
+                          <input
+                            className={input}
+                            type="number"
+                            step="0.01"
+                            placeholder="Deixe vazio para usar o preço do produto"
+                            value={o.price_override}
+                            onChange={(e) => patchOption(gi, oi, { price_override: e.target.value })}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        {([
+                          ["weight_g", "Peso (g)"],
+                          ["height_cm", "Altura (cm)"],
+                          ["width_cm", "Largura (cm)"],
+                          ["length_cm", "Comprimento (cm)"],
+                        ] as [keyof VariantOptionForm, string][]).map(([key, label]) => (
+                          <div key={key}>
+                            <label className="block text-[11px] text-muted-foreground mb-1">{label}</label>
+                            <input
+                              className={input}
+                              type="number"
+                              step="0.01"
+                              placeholder="Padrão do produto"
+                              value={o[key] as string}
+                              onChange={(e) => patchOption(gi, oi, { [key]: e.target.value } as Partial<VariantOptionForm>)}
+                            />
+                          </div>
+                        ))}
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] text-muted-foreground mb-1">
+                          Fotos desta opção (opcional)
+                        </label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          disabled={uploading}
+                          onChange={(e) => handleOptionUpload(gi, oi, e.target.files)}
+                          className="text-xs"
+                        />
+                        {o.image_urls.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            {o.image_urls.map((url, ii) => (
+                              <div key={url + ii} className="relative">
+                                <img src={url} alt="" className="h-14 w-14 rounded object-cover border border-border" />
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    patchOption(gi, oi, { image_urls: o.image_urls.filter((_, k) => k !== ii) })
+                                  }
+                                  className="absolute -top-1 -right-1 bg-background border border-border rounded-full p-0.5"
+                                  aria-label="Remover foto"
+                                >
+                                  <Trash2 className="h-3 w-3" />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setVariantGroups(
+                        variantGroups.map((x, i) => (i === gi ? { ...x, options: [...x.options, emptyOption()] } : x)),
+                      )
+                    }
+                    className="text-xs text-primary"
+                  >
+                    + adicionar opção
+                  </button>
+                </div>
+              ))}
+            </div>
+
             <div className="flex gap-2">
               <button disabled={saving} className="h-11 px-6 rounded bg-primary text-primary-foreground font-bold disabled:opacity-60">
                 {saving ? "Salvando..." : "Salvar produto"}
