@@ -295,7 +295,14 @@ const ProdutoPage = () => {
                             key={o.id}
                             type="button"
                             disabled={!o.available}
-                            onClick={() => setSelection((s) => ({ ...s, [v.id]: o.id }))}
+                            onClick={() =>
+                              setSelection((s) => {
+                                const next = { ...s };
+                                if (next[v.id] === o.id) delete next[v.id];
+                                else next[v.id] = o.id;
+                                return next;
+                              })
+                            }
                             className={`px-4 h-11 rounded-md border text-sm transition-colors ${
                               active
                                 ? "border-primary text-primary bg-primary/10 font-semibold"
