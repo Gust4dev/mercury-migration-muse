@@ -120,7 +120,7 @@ const AdminPedidos = () => {
     setExpanded(expanded === id ? null : id);
     if (!items[id]) {
       const { data } = await supabase.from("order_items").select("*").eq("order_id", id);
-      setItems((p) => ({ ...p, [id]: (data as Item[]) ?? [] }));
+      setItems((p) => ({ ...p, [id]: (data as unknown as Item[]) ?? [] }));
     }
     if (!payments[id]) {
       const { data } = await supabase
