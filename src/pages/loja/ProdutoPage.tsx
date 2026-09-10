@@ -280,6 +280,46 @@ const ProdutoPage = () => {
               </div>
             )}
 
+            {variants.length > 0 && (
+              <div className="mt-5 space-y-4">
+                {variants.map((v) => (
+                  <div key={v.id}>
+                    <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
+                      {v.name} {v.required && <span className="text-primary">*</span>}
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {v.product_variant_options.map((o) => {
+                        const active = selection[v.id] === o.id;
+                        return (
+                          <button
+                            key={o.id}
+                            type="button"
+                            disabled={!o.available}
+                            onClick={() => setSelection((s) => ({ ...s, [v.id]: o.id }))}
+                            className={`px-4 h-11 rounded-md border text-sm transition-colors ${
+                              active
+                                ? "border-primary text-primary bg-primary/10 font-semibold"
+                                : "border-border text-foreground hover:border-primary/60"
+                            } ${o.available ? "" : "opacity-40 cursor-not-allowed line-through"}`}
+                          >
+                            {o.label}
+                            {Number(o.price_delta) > 0 && o.price_override == null && (
+                              <span className="ml-1 text-[11px] text-muted-foreground">
+                                +{brl(Number(o.price_delta))}
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+                {pendingVariant && (
+                  <p className="text-xs text-primary">Escolha uma opção de “{pendingVariant}” para continuar.</p>
+                )}
+              </div>
+            )}
+
             {fields.length > 0 && (
               <div className="mt-5 rounded-lg border border-border bg-card p-4 space-y-3">
                 <div className="font-semibold text-sm">Personalização</div>
