@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { MapPin, Truck } from "lucide-react";
 import SEO from "@/components/SEO";
@@ -36,7 +36,7 @@ const CheckoutPage = () => {
     email: "",
     phone: "",
     document: "",
-    cep: localStorage.getItem("mercury-loja-cep") ?? "",
+    cep: getSavedCep(),
     street: "",
     number: "",
     complement: "",
@@ -52,33 +52,47 @@ const CheckoutPage = () => {
   const [coupon, setCoupon] = useState<{ code: string; discount: number; freeShipping: boolean } | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [created, setCreated] = useState<CreatedOrder | null>(null);
+  const [cepStatus, setCepStatus] = useState<"idle" | "loading" | "done" | "notfound">("idle");
+  const [quotedCep, setQuotedCep] = useState("");
+  const lastLookup = useRef("");
 
 
   useEffect(() => {
     if (user) setForm((f) => ({ ...f, email: f.email || user.email || "" }));
   }, [user]);
 
-  const lookupCep = async (value: string) => {
-    const digits = onlyDigits(value);
-    if (digits.length !== 8) return;
-    try {
-      const res = await fetch(`https://viacep.com.br/ws/${digits}/json/`);
-      const data = await res.json();
-      if (data.erro) return;
+  // Consulta o ViaCEP automaticamente assim que o CEP fica completo.
+  useEffect(() => {
+    if (!isCepComplete(form.cep)) {
+      setCepStatus("idle");
+      return;
+    }
+    if (normalizeCep(form.cep) === lastLookup.current) return;
+    lastLookup.current = normalizeCep(form.cep);
+    let active = true;
+    setCepStatus("loading");
+    lookupCep(form.cep).then((address) => {
+      if (!active) return;
+      if (!address) {
+        setCepStatus("notfound");
+        return;
+      }
+      setCepStatus("done");
+      saveCep(form.cep);
       setForm((f) => ({
         ...f,
-        street: data.logradouro || f.street,
-        district: data.bairro || f.district,
-        city: data.localidade || f.city,
-        state: data.uf || f.state,
+        street: address.street || f.street,
+        district: address.district || f.district,
+        city: address.city || f.city,
+        state: address.state || f.state,
       }));
-    } catch {
-      /* o cliente pode preencher manualmente */
-    }
-  };
+    });
+    return () => {
+      active = false;
+    };
+  }, [form.cep]);
 
   // Endereço alterado invalida a cotação anterior.
-  const quotedCep = quote ? normalizeCep(localStorage.getItem("mercury-loja-cep") ?? "") : "";
   const cepMismatch =
     delivery === "shipping" && !!quote && normalizeCep(form.cep) !== quotedCep && normalizeCep(form.cep).length === 8;
 
