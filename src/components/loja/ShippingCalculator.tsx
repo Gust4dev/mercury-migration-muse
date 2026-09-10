@@ -2,10 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import { Loader2, RefreshCw, Truck } from "lucide-react";
 import { brl, formatCep } from "@/lib/loja/pricing";
 import { getSavedCep, isCepComplete, saveCep } from "@/lib/loja/cep";
-import { quoteShipping, ShippingError, type QuoteOption, type QuoteResult } from "@/lib/loja/shipping";
+import {
+  quoteShipping,
+  ShippingError,
+  type QuoteOption,
+  type QuoteRequestItem,
+  type QuoteResult,
+} from "@/lib/loja/shipping";
 
 interface Props {
-  items: { product_id: string; quantity: number }[];
+  items: QuoteRequestItem[];
   title?: string;
   selectable?: boolean;
   selectedServiceId?: string | null;
