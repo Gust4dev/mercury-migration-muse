@@ -50,10 +50,30 @@ Deno.serve(async (req) => {
     const productionDays = products.reduce((m, p) => Math.max(m, Number(p.production_days || 0)), 0);
     const requiresArtwork = products.some((p) => p.customizable);
 
+    // Entrega grátis local: qualquer CEP 75xxx (Anápolis/GO e região) recebe a opção gratuita
+    // em primeiro lugar (pré-selecionada no checkout).
+    const withLocalFree = (opts: Record<string, unknown>[]) => {
+      if (!settings.free_shipping_local || !cep.startsWith("75")) return opts;
+      if (opts.some((o) => o.serviceId === "local-free")) return opts;
+      return [
+        {
+          id: "local-free",
+          provider: "melhor_envio",
+          carrier: "Mercury",
+          service: "Entrega grátis — Anápolis/GO e região",
+          serviceId: "local-free",
+          price: 0,
+          daysMin: 1,
+          daysMax: 2,
+        },
+        ...opts,
+      ];
+    };
+
     if (cached && Array.isArray(cached.options) && cached.options.length > 0) {
       return json({
         quote_id: cached.id,
-        options: cached.options,
+        options: withLocalFree(cached.options),
         expires_at: cached.expires_at,
         production_days: productionDays + Number(settings.handling_days || 0),
         requires_artwork: requiresArtwork,
@@ -103,22 +123,10 @@ Deno.serve(async (req) => {
       .filter((o) => !disabled.has(o.serviceId))
       .map((o) => ({ ...o, price: Number((o.price * (1 + markup / 100)).toFixed(2)) }));
 
-    // Entrega grátis local: qualquer CEP 75xxx (Anápolis/GO e região) recebe a opção gratuita,
-    // já em primeiro lugar e pré-selecionada no checkout.
-    if (settings.free_shipping_local && cep.startsWith("75")) {
-      finalOptions.unshift({
-        id: "local-free",
-        provider: "melhor_envio",
-        carrier: "Mercury",
-        service: "Entrega grátis — Anápolis/GO e região",
-        serviceId: "local-free",
-        price: 0,
-        daysMin: 1,
-        daysMax: 2,
-      });
-    }
+    const withLocalFreeFinal = withLocalFree(finalOptions as Record<string, unknown>[]);
+    const storedOptions = withLocalFreeFinal;
 
-    if (finalOptions.length === 0) {
+    if (withLocalFreeFinal.length === 0) {
       return json(
         { error: "no_services", message: "Nenhuma transportadora atende este CEP no momento." },
         200,
