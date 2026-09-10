@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { MapPin, Truck } from "lucide-react";
+import { Truck } from "lucide-react";
 import SEO from "@/components/SEO";
 import LojaLayout from "@/components/loja/LojaLayout";
 import ShippingCalculator from "@/components/loja/ShippingCalculator";
@@ -45,7 +45,6 @@ const CheckoutPage = () => {
     state: "",
     notes: "",
   });
-  const [delivery, setDelivery] = useState<"shipping" | "local">("shipping");
   const [quote, setQuote] = useState<QuoteResult | null>(null);
   const [selectedOption, setSelectedOption] = useState<QuoteOption | null>(null);
   const [couponCode, setCouponCode] = useState("");
@@ -94,9 +93,9 @@ const CheckoutPage = () => {
 
   // Endereço alterado invalida a cotação anterior.
   const cepMismatch =
-    delivery === "shipping" && !!quote && normalizeCep(form.cep) !== quotedCep && normalizeCep(form.cep).length === 8;
+    !!quote && normalizeCep(form.cep) !== quotedCep && normalizeCep(form.cep).length === 8;
 
-  const shippingCost = delivery === "local" || coupon?.freeShipping ? 0 : selectedOption?.price ?? 0;
+  const shippingCost = coupon?.freeShipping ? 0 : selectedOption?.price ?? 0;
   const discount = coupon?.discount ?? 0;
   const total = Math.max(0, subtotal - discount) + shippingCost;
 
@@ -139,22 +138,16 @@ const CheckoutPage = () => {
       toast({ title: "Dados incompletos", description: "Informe nome e e-mail.", variant: "destructive" });
       return;
     }
-    if (delivery === "shipping") {
-      if (!form.cep || !form.street || !form.city || !form.state) {
-        toast({ title: "Endereço incompleto", description: "Preencha o endereço de entrega.", variant: "destructive" });
-        return;
-      }
-      if (!quote || !selectedOption || cepMismatch) {
-        toast({
-          title: "Escolha a entrega",
-          description: "Calcule o frete para o CEP informado e selecione uma opção.",
-          variant: "destructive",
-        });
-        return;
-      }
+    if (!form.cep || !form.street || !form.city || !form.state) {
+      toast({ title: "Endereço incompleto", description: "Preencha o endereço de entrega.", variant: "destructive" });
+      return;
     }
-    if (delivery === "local" && !form.street.trim()) {
-      toast({ title: "Endereço incompleto", description: "Informe o endereço da entrega em Anápolis.", variant: "destructive" });
+    if (!quote || !selectedOption || cepMismatch) {
+      toast({
+        title: "Escolha a entrega",
+        description: "Calcule o frete para o CEP informado e selecione uma opção.",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -172,9 +165,9 @@ const CheckoutPage = () => {
             city: form.city,
             state: form.state,
           },
-          delivery_method: delivery,
-          quote_id: delivery === "shipping" ? quote?.quote_id : null,
-          shipping_service_id: delivery === "shipping" ? selectedOption?.serviceId : null,
+          delivery_method: "shipping",
+          quote_id: quote?.quote_id,
+          shipping_service_id: selectedOption?.serviceId,
           coupon_code: coupon?.code ?? null,
           payment_method: "pix",
           notes: form.notes,
@@ -210,10 +203,7 @@ const CheckoutPage = () => {
         subtotal: Number(data.subtotal ?? subtotal),
         discount: Number(data.discount ?? discount),
         shipping: Number(data.shipping_cost ?? shippingCost),
-        deliveryLabel:
-          delivery === "local"
-            ? "Entrega grátis em Anápolis/GO"
-            : `${selectedOption?.carrier ?? ""} ${selectedOption?.service ?? ""}`.trim(),
+        deliveryLabel: `${selectedOption?.carrier ?? ""} ${selectedOption?.service ?? ""}`.trim(),
         addressLabel: [form.street, form.number, form.district, form.city, form.state].filter(Boolean).join(", "),
         document: form.document,
       });
@@ -297,107 +287,67 @@ const CheckoutPage = () => {
           </section>
 
           <section className="rounded-lg border border-border bg-card p-4 space-y-3">
-            <div className="font-semibold text-sm">Entrega</div>
-            <div className="grid sm:grid-cols-2 gap-3">
-              <button
-                type="button"
-                onClick={() => setDelivery("shipping")}
-                className={`flex items-center gap-2 h-11 px-3 rounded border text-sm ${delivery === "shipping" ? "border-primary text-primary" : "border-border text-muted-foreground"}`}
-              >
-                <Truck className="h-4 w-4" /> Receber em casa
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setDelivery("local");
-                  setSelectedOption(null);
-                }}
-                className={`flex items-center gap-2 h-11 px-3 rounded border text-sm ${delivery === "local" ? "border-primary text-primary" : "border-border text-muted-foreground"}`}
-              >
-                <MapPin className="h-4 w-4" /> Entrega grátis em Anápolis/GO
-              </button>
+            <div className="flex items-center gap-2 font-semibold text-sm">
+              <Truck className="h-4 w-4 text-primary" /> Entrega
             </div>
 
-            {delivery === "shipping" ? (
-              <div className="space-y-3">
-                <div className="grid sm:grid-cols-3 gap-3">
-                  <input
-                    className={input}
-                    placeholder="CEP *"
-                    inputMode="numeric"
-                    value={form.cep}
-                    onChange={(e) => {
-                      setForm({ ...form, cep: formatCep(e.target.value) });
-                      setQuote(null);
-                      setSelectedOption(null);
-                      setQuotedCep("");
-                    }}
-                  />
-                  <input className={`${input} sm:col-span-2`} placeholder="Rua *" value={form.street} onChange={(e) => setForm({ ...form, street: e.target.value })} />
-                  <input className={input} placeholder="Número" value={form.number} onChange={(e) => setForm({ ...form, number: e.target.value })} />
-                  <input className={input} placeholder="Complemento" value={form.complement} onChange={(e) => setForm({ ...form, complement: e.target.value })} />
-                  <input className={input} placeholder="Bairro" value={form.district} onChange={(e) => setForm({ ...form, district: e.target.value })} />
-                  <input className={`${input} sm:col-span-2`} placeholder="Cidade *" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} />
-                  <input className={input} placeholder="UF *" maxLength={2} value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value.toUpperCase() })} />
-                </div>
-
-                {cepStatus === "loading" && (
-                  <p className="text-[11px] text-muted-foreground">Buscando endereço...</p>
-                )}
-                {cepStatus === "notfound" && (
-                  <p className="text-[11px] text-muted-foreground">
-                    Não encontramos esse CEP. Você pode preencher o endereço manualmente.
-                  </p>
-                )}
-
-                <ShippingCalculator
-                  title="Opções de entrega"
-                  selectable
-                  items={items.map((i) => ({
-                    product_id: i.productId,
-                    quantity: i.quantity,
-                    variant_option_ids: variantOptionIds(i),
-                  }))}
-                  initialCep={form.cep}
-                  selectedServiceId={selectedOption?.serviceId ?? null}
-                  onQuote={setQuote}
-                  onSelect={setSelectedOption}
-                  onCepChange={(cep) => {
-                    setForm((f) => ({ ...f, cep }));
-                    setQuotedCep(normalizeCep(cep));
+            <div className="space-y-3">
+              <div className="grid sm:grid-cols-3 gap-3">
+                <input
+                  className={input}
+                  placeholder="CEP *"
+                  inputMode="numeric"
+                  value={form.cep}
+                  onChange={(e) => {
+                    setForm({ ...form, cep: formatCep(e.target.value) });
+                    setQuote(null);
+                    setSelectedOption(null);
+                    setQuotedCep("");
                   }}
                 />
+                <input className={`${input} sm:col-span-2`} placeholder="Rua *" value={form.street} onChange={(e) => setForm({ ...form, street: e.target.value })} />
+                <input className={input} placeholder="Número" value={form.number} onChange={(e) => setForm({ ...form, number: e.target.value })} />
+                <input className={input} placeholder="Complemento" value={form.complement} onChange={(e) => setForm({ ...form, complement: e.target.value })} />
+                <input className={input} placeholder="Bairro" value={form.district} onChange={(e) => setForm({ ...form, district: e.target.value })} />
+                <input className={`${input} sm:col-span-2`} placeholder="Cidade *" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} />
+                <input className={input} placeholder="UF *" maxLength={2} value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value.toUpperCase() })} />
+              </div>
 
-                {cepMismatch && (
-                  <p className="text-[11px] text-destructive">
-                    O CEP do endereço mudou. Aguarde o novo cálculo da entrega antes de finalizar.
-                  </p>
-                )}
-              </div>
-            ) : (
-              <div className="space-y-3">
-                <p className="text-xs text-muted-foreground">
-                  Entregamos gratuitamente em Anápolis/GO. Informe o endereço para a nossa equipe combinar a entrega.
+              {cepStatus === "loading" && (
+                <p className="text-[11px] text-muted-foreground">Buscando endereço...</p>
+              )}
+              {cepStatus === "notfound" && (
+                <p className="text-[11px] text-muted-foreground">
+                  Não encontramos esse CEP. Você pode preencher o endereço manualmente.
                 </p>
-                <div className="grid sm:grid-cols-3 gap-3">
-                  <input className={`${input} sm:col-span-2`} placeholder="Rua *" value={form.street} onChange={(e) => setForm({ ...form, street: e.target.value })} />
-                  <input className={input} placeholder="Número" value={form.number} onChange={(e) => setForm({ ...form, number: e.target.value })} />
-                  <input className={input} placeholder="Bairro" value={form.district} onChange={(e) => setForm({ ...form, district: e.target.value })} />
-                  <input className={`${input} sm:col-span-2`} placeholder="Complemento / ponto de referência" value={form.complement} onChange={(e) => setForm({ ...form, complement: e.target.value })} />
-                  <input
-                    className={input}
-                    placeholder="CEP"
-                    inputMode="numeric"
-                    value={form.cep}
-                    onChange={(e) => setForm({ ...form, cep: formatCep(e.target.value) })}
-                  />
-                  <div className="sm:col-span-2 flex items-center gap-2 h-10 px-3 rounded bg-secondary border border-border text-sm text-muted-foreground">
-                    <MapPin className="h-4 w-4 text-primary" /> Anápolis / GO · frete grátis
-                  </div>
-                </div>
-              </div>
-            )}
+              )}
+
+              <ShippingCalculator
+                title="Opções de entrega"
+                selectable
+                items={items.map((i) => ({
+                  product_id: i.productId,
+                  quantity: i.quantity,
+                  variant_option_ids: variantOptionIds(i),
+                }))}
+                initialCep={form.cep}
+                selectedServiceId={selectedOption?.serviceId ?? null}
+                onQuote={setQuote}
+                onSelect={setSelectedOption}
+                onCepChange={(cep) => {
+                  setForm((f) => ({ ...f, cep }));
+                  setQuotedCep(normalizeCep(cep));
+                }}
+              />
+
+              {cepMismatch && (
+                <p className="text-[11px] text-destructive">
+                  O CEP do endereço mudou. Aguarde o novo cálculo da entrega antes de finalizar.
+                </p>
+              )}
+            </div>
           </section>
+
 
           <section className="rounded-lg border border-border bg-card p-4 space-y-3">
             <div className="font-semibold text-sm">Pagamento</div>
@@ -463,13 +413,13 @@ const CheckoutPage = () => {
               <span className="text-muted-foreground">
                 Frete {selectedOption ? `· ${selectedOption.carrier} ${selectedOption.service}` : ""}
               </span>
-              <span>{delivery === "local" ? "Grátis" : shippingCost ? brl(shippingCost) : "—"}</span>
+              <span>{selectedOption ? (shippingCost === 0 ? "Grátis" : brl(shippingCost)) : "—"}</span>
             </div>
             <div className="flex justify-between font-bold text-lg pt-2">
               <span>Total</span>
               <span className="text-primary">{brl(total)}</span>
             </div>
-            {delivery === "shipping" && selectedOption && (
+            {selectedOption && (
               <div className="text-[11px] text-muted-foreground pt-1">
                 Produção até {quote?.production_days ?? maxProductionDays} dia(s) úteis + entrega em{" "}
                 {selectedOption.daysMin}–{selectedOption.daysMax} dia(s) úteis.
