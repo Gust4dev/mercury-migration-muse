@@ -312,6 +312,37 @@ const AdminProdutos = () => {
 
       await Promise.all(inserts);
 
+      // Variações dinâmicas: cada grupo precisa do id para gravar as opções.
+      const num = (v: string) => (v.trim() === "" ? null : Number(v));
+      for (const [gi, g] of variantGroups.entries()) {
+        const name = g.name.trim();
+        const options = g.options.filter((o) => o.label.trim());
+        if (!name || !options.length) continue;
+        const { data: variantRow, error: variantError } = await supabase
+          .from("product_variants")
+          .insert({ product_id: productId, name, required: g.required, sort_order: gi })
+          .select("id")
+          .single();
+        if (variantError) throw variantError;
+        const { error: optionsError } = await supabase.from("product_variant_options").insert(
+          options.map((o, oi) => ({
+            variant_id: variantRow.id,
+            label: o.label.trim(),
+            price_delta: Number(o.price_delta || 0),
+            price_override: num(o.price_override),
+            available: o.available,
+            weight_g: num(o.weight_g),
+            width_cm: num(o.width_cm),
+            height_cm: num(o.height_cm),
+            length_cm: num(o.length_cm),
+            image_urls: o.image_urls,
+            sort_order: oi,
+          })),
+        );
+        if (optionsError) throw optionsError;
+      }
+
+
       toast({ title: "Produto salvo" });
       setOpen(false);
       load();
