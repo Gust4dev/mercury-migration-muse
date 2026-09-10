@@ -42,7 +42,10 @@ const ShippingCalculator = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialCep]);
 
-  const signature = items.map((i) => `${i.product_id}:${i.quantity}`).sort().join("|");
+  const signature = items
+    .map((i) => `${i.product_id}:${i.quantity}:${[...(i.variant_option_ids ?? [])].sort().join(",")}`)
+    .sort()
+    .join("|");
   const requestId = useRef(0);
 
   const calculate = async (targetCep: string) => {
