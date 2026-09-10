@@ -30,6 +30,8 @@ const ProdutoPage = () => {
   const [qty, setQty] = useState(1);
   const [activeImage, setActiveImage] = useState(0);
   const [custom, setCustom] = useState<Record<string, string>>({});
+  /** variantId -> optionId escolhido */
+  const [selection, setSelection] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (!slug) return;
@@ -39,6 +41,8 @@ const ProdutoPage = () => {
         setProduct(p);
         setQty(1);
         setCustom({});
+        setSelection({});
+        setActiveImage(0);
         if (p) setReviews(await fetchApprovedReviews(p.id));
       })
       .finally(() => setLoading(false));
