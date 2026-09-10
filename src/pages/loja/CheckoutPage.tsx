@@ -329,8 +329,8 @@ const CheckoutPage = () => {
                       setForm({ ...form, cep: formatCep(e.target.value) });
                       setQuote(null);
                       setSelectedOption(null);
+                      setQuotedCep("");
                     }}
-                    onBlur={(e) => lookupCep(e.target.value)}
                   />
                   <input className={`${input} sm:col-span-2`} placeholder="Rua *" value={form.street} onChange={(e) => setForm({ ...form, street: e.target.value })} />
                   <input className={input} placeholder="Número" value={form.number} onChange={(e) => setForm({ ...form, number: e.target.value })} />
@@ -340,8 +340,17 @@ const CheckoutPage = () => {
                   <input className={input} placeholder="UF *" maxLength={2} value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value.toUpperCase() })} />
                 </div>
 
+                {cepStatus === "loading" && (
+                  <p className="text-[11px] text-muted-foreground">Buscando endereço...</p>
+                )}
+                {cepStatus === "notfound" && (
+                  <p className="text-[11px] text-muted-foreground">
+                    Não encontramos esse CEP. Você pode preencher o endereço manualmente.
+                  </p>
+                )}
+
                 <ShippingCalculator
-                  title="Calcular entrega"
+                  title="Opções de entrega"
                   selectable
                   items={items.map((i) => ({ product_id: i.productId, quantity: i.quantity }))}
                   initialCep={form.cep}
@@ -350,13 +359,13 @@ const CheckoutPage = () => {
                   onSelect={setSelectedOption}
                   onCepChange={(cep) => {
                     setForm((f) => ({ ...f, cep }));
-                    lookupCep(cep);
+                    setQuotedCep(normalizeCep(cep));
                   }}
                 />
 
                 {cepMismatch && (
                   <p className="text-[11px] text-destructive">
-                    O CEP do endereço mudou. Calcule a entrega novamente antes de finalizar.
+                    O CEP do endereço mudou. Aguarde o novo cálculo da entrega antes de finalizar.
                   </p>
                 )}
               </div>
