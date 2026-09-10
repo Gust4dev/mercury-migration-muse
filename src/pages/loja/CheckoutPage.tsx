@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { MapPin, Truck } from "lucide-react";
+import { Truck } from "lucide-react";
 import SEO from "@/components/SEO";
 import LojaLayout from "@/components/loja/LojaLayout";
 import ShippingCalculator from "@/components/loja/ShippingCalculator";
@@ -45,7 +45,6 @@ const CheckoutPage = () => {
     state: "",
     notes: "",
   });
-  const [delivery, setDelivery] = useState<"shipping" | "local">("shipping");
   const [quote, setQuote] = useState<QuoteResult | null>(null);
   const [selectedOption, setSelectedOption] = useState<QuoteOption | null>(null);
   const [couponCode, setCouponCode] = useState("");
