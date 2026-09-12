@@ -50,6 +50,16 @@ Deno.serve(async (req) => {
     const productionDays = products.reduce((m, p) => Math.max(m, Number(p.production_days || 0)), 0);
     const requiresArtwork = products.some((p) => p.customizable);
 
+    const disabled = new Set(((settings.disabled_services as string[] | null) ?? []).map(String));
+
+    // Somente transportadoras aceitas e serviços ativos, ordenados pelo menor preço.
+    const sanitize = (opts: Record<string, unknown>[]) =>
+      opts
+        .filter((o) =>
+          isServiceAllowed({ carrier: o.carrier as string, serviceId: o.serviceId as string }, disabled),
+        )
+        .sort((a, b) => Number(a.price) - Number(b.price));
+
     // Entrega grátis local: qualquer CEP 75xxx (Anápolis/GO e região) recebe a opção gratuita
     // em primeiro lugar (pré-selecionada no checkout).
     const withLocalFree = (opts: Record<string, unknown>[]) => {
