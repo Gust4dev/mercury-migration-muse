@@ -2,6 +2,7 @@ import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { isValidCep, normalizeCep } from "../_shared/shipping/packing.ts";
 import { itemsHash, lineKey, loadItems, loadSettings, priceItems } from "../_shared/shipping/quote-core.ts";
+import { isServiceAllowed } from "../_shared/shipping/carriers.ts";
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
