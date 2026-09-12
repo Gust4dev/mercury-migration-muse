@@ -110,7 +110,8 @@ Deno.serve(async (req) => {
           }
         | undefined;
 
-      if (!option) {
+      const disabledServices = new Set(((settings.disabled_services as string[] | null) ?? []).map(String));
+      if (!option || !isServiceAllowed({ carrier: option.carrier, serviceId: option.serviceId }, disabledServices)) {
         return json({ error: "invalid_service", message: "Opção de entrega indisponível." }, 400);
       }
 
