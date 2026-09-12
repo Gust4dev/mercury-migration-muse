@@ -2,6 +2,7 @@
 // O token vive apenas em MELHOR_ENVIO_TOKEN (secret) e nunca é logado.
 
 import type { PackResult } from "./packing.ts";
+import { isAllowedCarrier } from "./carriers.ts";
 
 const BASE = Deno.env.get("MELHOR_ENVIO_BASE_URL") ?? "https://melhorenvio.com.br";
 const USER_AGENT = "Mercury Loja (contato@mercurygestora.com.br)";
