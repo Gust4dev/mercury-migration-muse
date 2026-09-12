@@ -83,7 +83,7 @@ Deno.serve(async (req) => {
     if (cached && Array.isArray(cached.options) && cached.options.length > 0) {
       return json({
         quote_id: cached.id,
-        options: withLocalFree(cached.options),
+        options: withLocalFree(sanitize(cached.options as Record<string, unknown>[])),
         expires_at: cached.expires_at,
         production_days: productionDays + Number(settings.handling_days || 0),
         requires_artwork: requiresArtwork,
