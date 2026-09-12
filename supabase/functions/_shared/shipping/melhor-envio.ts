@@ -16,9 +16,51 @@ export interface QuoteOption {
   price: number;
   daysMin: number;
   daysMax: number;
+  companyId?: string;
 }
 
 export class MelhorEnvioError extends Error {}
+
+export interface ServiceInfo {
+  serviceId: string;
+  service: string;
+  carrier: string;
+  companyId: string;
+}
+
+/** Catálogo de serviços do Melhor Envio, restrito às transportadoras aceitas. */
+export async function listServices(): Promise<ServiceInfo[]> {
+  const token = Deno.env.get("MELHOR_ENVIO_TOKEN");
+  if (!token) throw new MelhorEnvioError("missing_token");
+
+  const res = await fetch(`${BASE}/api/v2/me/shipment/services`, {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+      "User-Agent": USER_AGENT,
+    },
+  });
+  if (!res.ok) throw new MelhorEnvioError(`melhor_envio_http_${res.status}`);
+
+  const data = await res.json();
+  if (!Array.isArray(data)) throw new MelhorEnvioError("melhor_envio_invalid_response");
+
+  return data
+    .map((s: Record<string, unknown>) => {
+      const company = (s.company ?? {}) as { name?: string; id?: number | string };
+      return {
+        serviceId: String(s.id),
+        service: String(s.name ?? "Entrega"),
+        carrier: company.name ?? "Transportadora",
+        companyId: String(company.id ?? ""),
+      };
+    })
+    .filter((s: ServiceInfo) => isAllowedCarrier(s.carrier))
+    .sort((a: ServiceInfo, b: ServiceInfo) =>
+      a.carrier.localeCompare(b.carrier) || a.service.localeCompare(b.service),
+    );
+}
+
 
 export async function calculateShipping(params: {
   fromPostalCode: string;
