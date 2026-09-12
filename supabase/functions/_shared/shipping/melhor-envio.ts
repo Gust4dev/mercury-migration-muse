@@ -106,7 +106,7 @@ export async function calculateShipping(params: {
   return data
     .filter((s: Record<string, unknown>) => !s.error && s.price)
     .map((s: Record<string, unknown>) => {
-      const company = (s.company ?? {}) as { name?: string };
+      const company = (s.company ?? {}) as { name?: string; id?: number | string };
       const price = Number(s.price);
       const days = Number(s.delivery_time ?? 0);
       const rangeMin = Number((s.delivery_range as { min?: number } | undefined)?.min ?? days);
