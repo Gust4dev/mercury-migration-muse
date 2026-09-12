@@ -127,11 +127,13 @@ Deno.serve(async (req) => {
       );
     }
 
-    const disabled = new Set((settings.disabled_services as string[] | null) ?? []);
     const markup = Number(settings.shipping_markup_percent || 0);
-    const finalOptions = options
-      .filter((o) => !disabled.has(o.serviceId))
-      .map((o) => ({ ...o, price: Number((o.price * (1 + markup / 100)).toFixed(2)) }));
+    const finalOptions = sanitize(
+      options.map((o) => ({ ...o, price: Number((o.price * (1 + markup / 100)).toFixed(2)) })) as Record<
+        string,
+        unknown
+      >[],
+    );
 
     const withLocalFreeFinal = withLocalFree(finalOptions as Record<string, unknown>[]);
     const storedOptions = withLocalFreeFinal;
