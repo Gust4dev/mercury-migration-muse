@@ -120,8 +120,10 @@ export async function calculateShipping(params: {
         price: Number(price.toFixed(2)),
         daysMin: rangeMin || days,
         daysMax: rangeMax || days,
+        companyId: String(company.id ?? ""),
       };
     })
-    .filter((o: QuoteOption) => o.price > 0)
+    // Somente Correios, Jadlog e Loggi.
+    .filter((o: QuoteOption) => o.price > 0 && isAllowedCarrier(o.carrier))
     .sort((a: QuoteOption, b: QuoteOption) => a.price - b.price);
 }
