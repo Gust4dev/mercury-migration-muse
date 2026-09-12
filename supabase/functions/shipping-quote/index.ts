@@ -3,6 +3,7 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 import { buildPackage, isValidCep, normalizeCep, type PackItemInput } from "../_shared/shipping/packing.ts";
 import { calculateShipping, MelhorEnvioError } from "../_shared/shipping/melhor-envio.ts";
 import { itemsHash, loadItems, loadSettings } from "../_shared/shipping/quote-core.ts";
+import { isServiceAllowed } from "../_shared/shipping/carriers.ts";
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -50,6 +51,16 @@ Deno.serve(async (req) => {
     const productionDays = products.reduce((m, p) => Math.max(m, Number(p.production_days || 0)), 0);
     const requiresArtwork = products.some((p) => p.customizable);
 
+    const disabled = new Set(((settings.disabled_services as string[] | null) ?? []).map(String));
+
+    // Somente transportadoras aceitas e serviços ativos, ordenados pelo menor preço.
+    const sanitize = (opts: Record<string, unknown>[]) =>
+      opts
+        .filter((o) =>
+          isServiceAllowed({ carrier: o.carrier as string, serviceId: o.serviceId as string }, disabled),
+        )
+        .sort((a, b) => Number(a.price) - Number(b.price));
+
     // Entrega grátis local: qualquer CEP 75xxx (Anápolis/GO e região) recebe a opção gratuita
     // em primeiro lugar (pré-selecionada no checkout).
     const withLocalFree = (opts: Record<string, unknown>[]) => {
@@ -73,7 +84,7 @@ Deno.serve(async (req) => {
     if (cached && Array.isArray(cached.options) && cached.options.length > 0) {
       return json({
         quote_id: cached.id,
-        options: withLocalFree(cached.options),
+        options: withLocalFree(sanitize(cached.options as Record<string, unknown>[])),
         expires_at: cached.expires_at,
         production_days: productionDays + Number(settings.handling_days || 0),
         requires_artwork: requiresArtwork,
@@ -117,11 +128,13 @@ Deno.serve(async (req) => {
       );
     }
 
-    const disabled = new Set((settings.disabled_services as string[] | null) ?? []);
     const markup = Number(settings.shipping_markup_percent || 0);
-    const finalOptions = options
-      .filter((o) => !disabled.has(o.serviceId))
-      .map((o) => ({ ...o, price: Number((o.price * (1 + markup / 100)).toFixed(2)) }));
+    const finalOptions = sanitize(
+      options.map((o) => ({ ...o, price: Number((o.price * (1 + markup / 100)).toFixed(2)) })) as Record<
+        string,
+        unknown
+      >[],
+    );
 
     const withLocalFreeFinal = withLocalFree(finalOptions as Record<string, unknown>[]);
     const storedOptions = withLocalFreeFinal;

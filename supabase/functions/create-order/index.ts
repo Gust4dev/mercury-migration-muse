@@ -2,6 +2,7 @@ import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { isValidCep, normalizeCep } from "../_shared/shipping/packing.ts";
 import { itemsHash, lineKey, loadItems, loadSettings, priceItems } from "../_shared/shipping/quote-core.ts";
+import { isServiceAllowed } from "../_shared/shipping/carriers.ts";
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -110,7 +111,8 @@ Deno.serve(async (req) => {
           }
         | undefined;
 
-      if (!option) {
+      const disabledServices = new Set(((settings.disabled_services as string[] | null) ?? []).map(String));
+      if (!option || !isServiceAllowed({ carrier: option.carrier, serviceId: option.serviceId }, disabledServices)) {
         return json({ error: "invalid_service", message: "Opção de entrega indisponível." }, 400);
       }
 
