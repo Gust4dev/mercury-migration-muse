@@ -180,6 +180,39 @@ const AdminConfiguracoes = () => {
               Entrega grátis automática para CEPs 75xxx (Anápolis/GO e região)
             </label>
 
+            <div className="space-y-3 pt-2 border-t border-border">
+              <div>
+                <h3 className="font-semibold text-sm">Transportadoras e serviços</h3>
+                <p className="text-xs text-muted-foreground">
+                  A loja trabalha apenas com Correios, Jadlog e Loggi. Desative as modalidades que não quer oferecer ao
+                  cliente.
+                </p>
+              </div>
+
+              {loadingServices && <p className="text-xs text-muted-foreground">Carregando serviços...</p>}
+              {!loadingServices && servicesError && <p className="text-xs text-muted-foreground">{servicesError}</p>}
+
+              {carriers.map((carrier) => (
+                <div key={carrier} className="rounded border border-border p-3 space-y-2">
+                  <p className="text-xs font-bold uppercase tracking-wide">{carrier}</p>
+                  <div className="grid sm:grid-cols-2 gap-2">
+                    {services
+                      .filter((s) => s.carrier === carrier)
+                      .map((s) => (
+                        <label key={s.serviceId} className="flex items-center gap-2 text-sm">
+                          <input
+                            type="checkbox"
+                            checked={!settings.disabled_services.includes(s.serviceId)}
+                            onChange={() => toggleService(s.serviceId)}
+                          />
+                          {s.service}
+                        </label>
+                      ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
             <button
               onClick={save}
               disabled={saving}
