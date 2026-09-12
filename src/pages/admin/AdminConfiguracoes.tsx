@@ -12,21 +12,67 @@ interface Settings {
   quote_ttl_minutes: number;
   shipping_markup_percent: number | null;
   free_shipping_local: boolean;
+  disabled_services: string[];
+}
+
+interface ServiceInfo {
+  serviceId: string;
+  service: string;
+  carrier: string;
+  companyId: string;
 }
 
 const AdminConfiguracoes = () => {
   const { toast } = useToast();
   const [settings, setSettings] = useState<Settings | null>(null);
   const [saving, setSaving] = useState(false);
+  const [services, setServices] = useState<ServiceInfo[]>([]);
+  const [servicesError, setServicesError] = useState<string | null>(null);
+  const [loadingServices, setLoadingServices] = useState(true);
 
   useEffect(() => {
     supabase
       .from("shipping_settings")
-      .select("id,origin_postal_code,origin_city,origin_state,handling_days,quote_ttl_minutes,shipping_markup_percent,free_shipping_local")
+      .select("id,origin_postal_code,origin_city,origin_state,handling_days,quote_ttl_minutes,shipping_markup_percent,free_shipping_local,disabled_services")
       .limit(1)
       .maybeSingle()
-      .then(({ data }) => setSettings((data as Settings) ?? null));
+      .then(({ data }) =>
+        setSettings(
+          data
+            ? {
+                ...(data as unknown as Settings),
+                disabled_services: (((data as { disabled_services?: unknown }).disabled_services as string[]) ?? []).map(
+                  String,
+                ),
+              }
+            : null,
+        ),
+      );
+
+    supabase.functions
+      .invoke("shipping-services")
+      .then(({ data, error }) => {
+        if (error || !data?.services) {
+          setServicesError(data?.message ?? "Não foi possível carregar os serviços das transportadoras.");
+        } else {
+          setServices(data.services as ServiceInfo[]);
+        }
+      })
+      .finally(() => setLoadingServices(false));
   }, []);
+
+  const toggleService = (serviceId: string) => {
+    if (!settings) return;
+    const off = settings.disabled_services.includes(serviceId);
+    setSettings({
+      ...settings,
+      disabled_services: off
+        ? settings.disabled_services.filter((s) => s !== serviceId)
+        : [...settings.disabled_services, serviceId],
+    });
+  };
+
+  const carriers = Array.from(new Set(services.map((s) => s.carrier)));
 
   const save = async () => {
     if (!settings) return;
@@ -41,6 +87,7 @@ const AdminConfiguracoes = () => {
         quote_ttl_minutes: Number(settings.quote_ttl_minutes) || 30,
         shipping_markup_percent: Number(settings.shipping_markup_percent) || 0,
         free_shipping_local: settings.free_shipping_local,
+        disabled_services: settings.disabled_services,
       })
       .eq("id", settings.id);
     setSaving(false);
