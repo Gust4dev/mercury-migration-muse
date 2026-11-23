@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/mercury-logo.png";
+import glpIcon from "@/assets/comunidade/glp_icon.png.asset.json";
+import conversas from "@/assets/comunidade/comunidade_conversas.mp4.asset.json";
+import poster from "@/assets/comunidade/comunidade_conversas_poster.jpg.asset.json";
 import { CheckCircle2, Loader2 } from "lucide-react";
 
 const WA_NUMBER = "556293618627";
@@ -96,7 +99,11 @@ export default function Comunidade() {
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" />
       </Helmet>
       <main className="mx-auto w-full max-w-md px-4 pt-6 pb-10 sm:py-12">
-        <img src={logo} alt="Mercury Gestora" className="h-10 w-auto mx-auto mb-8" />
+        <img src={logo} alt="Mercury Gestora" className="h-8 w-auto mx-auto mb-6" />
+        <div className="flex flex-col items-center mb-6">
+          <img src={glpIcon.url} alt="Comunidade Revendas de GLP" width={104} height={104} className="h-24 w-24 rounded-full" />
+          <p className="mt-2 text-sm font-semibold">Revendas de GLP 🇧🇷</p>
+        </div>
         <h1 className="text-[1.7rem] sm:text-4xl font-bold text-center leading-tight">Faça parte da <span className="text-primary">Comunidade GLP Brasil!</span></h1>
         <p className="mt-4 text-center text-muted-foreground">Conecte-se gratuitamente com revendedores de gás de todo o Brasil. Compartilhe experiências, estratégias e novidades do mercado de GLP.</p>
         <p className="mt-3 text-center text-sm text-primary">Comunidade exclusiva para profissionais do setor de revenda de gás.</p>
@@ -154,6 +161,14 @@ export default function Comunidade() {
             <p className="text-xs text-center text-muted-foreground">Participação gratuita e sujeita a aprovação. Seus dados serão usados para analisar a solicitação e administrar a comunidade. <Link to="/privacidade" className="underline">Política de Privacidade</Link>.</p>
           </form>
         )}
+
+        <section className="mt-10">
+          <h2 className="text-xl font-bold text-center">Veja como é a <span className="text-primary">conversa</span> na comunidade</h2>
+          <p className="mt-2 text-center text-sm text-muted-foreground">Revendedores trocando experiências, novidades e oportunidades todos os dias.</p>
+          <div className="mt-5 mx-auto max-w-[300px] overflow-hidden rounded-3xl border border-border shadow-2xl pointer-events-none">
+            <video src={conversas.url} poster={poster.url} autoPlay muted loop playsInline preload="metadata" className="block w-full h-auto" />
+          </div>
+        </section>
       </main>
       <footer className="py-6 text-center text-xs text-muted-foreground border-t border-border">Comunidade GLP Brasil — Uma iniciativa Mercury Gestora.</footer>
     </div>
