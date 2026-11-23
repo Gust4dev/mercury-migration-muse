@@ -153,6 +153,7 @@ export type Database = {
           created_at: string
           estado: string
           id: string
+          perfil: string
           protocol: string
           revenda: string
           status: string
@@ -167,6 +168,7 @@ export type Database = {
           created_at?: string
           estado: string
           id?: string
+          perfil?: string
           protocol: string
           revenda: string
           status?: string
@@ -181,6 +183,7 @@ export type Database = {
           created_at?: string
           estado?: string
           id?: string
+          perfil?: string
           protocol?: string
           revenda?: string
           status?: string
@@ -1473,6 +1476,7 @@ export type Database = {
           _bandeira: string
           _cidade: string
           _estado: string
+          _perfil: string
           _revenda: string
           _utm: Json
           _vendas: string

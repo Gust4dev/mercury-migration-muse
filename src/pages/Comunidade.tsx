@@ -9,6 +9,7 @@ import { CheckCircle2, Loader2 } from "lucide-react";
 const WA_NUMBER = "556293618627";
 const UFS = ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
 const BANDEIRAS = ["Bandeira Branca (Independente)","Ultragaz","Copa Energia","Nacional Gás","Supergasbras","Consigaz","Outra"];
+const PERFIS = ["Dono de revenda","Entregador","Agência de marketing","Software","Outro"];
 const VENDAS = ["Até 100 botijões","101 a 300","301 a 500","501 a 1.000","1.001 a 2.000","2.001 a 5.000","Acima de 5.000"];
 const UTM_KEYS = ["utm_source","utm_medium","utm_campaign","utm_content","utm_term","fbclid"];
 
@@ -21,6 +22,7 @@ const maskPhone = (v: string) => {
 };
 
 const schema = z.object({
+  perfil: z.string().min(1, "Selecione quem você é"),
   revenda: z.string().trim().min(2, "Informe o nome da revenda").max(120),
   whatsapp: z.string().refine((v) => /^[1-9]{2}9?\d{8}$/.test(v.replace(/\D/g, "")) && (v.replace(/\D/g,"").length === 10 || v.replace(/\D/g,"")[2] === "9"), "WhatsApp inválido (inclua o DDD)"),
   cidade: z.string().trim().min(2, "Informe a cidade").max(100),
@@ -33,7 +35,7 @@ const schema = z.object({
 const track = (ev: string, data?: object) => { try { (window as any).fbq?.("track", ev, data); } catch {} };
 
 export default function Comunidade() {
-  const [f, setF] = useState({ revenda: "", whatsapp: "", cidade: "", estado: "", bandeira: "", outra: "", vendas: "" });
+  const [f, setF] = useState({ perfil: "", revenda: "", whatsapp: "", cidade: "", estado: "", bandeira: "", outra: "", vendas: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState<{ protocol: string; url: string } | null>(null);
@@ -67,24 +69,24 @@ export default function Comunidade() {
     setErrors({}); setLoading(true);
     const bandeira = f.bandeira === "Outra" ? `Outra: ${f.outra.trim()}` : f.bandeira;
     const { data, error } = await supabase.rpc("submit_comunidade_lead", {
-      _revenda: f.revenda, _whatsapp: f.whatsapp, _cidade: f.cidade, _estado: f.estado,
+      _perfil: f.perfil, _revenda: f.revenda, _whatsapp: f.whatsapp, _cidade: f.cidade, _estado: f.estado,
       _bandeira: bandeira, _vendas: f.vendas, _utm: utm,
     });
     setLoading(false);
     if (error || !data) return setErrors({ form: "Não foi possível salvar seu cadastro. Tente novamente." });
     track("Lead", { content_name: "Comunidade GLP Brasil" });
-    const msg = `Olá, Mercury! Quero solicitar minha entrada gratuita na Comunidade GLP Brasil.\n\nRevenda: ${f.revenda.trim()}\nWhatsApp: ${f.whatsapp}\nCidade: ${f.cidade.trim()}\nEstado: ${f.estado}\nBandeira: ${bandeira}\nVendas mensais: ${f.vendas}\nCadastro: ${data}\n\nGostaria de receber o convite para participar da comunidade!`;
+    const msg = `Olá, Mercury! Quero solicitar minha entrada gratuita na Comunidade GLP Brasil.\n\nSou: ${f.perfil}\nRevenda: ${f.revenda.trim()}\nWhatsApp: ${f.whatsapp}\nCidade: ${f.cidade.trim()}\nEstado: ${f.estado}\nBandeira: ${bandeira}\nVendas mensais: ${f.vendas}\nCadastro: ${data}\n\nGostaria de receber o convite para participar da comunidade!`;
     const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
     setDone({ protocol: data as string, url });
     track("Contact");
     window.location.href = url;
   };
 
-  const input = "w-full h-12 rounded-lg bg-secondary border border-border px-4 text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary";
+  const input = "w-full h-14 rounded-2xl bg-muted border border-border px-4 text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary";
   const Err = ({ k }: { k: string }) => errors[k] ? <p className="text-xs text-destructive mt-1">{errors[k]}</p> : null;
 
   return (
-    <div className="min-h-screen bg-background text-foreground" style={{ fontFamily: "'Questrial', sans-serif" }}>
+    <div className="min-h-screen bg-card text-foreground" style={{ fontFamily: "'Questrial', sans-serif" }}>
       <Helmet>
         <title>Comunidade GLP Brasil | Mercury Gestora</title>
         <meta name="description" content="Comunidade gratuita para revendedores de gás de todo o Brasil. Compartilhe experiências, estratégias e novidades do mercado de GLP." />
@@ -93,21 +95,32 @@ export default function Comunidade() {
         <meta property="og:description" content="Conecte-se gratuitamente com revendedores de gás de todo o Brasil." />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" />
       </Helmet>
-      <main className="mx-auto max-w-md px-5 py-8">
+      <main className="mx-auto w-full max-w-md px-4 pt-6 pb-10 sm:py-12">
         <img src={logo} alt="Mercury Gestora" className="h-10 w-auto mx-auto mb-8" />
-        <h1 className="text-3xl font-bold text-center leading-tight">Faça parte da <span className="text-primary">Comunidade GLP Brasil!</span></h1>
+        <h1 className="text-[1.7rem] sm:text-4xl font-bold text-center leading-tight">Faça parte da <span className="text-primary">Comunidade GLP Brasil!</span></h1>
         <p className="mt-4 text-center text-muted-foreground">Conecte-se gratuitamente com revendedores de gás de todo o Brasil. Compartilhe experiências, estratégias e novidades do mercado de GLP.</p>
         <p className="mt-3 text-center text-sm text-primary">Comunidade exclusiva para profissionais do setor de revenda de gás.</p>
 
         {done ? (
-          <div className="mt-8 rounded-xl border border-primary/40 bg-card p-6 text-center">
+          <div className="mt-8 rounded-3xl border border-primary/40 bg-muted p-6 text-center">
             <CheckCircle2 className="mx-auto h-12 w-12 text-primary" />
             <h2 className="mt-3 text-xl font-bold">Cadastro recebido!</h2>
             <p className="mt-2 text-sm text-muted-foreground">Protocolo <strong className="text-foreground">{done.protocol}</strong>. Agora envie a mensagem no WhatsApp para concluir sua solicitação.</p>
-            <a href={done.url} onClick={() => track("Contact")} className="mt-5 flex h-14 items-center justify-center rounded-lg bg-primary font-bold text-primary-foreground">ABRIR WHATSAPP</a>
+            <a href={done.url} onClick={() => track("Contact")} className="mt-5 flex h-14 items-center justify-center rounded-full bg-primary font-bold text-primary-foreground">ABRIR WHATSAPP</a>
           </div>
         ) : (
-          <form onSubmit={submit} noValidate className="mt-8 space-y-4">
+          <form onSubmit={submit} noValidate className="mt-8 space-y-4 rounded-3xl bg-background/60 p-4 sm:p-6 border border-border">
+            <fieldset>
+              <legend className="mb-3 text-base font-semibold">Sou:</legend>
+              <div className="grid grid-cols-2 gap-2">
+                {PERFIS.map((p, i) => (
+                  <button type="button" key={p} aria-pressed={f.perfil === p} onClick={() => setF({ ...f, perfil: p })}
+                    className={`min-h-12 rounded-2xl border px-3 py-3 text-sm transition ${i === PERFIS.length - 1 ? "col-span-2" : ""} ${f.perfil === p ? "border-primary bg-primary/15 text-primary font-semibold" : "border-border bg-muted text-foreground"}`}>
+                    {p}
+                  </button>
+                ))}
+              </div><Err k="perfil" />
+            </fieldset>
             <div><input className={input} placeholder="Nome da revenda" value={f.revenda} onChange={set("revenda")} maxLength={120} /><Err k="revenda" /></div>
             <div><input className={input} placeholder="WhatsApp com DDD" inputMode="tel" value={f.whatsapp} onChange={set("whatsapp")} /><Err k="whatsapp" /></div>
             <div>
@@ -135,7 +148,7 @@ export default function Comunidade() {
               </select><Err k="vendas" />
             </div>
             <Err k="form" />
-            <button type="submit" disabled={loading} className="flex h-16 w-full items-center justify-center rounded-lg bg-primary text-lg font-bold text-primary-foreground shadow-lg transition active:scale-[0.98] disabled:opacity-70">
+            <button type="submit" disabled={loading} className="flex h-16 w-full items-center justify-center rounded-full bg-primary text-base sm:text-lg font-bold text-primary-foreground shadow-lg transition active:scale-[0.98] disabled:opacity-70">
               {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : "SOLICITAR ENTRADA GRATUITAMENTE"}
             </button>
             <p className="text-xs text-center text-muted-foreground">Participação gratuita e sujeita a aprovação. Seus dados serão usados para analisar a solicitação e administrar a comunidade. <Link to="/privacidade" className="underline">Política de Privacidade</Link>.</p>
