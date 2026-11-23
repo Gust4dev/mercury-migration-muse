@@ -156,6 +156,10 @@ export type Database = {
           perfil: string
           protocol: string
           revenda: string
+          sheets_attempts: number
+          sheets_last_error: string | null
+          sheets_status: string
+          sheets_synced_at: string | null
           status: string
           updated_at: string
           utm: Json
@@ -171,6 +175,10 @@ export type Database = {
           perfil?: string
           protocol: string
           revenda: string
+          sheets_attempts?: number
+          sheets_last_error?: string | null
+          sheets_status?: string
+          sheets_synced_at?: string | null
           status?: string
           updated_at?: string
           utm?: Json
@@ -186,6 +194,10 @@ export type Database = {
           perfil?: string
           protocol?: string
           revenda?: string
+          sheets_attempts?: number
+          sheets_last_error?: string | null
+          sheets_status?: string
+          sheets_synced_at?: string | null
           status?: string
           updated_at?: string
           utm?: Json

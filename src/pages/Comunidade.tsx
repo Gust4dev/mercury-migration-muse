@@ -80,6 +80,14 @@ export default function Comunidade() {
     setLoading(false);
     if (error || !data) return setErrors({ form: "Não foi possível salvar seu cadastro. Tente novamente." });
     track("Lead", { content_name: "Comunidade GLP Brasil" });
+    // Envia para a planilha em segundo plano; não bloqueia o WhatsApp se falhar.
+    try {
+      fetch(`https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/comunidade-sheets-sync`, {
+        method: "POST", keepalive: true,
+        headers: { "Content-Type": "application/json", apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY, Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}` },
+        body: JSON.stringify({ protocol: data }),
+      }).catch(() => {});
+    } catch { /* ignora */ }
     const msg = `Olá, Mercury! Quero solicitar minha entrada gratuita na Comunidade GLP Brasil.\n\nSou: ${perfil}\nRevenda: ${f.revenda.trim()}\nWhatsApp: ${f.whatsapp}\nCidade: ${f.cidade.trim()}\nEstado: ${f.estado}\nBandeira: ${bandeira}\nVendas mensais: ${f.vendas}\nCadastro: ${data}\n\nGostaria de receber o convite para participar da comunidade!`;
     const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
     setDone({ protocol: data as string, url });
