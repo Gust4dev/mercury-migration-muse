@@ -115,8 +115,6 @@ export default function Comunidade() {
           <p className="mt-2 text-sm font-semibold">Revendas de GLP</p>
         </div>
         <h1 className="text-[1.7rem] sm:text-4xl font-bold text-center leading-tight">Faça parte da <span className="text-primary">Comunidade GLP Brasil!</span></h1>
-        <p className="mt-4 text-center text-muted-foreground">Conecte-se gratuitamente com revendedores de gás de todo o Brasil. Compartilhe experiências, estratégias e novidades do mercado de GLP.</p>
-        <p className="mt-3 text-center text-sm text-primary">Comunidade exclusiva para profissionais do setor de revenda de gás.</p>
 
         <section className="mt-8">
           <h2 className="text-xl font-bold text-center">Veja como é a <span className="text-primary">conversa</span> na comunidade</h2>
@@ -176,6 +174,9 @@ export default function Comunidade() {
             <p className="text-xs text-center text-muted-foreground">Participação gratuita e sujeita a aprovação. Seus dados serão usados para analisar a solicitação e administrar a comunidade. <Link to="/privacidade" className="underline">Política de Privacidade</Link>.</p>
           </form>
         )}
+
+        <p className="mt-8 text-center text-muted-foreground">Conecte-se gratuitamente com revendedores de gás de todo o Brasil. Compartilhe experiências, estratégias e novidades do mercado de GLP.</p>
+        <p className="mt-3 text-center text-sm text-primary">Comunidade exclusiva para profissionais do setor de revenda de gás.</p>
       </main>
       <footer className="py-6 text-center text-xs text-muted-foreground border-t border-border">Comunidade GLP Brasil — Uma iniciativa Mercury Gestora.</footer>
     </div>
