@@ -26,6 +26,7 @@ const maskPhone = (v: string) => {
 
 const schema = z.object({
   perfil: z.string().min(1, "Selecione quem você é"),
+  perfilOutro: z.string().trim().max(60).optional(),
   revenda: z.string().trim().min(2, "Informe o nome da revenda").max(120),
   whatsapp: z.string().refine((v) => /^[1-9]{2}9?\d{8}$/.test(v.replace(/\D/g, "")) && (v.replace(/\D/g,"").length === 10 || v.replace(/\D/g,"")[2] === "9"), "WhatsApp inválido (inclua o DDD)"),
   cidade: z.string().trim().min(2, "Informe a cidade").max(100),
@@ -33,12 +34,12 @@ const schema = z.object({
   bandeira: z.string().min(1, "Selecione a bandeira"),
   outra: z.string().trim().max(80).optional(),
   vendas: z.string().min(1, "Selecione a média de vendas"),
-}).refine((d) => d.bandeira !== "Outra" || (d.outra && d.outra.length >= 2), { path: ["outra"], message: "Informe a companhia" });
+}).refine((d) => d.perfil !== "Outro" || (d.perfilOutro && d.perfilOutro.length >= 2), { path: ["perfilOutro"], message: "Conte o que você faz" }).refine((d) => d.bandeira !== "Outra" || (d.outra && d.outra.length >= 2), { path: ["outra"], message: "Informe a companhia" });
 
 const track = (ev: string, data?: object) => { try { (window as any).fbq?.("track", ev, data); } catch {} };
 
 export default function Comunidade() {
-  const [f, setF] = useState({ perfil: "", revenda: "", whatsapp: "", cidade: "", estado: "", bandeira: "", outra: "", vendas: "" });
+  const [f, setF] = useState({ perfil: "", perfilOutro: "", revenda: "", whatsapp: "", cidade: "", estado: "", bandeira: "", outra: "", vendas: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState<{ protocol: string; url: string } | null>(null);
@@ -70,15 +71,16 @@ export default function Comunidade() {
       return setErrors(errs);
     }
     setErrors({}); setLoading(true);
+    const perfil = f.perfil === "Outro" ? `Outro: ${f.perfilOutro.trim()}` : f.perfil;
     const bandeira = f.bandeira === "Outra" ? `Outra: ${f.outra.trim()}` : f.bandeira;
     const { data, error } = await supabase.rpc("submit_comunidade_lead", {
-      _perfil: f.perfil, _revenda: f.revenda, _whatsapp: f.whatsapp, _cidade: f.cidade, _estado: f.estado,
+      _perfil: perfil, _revenda: f.revenda, _whatsapp: f.whatsapp, _cidade: f.cidade, _estado: f.estado,
       _bandeira: bandeira, _vendas: f.vendas, _utm: utm,
     });
     setLoading(false);
     if (error || !data) return setErrors({ form: "Não foi possível salvar seu cadastro. Tente novamente." });
     track("Lead", { content_name: "Comunidade GLP Brasil" });
-    const msg = `Olá, Mercury! Quero solicitar minha entrada gratuita na Comunidade GLP Brasil.\n\nSou: ${f.perfil}\nRevenda: ${f.revenda.trim()}\nWhatsApp: ${f.whatsapp}\nCidade: ${f.cidade.trim()}\nEstado: ${f.estado}\nBandeira: ${bandeira}\nVendas mensais: ${f.vendas}\nCadastro: ${data}\n\nGostaria de receber o convite para participar da comunidade!`;
+    const msg = `Olá, Mercury! Quero solicitar minha entrada gratuita na Comunidade GLP Brasil.\n\nSou: ${perfil}\nRevenda: ${f.revenda.trim()}\nWhatsApp: ${f.whatsapp}\nCidade: ${f.cidade.trim()}\nEstado: ${f.estado}\nBandeira: ${bandeira}\nVendas mensais: ${f.vendas}\nCadastro: ${data}\n\nGostaria de receber o convite para participar da comunidade!`;
     const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
     setDone({ protocol: data as string, url });
     track("Contact");
@@ -101,8 +103,8 @@ export default function Comunidade() {
       <main className="mx-auto w-full max-w-md px-4 pt-6 pb-10 sm:py-12">
         <img src={logo} alt="Mercury Gestora" className="h-8 w-auto mx-auto mb-6" />
         <div className="flex flex-col items-center mb-6">
-          <img src={glpIcon.url} alt="Comunidade Revendas de GLP" width={104} height={104} className="h-24 w-24 rounded-full" />
-          <p className="mt-2 text-sm font-semibold">Revendas de GLP 🇧🇷</p>
+          <img src={glpIcon.url} alt="Comunidade Revendas de GLP" width={104} height={104} className="h-24 w-24 rounded-full ring-2 ring-primary ring-offset-4 ring-offset-card" />
+          <p className="mt-2 text-sm font-semibold">Revendas de GLP</p>
         </div>
         <h1 className="text-[1.7rem] sm:text-4xl font-bold text-center leading-tight">Faça parte da <span className="text-primary">Comunidade GLP Brasil!</span></h1>
         <p className="mt-4 text-center text-muted-foreground">Conecte-se gratuitamente com revendedores de gás de todo o Brasil. Compartilhe experiências, estratégias e novidades do mercado de GLP.</p>
@@ -117,17 +119,14 @@ export default function Comunidade() {
           </div>
         ) : (
           <form onSubmit={submit} noValidate className="mt-8 space-y-4 rounded-3xl bg-background/60 p-4 sm:p-6 border border-border">
-            <fieldset>
-              <legend className="mb-3 text-base font-semibold">Sou:</legend>
-              <div className="grid grid-cols-2 gap-2">
-                {PERFIS.map((p, i) => (
-                  <button type="button" key={p} aria-pressed={f.perfil === p} onClick={() => setF({ ...f, perfil: p })}
-                    className={`min-h-12 rounded-2xl border px-3 py-3 text-sm transition ${i === PERFIS.length - 1 ? "col-span-2" : ""} ${f.perfil === p ? "border-primary bg-primary/15 text-primary font-semibold" : "border-border bg-muted text-foreground"}`}>
-                    {p}
-                  </button>
-                ))}
-              </div><Err k="perfil" />
-            </fieldset>
+            <div>
+              <label className="block text-sm text-muted-foreground mb-1">Sou:</label>
+              <select className={input} value={f.perfil} onChange={set("perfil")}>
+                <option value="">Selecione</option>
+                {PERFIS.map((p) => <option key={p}>{p}</option>)}
+              </select><Err k="perfil" />
+            </div>
+            {f.perfil === "Outro" && <div><input className={input} placeholder="Conte o que você faz" value={f.perfilOutro} onChange={set("perfilOutro")} maxLength={60} /><Err k="perfilOutro" /></div>}
             <div><input className={input} placeholder="Nome da revenda" value={f.revenda} onChange={set("revenda")} maxLength={120} /><Err k="revenda" /></div>
             <div><input className={input} placeholder="WhatsApp com DDD" inputMode="tel" value={f.whatsapp} onChange={set("whatsapp")} /><Err k="whatsapp" /></div>
             <div>
