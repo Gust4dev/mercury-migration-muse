@@ -118,6 +118,14 @@ export default function Comunidade() {
         <p className="mt-4 text-center text-muted-foreground">Conecte-se gratuitamente com revendedores de gás de todo o Brasil. Compartilhe experiências, estratégias e novidades do mercado de GLP.</p>
         <p className="mt-3 text-center text-sm text-primary">Comunidade exclusiva para profissionais do setor de revenda de gás.</p>
 
+        <section className="mt-8">
+          <h2 className="text-xl font-bold text-center">Veja como é a <span className="text-primary">conversa</span> na comunidade</h2>
+          <p className="mt-2 text-center text-sm text-muted-foreground">Revendedores trocando experiências, novidades e oportunidades todos os dias.</p>
+          <div className="mt-5 mx-auto max-w-[300px] overflow-hidden rounded-3xl border border-border shadow-2xl pointer-events-none">
+            <video src={conversas.url} poster={poster.url} autoPlay muted loop playsInline preload="metadata" className="block w-full h-auto" />
+          </div>
+        </section>
+
         {done ? (
           <div className="mt-8 rounded-3xl border border-primary/40 bg-muted p-6 text-center">
             <CheckCircle2 className="mx-auto h-12 w-12 text-primary" />
@@ -168,14 +176,6 @@ export default function Comunidade() {
             <p className="text-xs text-center text-muted-foreground">Participação gratuita e sujeita a aprovação. Seus dados serão usados para analisar a solicitação e administrar a comunidade. <Link to="/privacidade" className="underline">Política de Privacidade</Link>.</p>
           </form>
         )}
-
-        <section className="mt-10">
-          <h2 className="text-xl font-bold text-center">Veja como é a <span className="text-primary">conversa</span> na comunidade</h2>
-          <p className="mt-2 text-center text-sm text-muted-foreground">Revendedores trocando experiências, novidades e oportunidades todos os dias.</p>
-          <div className="mt-5 mx-auto max-w-[300px] overflow-hidden rounded-3xl border border-border shadow-2xl pointer-events-none">
-            <video src={conversas.url} poster={poster.url} autoPlay muted loop playsInline preload="metadata" className="block w-full h-auto" />
-          </div>
-        </section>
       </main>
       <footer className="py-6 text-center text-xs text-muted-foreground border-t border-border">Comunidade GLP Brasil — Uma iniciativa Mercury Gestora.</footer>
     </div>
