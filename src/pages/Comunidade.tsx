@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/mercury-logo.png";
-import glpIcon from "@/assets/comunidade/comunidade-glp.png.asset.json";
-import conversas from "@/assets/comunidade/comunidade_conversas_mobile.mp4.asset.json";
-import poster from "@/assets/comunidade/comunidade_conversas_poster.jpg.asset.json";
+// Served from public/ because the main domain is hosted outside Lovable and cannot serve /__l5e/ CDN assets.
+const GLP_ICON = "/comunidade/comunidade-glp.png";
+const CONVERSAS_VIDEO = "/comunidade/conversas.mp4";
+const CONVERSAS_POSTER = "/comunidade/conversas-poster.jpg";
 import { CheckCircle2, Loader2 } from "lucide-react";
 
 const WA_NUMBER = "556293618627";
@@ -138,7 +139,7 @@ export default function Comunidade() {
       <main className="mx-auto w-full max-w-md px-4 pt-6 pb-10 sm:py-12">
         <img src={logo} alt="Mercury Gestora" className="h-8 w-auto mx-auto mb-6" />
         <div className="flex flex-col items-center mb-6">
-          <img src={glpIcon.url} alt="Comunidade Revendas de GLP" width={112} height={112} className="h-28 w-28 rounded-full object-cover" />
+          <img src={GLP_ICON} alt="Comunidade Revendas de GLP" width={112} height={112} className="h-28 w-28 rounded-full object-cover" />
           <p className="mt-2 text-sm font-semibold">Revendas de GLP</p>
         </div>
         <h1 className="text-[1.7rem] sm:text-4xl font-bold text-center leading-tight">Faça parte da <span className="text-primary">Comunidade GLP Brasil!</span></h1>
@@ -147,7 +148,7 @@ export default function Comunidade() {
           <h2 className="text-xl font-bold text-center">Veja como é a <span className="text-primary">conversa</span> na comunidade</h2>
           <p className="mt-2 text-center text-sm text-muted-foreground">Revendedores trocando experiências, novidades e oportunidades todos os dias.</p>
           <div className="mt-5 mx-auto max-w-[300px] overflow-hidden rounded-3xl border border-border shadow-2xl pointer-events-none">
-            <video ref={videoRef} src={conversas.url} poster={poster.url} autoPlay muted loop playsInline preload="auto" disablePictureInPicture className="block w-full h-auto" />
+            <video ref={videoRef} poster={CONVERSAS_POSTER} autoPlay muted loop playsInline preload="auto" disablePictureInPicture className="block w-full h-auto"><source src={CONVERSAS_VIDEO} type="video/mp4" /></video>
           </div>
         </section>
 

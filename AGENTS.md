@@ -1,0 +1,1 @@
+- Media used on pages must live in public/ or be imported from src/assets as real files, not lovable-assets pointers: the main domain (mercurygestora.com.br) is hosted on Vercel and cannot serve /__l5e/ CDN URLs.
