@@ -11,6 +11,8 @@ import VendiMais from "./pages/VendiMais.tsx";
 
 import Suporte from "./pages/Suporte.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import Comunidade from "./pages/Comunidade.tsx";
+import Privacidade from "./pages/Privacidade.tsx";
 
 import LojaHome from "./pages/loja/LojaHome.tsx";
 import Catalogo from "./pages/loja/Catalogo.tsx";
@@ -50,6 +52,8 @@ const App = () => (
             <Route path="/vendi-mais" element={<VendiMais />} />
 
             <Route path="/suporte" element={<Suporte />} />
+            <Route path="/comunidade" element={<Comunidade />} />
+            <Route path="/privacidade" element={<Privacidade />} />
 
             {/* Loja */}
             <Route path="/loja" element={<LojaHome />} />

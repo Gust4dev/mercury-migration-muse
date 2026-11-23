@@ -146,6 +146,51 @@ export type Database = {
         }
         Relationships: []
       }
+      comunidade_leads: {
+        Row: {
+          bandeira: string
+          cidade: string
+          created_at: string
+          estado: string
+          id: string
+          protocol: string
+          revenda: string
+          status: string
+          updated_at: string
+          utm: Json
+          vendas_mensais: string
+          whatsapp: string
+        }
+        Insert: {
+          bandeira: string
+          cidade: string
+          created_at?: string
+          estado: string
+          id?: string
+          protocol: string
+          revenda: string
+          status?: string
+          updated_at?: string
+          utm?: Json
+          vendas_mensais: string
+          whatsapp: string
+        }
+        Update: {
+          bandeira?: string
+          cidade?: string
+          created_at?: string
+          estado?: string
+          id?: string
+          protocol?: string
+          revenda?: string
+          status?: string
+          updated_at?: string
+          utm?: Json
+          vendas_mensais?: string
+          whatsapp?: string
+        }
+        Relationships: []
+      }
       coupons: {
         Row: {
           active: boolean
@@ -1422,6 +1467,18 @@ export type Database = {
           msg_id: number
           read_ct: number
         }[]
+      }
+      submit_comunidade_lead: {
+        Args: {
+          _bandeira: string
+          _cidade: string
+          _estado: string
+          _revenda: string
+          _utm: Json
+          _vendas: string
+          _whatsapp: string
+        }
+        Returns: string
       }
     }
     Enums: {
