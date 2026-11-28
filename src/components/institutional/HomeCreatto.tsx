@@ -1,14 +1,16 @@
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import creattoOne from "@/assets/institutional/creatto-1.webp";
+import creattoOne from "@/assets/institutional/creatto-4.webp";
 import creattoTwo from "@/assets/institutional/creatto-2.webp";
 import creattoThree from "@/assets/institutional/creatto-3.webp";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
+import InstitutionalMediaGallery from "./InstitutionalMediaGallery";
+import { creattoOfficialLogo, creattoProductionPhotos } from "./authority";
 import { trackInstitutionalEvent, WHATSAPP_URL } from "./config";
 
 const products = [
-  { image: creattoOne, alt: "Placa NFC real desenvolvida para revenda de gás" },
+  { image: creattoOne, alt: "Placa NFC real desenvolvida para clínica" },
   { image: creattoTwo, alt: "Placa NFC real para avaliações no Google" },
   { image: creattoThree, alt: "Placa NFC preta real para avaliações no Google" },
 ];
@@ -18,6 +20,7 @@ const HomeCreatto = () => (
     <div className="institutional-container grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
       <Reveal>
         <div>
+          {creattoOfficialLogo && <img src={creattoOfficialLogo} alt="Logotipo oficial Creatto" className="mb-6 h-20 w-auto" loading="lazy" />}
           <SectionHeading
             eyebrow="DESENVOLVIMENTO E FABRICAÇÃO"
             title="Da ideia ao produto. Conheça a Creatto."
@@ -59,6 +62,7 @@ const HomeCreatto = () => (
           ))}
         </div>
         <p className="mt-3 text-xs text-institutional-muted">Fotografias reais de produtos comercializados na Mercury Loja.</p>
+        <InstitutionalMediaGallery photos={creattoProductionPhotos} />
       </Reveal>
     </div>
   </section>

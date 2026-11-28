@@ -9,6 +9,7 @@ import HomeVendi from "@/components/institutional/HomeVendi";
 import HomeCommunity from "@/components/institutional/HomeCommunity";
 import HomeCreatto from "@/components/institutional/HomeCreatto";
 import HomeAbout from "@/components/institutional/HomeAbout";
+import RealCases from "@/components/institutional/RealCases";
 import InstitutionalCta from "@/components/institutional/InstitutionalCta";
 
 const jsonLd = [
@@ -57,6 +58,7 @@ const Index = () => (
       <HomeCommunity />
       <HomeCreatto />
       <HomeAbout />
+      <RealCases />
       <InstitutionalCta />
     </InstitutionalLayout>
   </>

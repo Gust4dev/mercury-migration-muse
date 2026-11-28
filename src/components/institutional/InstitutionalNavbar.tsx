@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import mercuryLogo from "@/assets/mercury-logo.png";
@@ -74,13 +75,13 @@ const InstitutionalNavbar = () => {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-institutional-white/10 bg-institutional-black/[0.97] text-institutional-white">
       <div className="institutional-container flex h-[76px] items-center justify-between gap-5">
-        <Link to="/" className="flex shrink-0 items-center gap-2.5" aria-label="Mercury Gestora — Início">
-          <img src={mercuryLogo} alt="" className="h-8 w-auto" />
-          <span className="text-lg tracking-tight text-institutional-white">Mercury Gestora</span>
+        <Link to="/" className="flex shrink-0 items-center gap-3" aria-label="Mercury Gestora — Início">
+          <img src={mercuryLogo} alt="" className="h-11 w-auto" />
+          <span className="text-xl text-institutional-white">Mercury Gestora</span>
         </Link>
 
-        <nav className="hidden items-center gap-1 xl:flex" aria-label="Navegação principal">
-          <Link to="/" className="px-3 py-2 text-sm text-institutional-white/70 transition-colors hover:text-institutional-white">Início</Link>
+        <nav className="hidden items-center gap-2 xl:flex" aria-label="Navegação principal">
+          <Link to="/" className="px-3 py-2 text-sm text-institutional-white/85 transition-colors hover:text-institutional-white">Início</Link>
           {groups.slice(0, 2).map((group) => (
             <div
               key={group.label}
@@ -88,14 +89,14 @@ const InstitutionalNavbar = () => {
               onMouseEnter={() => setDropdown(group.label)}
               onMouseLeave={() => setDropdown(null)}
             >
-              <button
+              <Button variant="ghost"
                 type="button"
-                className="flex items-center gap-1 px-3 py-2 text-sm text-institutional-white/70 transition-colors hover:text-institutional-white"
+                className="flex items-center gap-1 px-3 py-2 text-sm text-institutional-white/85 transition-colors hover:text-institutional-white"
                 aria-expanded={dropdown === group.label}
                 onClick={() => setDropdown(dropdown === group.label ? null : group.label)}
               >
                 {group.label}<ChevronDown size={14} className={dropdown === group.label ? "rotate-180 transition-transform" : "transition-transform"} />
-              </button>
+              </Button>
               {dropdown === group.label && (
                 <div className="absolute left-0 top-full w-72 pt-2">
                   <div className="border border-institutional-white/10 bg-institutional-graphite p-2 shadow-2xl">
@@ -112,16 +113,16 @@ const InstitutionalNavbar = () => {
               )}
             </div>
           ))}
-          <Link to="/tecnologia" className="px-3 py-2 text-sm text-institutional-white/70 transition-colors hover:text-institutional-white">Tecnologia</Link>
+          <Link to="/tecnologia" className="px-3 py-2 text-sm text-institutional-white/85 transition-colors hover:text-institutional-white">Tecnologia</Link>
           <div className="relative" onMouseEnter={() => setDropdown("Sobre nós")} onMouseLeave={() => setDropdown(null)}>
-            <button
+            <Button variant="ghost"
               type="button"
-              className="flex items-center gap-1 px-3 py-2 text-sm text-institutional-white/70 transition-colors hover:text-institutional-white"
+              className="flex items-center gap-1 px-3 py-2 text-sm text-institutional-white/85 transition-colors hover:text-institutional-white"
               aria-expanded={dropdown === "Sobre nós"}
               onClick={() => setDropdown(dropdown === "Sobre nós" ? null : "Sobre nós")}
             >
               Sobre nós<ChevronDown size={14} className={dropdown === "Sobre nós" ? "rotate-180 transition-transform" : "transition-transform"} />
-            </button>
+            </Button>
             {dropdown === "Sobre nós" && (
               <div className="absolute left-0 top-full w-64 pt-2">
                 <div className="border border-institutional-white/10 bg-institutional-graphite p-2 shadow-2xl">
@@ -134,7 +135,7 @@ const InstitutionalNavbar = () => {
               </div>
             )}
           </div>
-          <Link to="/loja" className="px-3 py-2 text-sm text-institutional-white/70 transition-colors hover:text-institutional-white">Loja</Link>
+          <Link to="/loja" className="px-3 py-2 text-sm text-institutional-white/85 transition-colors hover:text-institutional-white">Loja</Link>
         </nav>
 
         <div className="hidden items-center gap-3 xl:flex">
@@ -159,7 +160,7 @@ const InstitutionalNavbar = () => {
           </a>
         </div>
 
-        <button
+        <Button variant="ghost"
           type="button"
           className="p-2 text-institutional-white xl:hidden"
           onClick={() => setOpen(!open)}
@@ -167,7 +168,7 @@ const InstitutionalNavbar = () => {
           aria-label={open ? "Fechar menu" : "Abrir menu"}
         >
           {open ? <X size={25} /> : <Menu size={25} />}
-        </button>
+        </Button>
       </div>
 
       {open && (
@@ -178,7 +179,7 @@ const InstitutionalNavbar = () => {
               <div key={group.label} className="border-b border-institutional-white/10 py-2">
                 <div className="flex items-center justify-between">
                   <Link to={group.href} className="flex-1 py-3 text-xl">{group.label}</Link>
-                  <button
+                  <Button variant="ghost"
                     type="button"
                     className="p-3 text-institutional-white/65"
                     aria-label={`${mobileGroup === group.label ? "Recolher" : "Abrir"} ${group.label}`}
@@ -186,7 +187,7 @@ const InstitutionalNavbar = () => {
                     onClick={() => setMobileGroup(mobileGroup === group.label ? null : group.label)}
                   >
                     <ChevronDown size={20} className={mobileGroup === group.label ? "rotate-180 transition-transform" : "transition-transform"} />
-                  </button>
+                  </Button>
                 </div>
                 {mobileGroup === group.label && (
                   <div className="pb-3 pl-3">

@@ -1,6 +1,6 @@
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import NexusVideo from "./NexusVideo";
+import NexusShowcase from "./NexusShowcase";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
 import { NEXUS_URL, trackInstitutionalEvent } from "./config";
@@ -23,17 +23,14 @@ const HomeNexus = () => (
       </Reveal>
       <div className="mt-12 grid gap-10 lg:grid-cols-[1.4fr_0.6fr] lg:gap-14">
         <Reveal>
-          <figure>
-            <div className="overflow-hidden rounded-sm border border-institutional-white/15">
-              <NexusVideo />
-            </div>
-            <figcaption className="mt-3 text-xs text-institutional-white/40">Captura real da plataforma Mercury Nexus®.</figcaption>
-          </figure>
+          <div>
+            <NexusShowcase />
+          </div>
         </Reveal>
         <Reveal delay={100}>
-          <ul className="border-t border-institutional-white/15">
+          <ul className="grid grid-cols-2 gap-x-5 gap-y-5">
             {features.map((feature, index) => (
-              <li key={feature} className="flex items-center gap-4 border-b border-institutional-white/15 py-3.5 text-sm text-institutional-white/75">
+              <li key={feature} className="flex items-start gap-3 py-2 text-base text-institutional-white/75">
                 <span className="text-xs text-institutional-yellow">{String(index + 1).padStart(2, "0")}</span>{feature}
               </li>
             ))}

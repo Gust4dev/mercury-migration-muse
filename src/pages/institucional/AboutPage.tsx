@@ -5,7 +5,7 @@ import InstitutionalLayout from "@/components/institutional/InstitutionalLayout"
 import PageHero from "@/components/institutional/PageHero";
 import InstitutionalCta from "@/components/institutional/InstitutionalCta";
 import Reveal from "@/components/institutional/Reveal";
-import mercuryLogo from "@/assets/mercury-logo.png";
+import MercuryIdentity from "@/components/institutional/MercuryIdentity";
 import { trackInstitutionalEvent, WHATSAPP_URL } from "@/components/institutional/config";
 
 const brands = [
@@ -34,12 +34,9 @@ const AboutPage = () => (
       </PageHero>
 
       <section className="bg-institutional-white py-16 sm:py-24">
-        <div className="institutional-container grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+        <div className="institutional-container grid items-center gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <Reveal>
-            <div className="border-l-4 border-institutional-yellow pl-7">
-              <img src={mercuryLogo} alt="" className="h-16 w-auto" />
-              <p className="mt-8 text-2xl leading-snug text-institutional-black">Estratégia, tecnologia própria e execução operacional no mesmo trabalho.</p>
-            </div>
+            <MercuryIdentity />
           </Reveal>
           <Reveal delay={100}>
             <div className="space-y-5 text-lg leading-8 text-institutional-muted">
@@ -58,7 +55,7 @@ const AboutPage = () => (
           <div className="mt-12 border-t border-institutional-line">
             {brands.map(([name, text], index) => (
               <article key={name} className="grid gap-3 border-b border-institutional-line py-6 md:grid-cols-[0.35fr_0.65fr] md:gap-10">
-                <h3 className="text-2xl text-institutional-black">{name}</h3>
+                <h3 className={`text-2xl ${name === "Mercury Gestora" || name === "Mercury Nexus®" ? "bg-institutional-black p-3 text-institutional-white" : "text-institutional-black"}`}>{name}</h3>
                 <p className="max-w-2xl leading-7 text-institutional-muted">{text}</p>
               </article>
             ))}

@@ -5,14 +5,14 @@ import InstitutionalLayout from "@/components/institutional/InstitutionalLayout"
 import PageHero from "@/components/institutional/PageHero";
 import InstitutionalCta from "@/components/institutional/InstitutionalCta";
 import Reveal from "@/components/institutional/Reveal";
-import creattoOne from "@/assets/institutional/creatto-1.webp";
+import InstitutionalMediaGallery from "@/components/institutional/InstitutionalMediaGallery";
+import { creattoOfficialLogo, creattoProductionPhotos } from "@/components/institutional/authority";
 import creattoTwo from "@/assets/institutional/creatto-2.webp";
 import creattoThree from "@/assets/institutional/creatto-3.webp";
 import creattoFour from "@/assets/institutional/creatto-4.webp";
 import { trackInstitutionalEvent, WHATSAPP_URL } from "@/components/institutional/config";
 
 const products = [
-  [creattoOne, "Placa NFC real para revenda de gás"],
   [creattoTwo, "Placa NFC real para avaliação no Google"],
   [creattoThree, "Placa NFC preta real para avaliação no Google"],
   [creattoFour, "Placa NFC real desenvolvida para clínica"],
@@ -29,6 +29,7 @@ const CreattoPage = () => (
     <InstitutionalLayout>
       <PageHero
         light
+        logo={creattoOfficialLogo}
         eyebrow="DESENVOLVIMENTO E FABRICAÇÃO"
         title="Da ideia ao produto. Conheça a Creatto."
         description="A Creatto é o braço de fabricação e impressão 3D da Mercury, dedicado ao desenvolvimento de produtos personalizados, soluções físicas e aplicações que conectam criatividade, tecnologia e funcionalidade."
@@ -46,7 +47,7 @@ const CreattoPage = () => (
             </div>
             <p className="text-lg leading-8 text-institutional-muted">Da criação de produtos para estabelecimentos comerciais às soluções com tecnologia NFC, a Creatto transforma desenvolvimento e fabricação em aplicações úteis para marketing, relacionamento e experiência do cliente.</p>
           </div>
-          <div className="mt-12 grid grid-cols-2 gap-3 lg:grid-cols-4">
+          <div className="mt-12 grid grid-cols-2 gap-3 lg:grid-cols-3">
             {products.map(([image, alt]) => (
               <Reveal key={alt}>
                 <div className="aspect-square overflow-hidden rounded-sm bg-institutional-light"><img src={image} alt={alt} loading="lazy" className="h-full w-full object-cover" /></div>
@@ -54,6 +55,7 @@ const CreattoPage = () => (
             ))}
           </div>
           <p className="mt-3 text-xs text-institutional-muted">Fotografias reais dos produtos já cadastrados na Mercury Loja.</p>
+          <InstitutionalMediaGallery photos={creattoProductionPhotos} />
         </div>
       </section>
 

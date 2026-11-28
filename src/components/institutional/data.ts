@@ -124,6 +124,9 @@ export interface SegmentDetail {
   slug: string;
   name: string;
   shortName: string;
+  logo?: string;
+  summary: string;
+  approach: { title: string; text: string; services: string[] }[];
   title: string;
   description: string;
   introduction: string;
@@ -140,9 +143,16 @@ export const segmentDetails: SegmentDetail[] = [
     slug: "glp",
     name: "Mercury GLP",
     shortName: "GLP",
-    title: "Estratégia e tecnologia para a realidade das revendas de gás.",
+    logo: "/institutional/mercury-glp.webp",
+    summary: "Novos consumidores, atendimento organizado e mais recorrência para sua revenda.",
+    approach: [
+      { title: "Ser encontrado na hora certa", text: "Quando o gás acaba, o consumidor busca uma solução próxima. Trabalhamos sua presença nas buscas e os anúncios para facilitar esse primeiro contato.", services: ["Google Ads", "Otimização do Perfil da Empresa no Google", "Aquisição de novos consumidores"] },
+      { title: "Do WhatsApp ao pedido", text: "Organizamos o atendimento e a automação comercial para dar continuidade às conversas e apoiar a rotina de quem vende e entrega gás.", services: ["Atendimento pelo WhatsApp", "Automação comercial", "Análise de resultados"] },
+      { title: "A próxima compra também importa", text: "Acompanhamos o relacionamento com sua carteira para recuperar clientes e criar oportunidades de recorrência, respeitando o contexto de cada consumidor.", services: ["Recuperação de clientes", "Remarketing", "Recorrência de pedidos", "Comunidade Mercury GLP Brasil"] },
+    ],
+    title: "Sua revenda precisa ser encontrada quando o cliente precisa de gás.",
     description:
-      "Soluções para conquistar novos consumidores, aumentar a recorrência de pedidos e melhorar a operação comercial de revendas de GLP.",
+      "Ajudamos revendas de GLP a conquistar novos consumidores, aumentar a recorrência de pedidos e melhorar suas operações comerciais por meio de marketing, tecnologia e inteligência comercial.",
     introduction:
       "A Mercury GLP reúne aquisição de clientes, presença no Google, atendimento e relacionamento em uma atuação desenhada para a rotina de quem vende e entrega gás de cozinha.",
     image: glpImage,
@@ -165,9 +175,15 @@ export const segmentDetails: SegmentDetail[] = [
     slug: "farma",
     name: "Mercury Farma",
     shortName: "Farma",
-    title: "Presença local, relacionamento e tecnologia para farmácias e drogarias.",
+    summary: "Presença local, relacionamento e tecnologia para farmácias e drogarias.",
+    approach: [
+      { title: "Mais presença na sua região", text: "Fortalecemos os pontos de contato digitais da farmácia para facilitar a descoberta local e apresentar informações claras sobre a operação.", services: ["Presença digital local", "Gestão de anúncios"] },
+      { title: "Atendimento que aproxima", text: "Conectamos atendimento e relacionamento para acompanhar as necessidades dos consumidores sem perder o cuidado e a confiança que o setor exige.", services: ["Atendimento", "Relacionamento com consumidores"] },
+      { title: "Relacionamento além da primeira compra", text: "Apoiamos a organização comercial e ações de fidelização para que a farmácia esteja mais presente na rotina de seus clientes.", services: ["Fidelização", "Recorrência de compras", "Organização comercial"] },
+    ],
+    title: "Sua farmácia mais presente na rotina dos seus clientes.",
     description:
-      "Estratégias para fortalecer a descoberta da farmácia, organizar o atendimento e ampliar oportunidades de relacionamento com clientes.",
+      "Desenvolvemos estratégias de marketing, relacionamento e tecnologia para ajudar farmácias e drogarias a fortalecer sua presença local e ampliar oportunidades comerciais.",
     introduction:
       "A Mercury Farma conecta marketing e tecnologia à rotina de farmácias e drogarias, respeitando a importância da conveniência, da confiança e do atendimento local.",
     image: farmaImage,
@@ -190,9 +206,16 @@ export const segmentDetails: SegmentDetail[] = [
     slug: "auto",
     name: "Mercury Auto",
     shortName: "Auto",
-    title: "Marketing e tecnologia conectados ao mercado automotivo.",
+    logo: "/institutional/mercury-auto.webp",
+    summary: "Mais oportunidades para autopeças, pneus, rodas e serviços automotivos.",
+    approach: [
+      { title: "Encontrar quem procura sua solução", text: "Aproximamos sua empresa de consumidores e negócios que pesquisam peças, pneus, rodas e serviços na sua região.", services: ["Aquisição de clientes", "Presença no Google", "Gestão de anúncios"] },
+      { title: "Transformar contatos em oportunidades", text: "Organizamos o atendimento comercial e as solicitações de orçamento para dar continuidade às conversas com contexto e clareza.", services: ["Atendimento comercial", "Solicitações de orçamento"] },
+      { title: "Não deixar boas oportunidades para trás", text: "Acompanhamos orçamentos e relacionamentos para recuperar oportunidades e manter a empresa próxima de quem já conhece seu trabalho.", services: ["Recuperação de oportunidades", "Relacionamento com clientes"] },
+    ],
+    title: "Conectamos sua empresa a quem precisa dos seus produtos e serviços.",
     description:
-      "Soluções para autopeças, borracharias, lojas de pneus, rodas e outros negócios que atendem consumidores e empresas do setor automotivo.",
+      "Soluções de marketing, tecnologia e inteligência comercial para autopeças, borracharias, lojas de pneus, rodas e outros negócios do mercado automotivo.",
     introduction:
       "A Mercury Auto ajuda negócios do setor a apresentar melhor seus produtos e serviços, organizar contatos e construir uma operação comercial mais eficiente.",
     image: autoImage,

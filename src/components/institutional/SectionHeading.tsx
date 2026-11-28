@@ -17,7 +17,7 @@ const SectionHeading = ({ eyebrow, title, description, dark = false, className =
       {title}
     </h2>
     {description && (
-      <p className={`mt-5 max-w-2xl text-base leading-7 sm:text-lg ${dark ? "text-institutional-white/65" : "text-institutional-muted"}`}>
+      <p className={`mt-5 max-w-2xl text-lg leading-8 ${dark ? "text-institutional-white/80" : "text-institutional-muted"}`}>
         {description}
       </p>
     )}
