@@ -31,12 +31,12 @@ const clients = [
 const LogoRow = ({ hidden = false }: { hidden?: boolean }) => (
   <div className="flex items-center gap-3 pr-3" aria-hidden={hidden || undefined}>
     {clients.map((client) => (
-      <div key={`${client.name}-${hidden}`} className="flex h-28 w-28 shrink-0 items-center justify-center sm:h-32 sm:w-32">
+      <div key={`${client.name}-${hidden}`} className="flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-institutional-white sm:h-32 sm:w-32">
         <img
           src={client.logo}
           alt={hidden ? "" : client.name}
           loading="lazy"
-          className="h-full w-full rounded-xl object-contain"
+          className="block h-full w-full object-cover object-center"
         />
       </div>
     ))}
