@@ -8,10 +8,11 @@ interface PageHeroProps {
   image?: string;
   imageAlt?: string;
   imageCaption?: string;
+  squareImage?: boolean;
   light?: boolean;
 }
 
-const PageHero = ({ eyebrow, title, description, children, image, imageAlt, imageCaption, light = false }: PageHeroProps) => (
+const PageHero = ({ eyebrow, title, description, children, image, imageAlt, imageCaption, squareImage = false, light = false }: PageHeroProps) => (
   <section className={`${light ? "bg-institutional-light text-institutional-black" : "bg-institutional-black text-institutional-white"} pb-16 pt-32 sm:pb-20 sm:pt-40`}>
     <div className={`institutional-container grid items-center gap-10 ${image ? "lg:grid-cols-2 lg:gap-16" : ""}`}>
       <div className={image ? "" : "max-w-4xl"}>
@@ -22,7 +23,7 @@ const PageHero = ({ eyebrow, title, description, children, image, imageAlt, imag
       </div>
       {image && (
         <figure>
-          <div className="aspect-[4/3] overflow-hidden rounded-sm">
+          <div className={`${squareImage ? "aspect-square" : "aspect-[4/3]"} overflow-hidden rounded-sm`}>
             <img src={image} alt={imageAlt ?? ""} className="institutional-photo h-full w-full object-cover" />
           </div>
           {imageCaption && <figcaption className={`mt-2 text-xs ${light ? "text-institutional-muted" : "text-institutional-white/45"}`}>{imageCaption}</figcaption>}

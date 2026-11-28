@@ -1,4 +1,4 @@
-import glpImage from "@/assets/institutional/glp.webp";
+import glpImage from "@/assets/institutional/glp-cliente.webp";
 import farmaImage from "@/assets/institutional/farma.webp";
 import autoImage from "@/assets/institutional/auto.webp";
 
@@ -129,6 +129,7 @@ export interface SegmentDetail {
   introduction: string;
   image: string;
   imageAlt: string;
+  imageIsIllustrative: boolean;
   audiences: string[];
   challenges: string[];
   solutions: string[];
@@ -145,7 +146,8 @@ export const segmentDetails: SegmentDetail[] = [
     introduction:
       "A Mercury GLP reúne aquisição de clientes, presença no Google, atendimento e relacionamento em uma atuação desenhada para a rotina de quem vende e entrega gás de cozinha.",
     image: glpImage,
-    imageAlt: "Imagem ilustrativa de entregador ao lado de botijões de gás em um caminhão",
+    imageAlt: "Botijões de gás organizados na revenda de um cliente da Mercury GLP",
+    imageIsIllustrative: false,
     audiences: ["Revendas de gás de cozinha", "Distribuidoras e pontos de venda", "Operações de entrega de GLP"],
     challenges: [
       "Ser encontrado quando o consumidor precisa de gás",
@@ -170,6 +172,7 @@ export const segmentDetails: SegmentDetail[] = [
       "A Mercury Farma conecta marketing e tecnologia à rotina de farmácias e drogarias, respeitando a importância da conveniência, da confiança e do atendimento local.",
     image: farmaImage,
     imageAlt: "Imagem ilustrativa de profissionais organizando produtos em uma farmácia",
+    imageIsIllustrative: true,
     audiences: ["Farmácias independentes", "Drogarias e redes regionais", "Operações com atendimento local e digital"],
     challenges: [
       "Fortalecer a presença da farmácia na região",
@@ -194,6 +197,7 @@ export const segmentDetails: SegmentDetail[] = [
       "A Mercury Auto ajuda negócios do setor a apresentar melhor seus produtos e serviços, organizar contatos e construir uma operação comercial mais eficiente.",
     image: autoImage,
     imageAlt: "Imagem ilustrativa de mecânico trabalhando no motor de um veículo",
+    imageIsIllustrative: true,
     audiences: ["Autopeças e lojas de pneus", "Borracharias e lojas de rodas", "Oficinas e negócios automotivos"],
     challenges: [
       "Apresentar produtos e serviços para o público certo",

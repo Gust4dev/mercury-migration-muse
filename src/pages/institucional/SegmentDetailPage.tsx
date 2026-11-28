@@ -28,7 +28,8 @@ const SegmentDetailPage = () => {
           description={segment.description}
           image={segment.image}
           imageAlt={segment.imageAlt}
-          imageCaption="Fotografia ilustrativa do segmento; não representa cliente ou operação da Mercury."
+          squareImage={segment.slug === "glp"}
+          imageCaption={segment.imageIsIllustrative ? "Fotografia ilustrativa do segmento; não representa cliente ou operação da Mercury." : undefined}
         >
           <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackInstitutionalEvent("Contact", `Interesse em ${segment.name}`)} className="institutional-button bg-institutional-yellow text-institutional-black">
             Converse com nossa equipe <ArrowUpRight size={17} />

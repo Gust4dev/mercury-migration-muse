@@ -28,10 +28,10 @@ const SegmentsPage = () => (
             <Reveal key={segment.slug}>
               <article className="grid items-center gap-8 border-t border-institutional-line py-10 lg:grid-cols-2 lg:gap-16 lg:py-14">
                 <figure className={index % 2 ? "lg:order-2" : ""}>
-                  <div className="aspect-[16/10] overflow-hidden rounded-sm">
+                  <div className={`${segment.slug === "glp" ? "aspect-square" : "aspect-[16/10]"} overflow-hidden rounded-sm`}>
                     <img src={segment.image} alt={segment.imageAlt} loading="lazy" className="institutional-photo h-full w-full object-cover" />
                   </div>
-                  <figcaption className="mt-2 text-xs text-institutional-muted">Fotografia ilustrativa do segmento.</figcaption>
+                  {segment.imageIsIllustrative && <figcaption className="mt-2 text-xs text-institutional-muted">Fotografia ilustrativa do segmento.</figcaption>}
                 </figure>
                 <div className={index % 2 ? "lg:order-1" : ""}>
                   <p className="institutional-eyebrow text-institutional-muted">VERTICAL DE ATUAÇÃO</p>
