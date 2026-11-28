@@ -1,10 +1,12 @@
 # Roadmap
 
-## Mercado Pago (Checkout Transparente + Orders API)
-- [x] Banco: campos de pagamento no pedido, tentativas em `payments`, eventos de webhook
-- [x] Funções de servidor: `mp-config`, `mp-create-payment`, `mp-payment-status`, `mercado-pago-webhook`
-- [x] Checkout: PIX + cartão de crédito sem sair do site
-- [x] Painel administrativo: seção de pagamento no pedido
-- [x] Somente credenciais de PRODUÇÃO (`MERCADO_PAGO_*`), `PAYMENT_ENVIRONMENT=production`
-- [ ] Cadastro dos secrets de produção pelo usuário (bloqueado: depende das chaves reais)
-- [ ] Cadastro da URL do webhook no painel do Mercado Pago (bloqueado: ação no painel do usuário)
+## Reformulação institucional
+- [ ] Criar identidade, cabeçalho e rodapé isolados da área operacional
+- [ ] Reconstruir a Home com os três pilares, segmentos, Nexus, Vendi.Mais, comunidade, Creatto e Mercury
+- [ ] Criar páginas institucionais de soluções, segmentos, tecnologia, Creatto, sobre e contato
+- [ ] Atualizar SEO e sitemap somente das páginas institucionais
+- [ ] Validar desktop, mobile, navegação e preservação das rotas operacionais
+- [ ] Cases públicos aguardam resultados reais, contextualizados e autorizados
+
+## Pendências externas anteriores
+- [ ] Confirmar o cadastro da URL do webhook no painel do Mercado Pago (ação do usuário)
