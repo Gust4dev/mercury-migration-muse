@@ -13,6 +13,14 @@ import Suporte from "./pages/Suporte.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Comunidade from "./pages/Comunidade.tsx";
 import Privacidade from "./pages/Privacidade.tsx";
+import SolutionsPage from "./pages/institucional/SolutionsPage.tsx";
+import SolutionDetailPage from "./pages/institucional/SolutionDetailPage.tsx";
+import SegmentsPage from "./pages/institucional/SegmentsPage.tsx";
+import SegmentDetailPage from "./pages/institucional/SegmentDetailPage.tsx";
+import TechnologyPage from "./pages/institucional/TechnologyPage.tsx";
+import CreattoPage from "./pages/institucional/CreattoPage.tsx";
+import AboutPage from "./pages/institucional/AboutPage.tsx";
+import ContactPage from "./pages/institucional/ContactPage.tsx";
 
 import LojaHome from "./pages/loja/LojaHome.tsx";
 import Catalogo from "./pages/loja/Catalogo.tsx";
@@ -48,6 +56,17 @@ const App = () => (
         <CartProvider>
           <Routes>
             <Route path="/" element={<Index />} />
+
+            {/* Institucional */}
+            <Route path="/solucoes" element={<SolutionsPage />} />
+            <Route path="/solucoes/:slug" element={<SolutionDetailPage />} />
+            <Route path="/segmentos" element={<SegmentsPage />} />
+            <Route path="/segmentos/:slug" element={<SegmentDetailPage />} />
+            <Route path="/tecnologia" element={<TechnologyPage />} />
+            <Route path="/creatto" element={<CreattoPage />} />
+            <Route path="/sobre" element={<AboutPage />} />
+            <Route path="/contato" element={<ContactPage />} />
+
             <Route path="/vendimais" element={<VendiMais />} />
             <Route path="/vendi-mais" element={<VendiMais />} />
 

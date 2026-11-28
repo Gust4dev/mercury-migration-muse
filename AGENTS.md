@@ -1,1 +1,2 @@
 - Media used on pages must live in public/ or be imported from src/assets as real files, not lovable-assets pointers: the main domain (mercurygestora.com.br) is hosted on Vercel and cannot serve /__l5e/ CDN URLs.
+- Institutional pages use isolated components and styles under `src/components/institutional/` and `src/pages/institucional/`; operational pages retain their existing shared header, footer, styles, and behavior to prevent institutional redesigns from affecting the store or admin.

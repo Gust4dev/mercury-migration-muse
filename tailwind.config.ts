@@ -63,10 +63,20 @@ export default {
           card: "hsl(var(--mercury-card))",
           light: "hsl(var(--mercury-light))",
         },
+        institutional: {
+          yellow: "hsl(var(--institutional-yellow) / <alpha-value>)",
+          black: "hsl(var(--institutional-black) / <alpha-value>)",
+          white: "hsl(var(--institutional-white) / <alpha-value>)",
+          light: "hsl(var(--institutional-light) / <alpha-value>)",
+          graphite: "hsl(var(--institutional-graphite) / <alpha-value>)",
+          muted: "hsl(var(--institutional-muted) / <alpha-value>)",
+          line: "hsl(var(--institutional-line) / <alpha-value>)",
+        },
       },
       fontFamily: {
         heading: ["Space Grotesk", "sans-serif"],
         body: ["Inter", "sans-serif"],
+        institutional: ["Questrial", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

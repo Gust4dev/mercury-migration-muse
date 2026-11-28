@@ -1,72 +1,65 @@
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import ClientLogos from "@/components/ClientLogos";
-import MetricsBanner from "@/components/MetricsBanner";
-import OperationSection from "@/components/OperationSection";
-import VendiMaisHighlight from "@/components/VendiMaisHighlight";
-import NexusSection from "@/components/NexusSection";
-import MercuryDifferentials from "@/components/MercuryDifferentials";
-import AboutSection from "@/components/AboutSection";
-import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
+import InstitutionalLayout from "@/components/institutional/InstitutionalLayout";
+import HomeHero from "@/components/institutional/HomeHero";
+import HomeLogos from "@/components/institutional/HomeLogos";
+import HomePillars from "@/components/institutional/HomePillars";
+import HomeSegments from "@/components/institutional/HomeSegments";
+import HomeNexus from "@/components/institutional/HomeNexus";
+import HomeVendi from "@/components/institutional/HomeVendi";
+import HomeCommunity from "@/components/institutional/HomeCommunity";
+import HomeCreatto from "@/components/institutional/HomeCreatto";
+import HomeAbout from "@/components/institutional/HomeAbout";
+import InstitutionalCta from "@/components/institutional/InstitutionalCta";
 
-const Index = () => {
-  const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      name: "Mercury Gestora",
-      url: "https://mercurygestora.com.br",
-      inLanguage: "pt-BR",
-      potentialAction: {
-        "@type": "SearchAction",
-        target: "https://mercurygestora.com.br/?q={search_term_string}",
-        "query-input": "required name=search_term_string",
-      },
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "ProfessionalService",
-      name: "Mercury Gestora",
-      image: "https://mercurygestora.com.br/favicon.png",
-      url: "https://mercurygestora.com.br",
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Mercury Gestora",
+    url: "https://mercurygestora.com.br",
+    inLanguage: "pt-BR",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Mercury Gestora",
+    url: "https://mercurygestora.com.br",
+    logo: "https://mercurygestora.com.br/favicon.png",
+    taxID: "50.884.134/0001-90",
+    description: "Empresa de marketing, tecnologia e inteligência comercial que desenvolve soluções para aquisição de clientes, atendimento, relacionamento e eficiência operacional.",
+    contactPoint: {
+      "@type": "ContactPoint",
       telephone: "+55-62-9361-8627",
-      priceRange: "$$",
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: "Goiânia",
-        addressRegion: "GO",
-        addressCountry: "BR",
-      },
+      contactType: "sales",
       areaServed: "BR",
-      description:
-        "Gestão de tráfego, IA, CRM, automação, dados e consultoria estratégica para PMEs. Solução principal: Vendi.Mais®. Tecnologia proprietária: Mercury Nexus®.",
+      availableLanguage: ["Portuguese"],
     },
-  ];
+    sameAs: ["https://www.instagram.com/mercurygestora"],
+  },
+];
 
-  return (
-    <div className="min-h-screen">
-      <SEO
-        title="Mercury Gestora — Automação Comercial com IA e CRM"
-        description="Tecnologia, estratégia e automação para sua empresa vender mais. Conheça o Vendi.Mais® e a tecnologia Mercury Nexus®."
-        canonical="/"
-        keywords="Mercury Gestora, Vendi.Mais, Mercury Nexus, automação comercial, IA para vendas, CRM, bot WhatsApp"
-        jsonLd={jsonLd}
-      />
-      <Navbar />
-      <main>
-        <Hero />
-        <ClientLogos />
-        <MetricsBanner />
-        <OperationSection />
-        <VendiMaisHighlight />
-        <NexusSection />
-        <MercuryDifferentials />
-        <AboutSection />
-      </main>
-      <Footer />
-    </div>
-  );
-};
+const Index = () => (
+  <>
+    <SEO
+      title="Mercury Gestora | Marketing, Tecnologia e Inteligência Comercial"
+      description="A Mercury Gestora conecta marketing, tecnologia e inteligência comercial para ajudar empresas a conquistar clientes, aumentar vendas e melhorar suas operações."
+      canonical="/"
+      keywords="Mercury Gestora, marketing, tecnologia, inteligência comercial, gestão de tráfego, presença digital, Mercury Nexus, Vendi.Mais, Creatto"
+      jsonLd={jsonLd}
+    />
+    <InstitutionalLayout>
+      <HomeHero />
+      <HomeLogos />
+      <HomePillars />
+      <HomeSegments />
+      <HomeNexus />
+      <HomeVendi />
+      <HomeCommunity />
+      <HomeCreatto />
+      <HomeAbout />
+      <InstitutionalCta />
+    </InstitutionalLayout>
+  </>
+);
 
 export default Index;

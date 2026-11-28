@@ -1,0 +1,157 @@
+.institutional-site {
+  --institutional-yellow: 51 100% 50%;
+  --institutional-black: 0 0% 4.7%;
+  --institutional-white: 0 0% 100%;
+  --institutional-light: 0 0% 95.7%;
+  --institutional-graphite: 0 0% 13.3%;
+  --institutional-muted: 0 0% 42%;
+  --institutional-line: 0 0% 82%;
+  font-family: "Questrial", sans-serif;
+  background: hsl(var(--institutional-white));
+  color: hsl(var(--institutional-black));
+  overflow-x: clip;
+}
+
+.institutional-site h1,
+.institutional-site h2,
+.institutional-site h3,
+.institutional-site h4,
+.institutional-site p {
+  font-family: "Questrial", sans-serif;
+}
+
+.institutional-container {
+  width: min(100% - 2.5rem, 1320px);
+  margin-inline: auto;
+}
+
+.institutional-eyebrow {
+  font-size: 0.72rem;
+  line-height: 1rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.institutional-display {
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+
+.institutional-title {
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+}
+
+.institutional-button {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1.25rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.institutional-button:hover {
+  transform: translateY(-2px);
+}
+
+.institutional-button:active {
+  transform: scale(0.97);
+}
+
+.institutional-button:focus-visible,
+.institutional-site a:focus-visible,
+.institutional-site button:focus-visible {
+  outline: 2px solid hsl(var(--institutional-yellow));
+  outline-offset: 4px;
+}
+
+.institutional-reveal {
+  opacity: 1;
+  transform: translateY(14px);
+  transition: transform 550ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.institutional-reveal.is-visible {
+  transform: translateY(0);
+}
+
+.institutional-skip-link {
+  position: fixed;
+  left: 1rem;
+  top: 0.75rem;
+  z-index: 100;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.institutional-skip-link:focus {
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip-path: none;
+}
+
+.institutional-marquee {
+  animation: institutional-marquee 36s linear infinite;
+  width: max-content;
+  will-change: transform;
+}
+
+.institutional-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes institutional-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.institutional-photo {
+  filter: saturate(0.78) contrast(1.04);
+}
+
+.institutional-video {
+  pointer-events: none;
+  display: block;
+  width: 100%;
+  height: auto;
+  background: hsl(var(--institutional-black));
+}
+
+@media (min-width: 640px) {
+  .institutional-container {
+    width: min(100% - 4rem, 1320px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .institutional-site *,
+  .institutional-site *::before,
+  .institutional-site *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .institutional-reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .institutional-marquee {
+    animation: none;
+  }
+}
