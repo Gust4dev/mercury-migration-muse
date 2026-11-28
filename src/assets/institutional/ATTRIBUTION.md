@@ -13,3 +13,5 @@ Licença Pexels: https://www.pexels.com/license/
 `nexus-poster.jpg` e `public/videos/nexus-institutional.mp4` derivam do vídeo real `public/videos/nexus-demo.mp4`, já existente no projeto.
 
 `glp-cliente.webp` é um recorte quadrado da fotografia enviada pelo usuário, que confirmou retratar a revenda de um cliente real da Mercury GLP. Não é uma fotografia ilustrativa.
+
+`farma-cliente.webp` e `auto-cliente.webp` são recortes quadrados das fotografias enviadas pelo usuário, que confirmou retratarem clientes reais da Mercury Farma e Mercury Auto, respectivamente. Não são fotografias ilustrativas.

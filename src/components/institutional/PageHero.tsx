@@ -23,7 +23,7 @@ const PageHero = ({ eyebrow, title, description, children, image, imageAlt, imag
       </div>
       {image && (
         <figure>
-          <div className={`${squareImage ? "aspect-square" : "aspect-[4/3]"} overflow-hidden rounded-sm`}>
+          <div className={`${squareImage ? "aspect-square rounded-2xl" : "aspect-[4/3] rounded-sm"} overflow-hidden`}>
             <img src={image} alt={imageAlt ?? ""} className="institutional-photo h-full w-full object-cover" />
           </div>
           {imageCaption && <figcaption className={`mt-2 text-xs ${light ? "text-institutional-muted" : "text-institutional-white/45"}`}>{imageCaption}</figcaption>}

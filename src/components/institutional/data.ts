@@ -1,6 +1,6 @@
 import glpImage from "@/assets/institutional/glp-cliente.webp";
-import farmaImage from "@/assets/institutional/farma.webp";
-import autoImage from "@/assets/institutional/auto.webp";
+import farmaImage from "@/assets/institutional/farma-cliente.webp";
+import autoImage from "@/assets/institutional/auto-cliente.webp";
 
 export interface SolutionDetail {
   slug: string;
@@ -171,8 +171,8 @@ export const segmentDetails: SegmentDetail[] = [
     introduction:
       "A Mercury Farma conecta marketing e tecnologia à rotina de farmácias e drogarias, respeitando a importância da conveniência, da confiança e do atendimento local.",
     image: farmaImage,
-    imageAlt: "Imagem ilustrativa de profissionais organizando produtos em uma farmácia",
-    imageIsIllustrative: true,
+    imageAlt: "Interior da farmácia de um cliente da Mercury Farma",
+    imageIsIllustrative: false,
     audiences: ["Farmácias independentes", "Drogarias e redes regionais", "Operações com atendimento local e digital"],
     challenges: [
       "Fortalecer a presença da farmácia na região",
@@ -196,8 +196,8 @@ export const segmentDetails: SegmentDetail[] = [
     introduction:
       "A Mercury Auto ajuda negócios do setor a apresentar melhor seus produtos e serviços, organizar contatos e construir uma operação comercial mais eficiente.",
     image: autoImage,
-    imageAlt: "Imagem ilustrativa de mecânico trabalhando no motor de um veículo",
-    imageIsIllustrative: true,
+    imageAlt: "Veículos e peças no estabelecimento de um cliente da Mercury Auto",
+    imageIsIllustrative: false,
     audiences: ["Autopeças e lojas de pneus", "Borracharias e lojas de rodas", "Oficinas e negócios automotivos"],
     challenges: [
       "Apresentar produtos e serviços para o público certo",
