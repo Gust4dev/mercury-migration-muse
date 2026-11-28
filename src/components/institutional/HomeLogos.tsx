@@ -36,7 +36,7 @@ const LogoRow = ({ hidden = false }: { hidden?: boolean }) => (
           src={client.logo}
           alt={hidden ? "" : client.name}
           loading="lazy"
-          className="max-h-full max-w-full object-contain grayscale transition-all duration-300 hover:grayscale-0"
+          className="max-h-full max-w-full rounded-xl object-contain"
         />
       </div>
     ))}
